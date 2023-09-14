@@ -1,8 +1,8 @@
 package user;
 
+import email.EmailAddressValidator;
 import lombok.AllArgsConstructor;
-import net.sf.resultsetmapper.ReflectionResultSetMapper;
-import net.sf.resultsetmapper.ResultSetMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import utils.DatabaseConnectionManager;
 import utils.iDAO;
@@ -12,10 +12,11 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class UserDAO implements iDAO<User, Integer> { // In future projects, implement your DB w Hibernate - Makes it much simpler & easier to implement and unit test with DBUnit
+public class UserDAO implements iUserDAO { // In future projects, implement your DB w Hibernate - Makes it much simpler & easier to implement and unit test with DBUnit
 
     Connection databaseConnection;
-    ResultSetMapper<User> resultSetMapper = new ReflectionResultSetMapper<User>(User.class);
+    @Autowired
+    EmailAddressValidator emailAddressValidator;
 
     public UserDAO() throws SQLException { // Cannot use @NoArgsConstructor w default values assigned to members as setting databaseConnection member with DriverManager can throw an exception
         databaseConnection = DatabaseConnectionManager.getConnection(); // Singleton instance to our DB to prevent multiple instances
@@ -24,25 +25,61 @@ public class UserDAO implements iDAO<User, Integer> { // In future projects, imp
     @Override
     public User get(Integer id) throws SQLException {
 
-        final String query = "SELECT * FROM Users WHERE ID = ?";
+        final String query = "SELECT * FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         statement.setInt(1, id);
         ResultSet results = statement.executeQuery();
 
-        return results.next() ? resultSetMapper.mapRow(results) : null;
+        if (results.next()){
+            return new User(results.getInt("UserID"), // Ideally switch to Mapper
+                    results.getString("Email"),
+                    results.getString("ProfilePictureLink"),
+                    results.getString("ProfileDescription"),
+                    results.getDate("RegistrationDate"),
+                    UserType.valueOf(results.getString("AccountType")));
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    public User getByEmail(String email) throws SQLException {
+
+        final String query = "SELECT * FROM User WHERE Email = ?";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        statement.setString(1, email);
+        ResultSet results = statement.executeQuery();
+
+        if (results.next()){
+            return new User(results.getInt("UserID"), // Ideally switch to Mapper
+                    results.getString("Email"),
+                    results.getString("ProfilePictureLink"),
+                    results.getString("ProfileDescription"),
+                    results.getDate("RegistrationDate"),
+                    UserType.valueOf(results.getString("AccountType")));
+        }
+        else {
+            return null;
+        }
 
     }
 
     @Override
     public List<User> getAll() throws SQLException {
 
-        final String query = "SELECT * FROM Users";
+        final String query = "SELECT * FROM User";
         List<User> users = new LinkedList<User>();
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         ResultSet results = statement.executeQuery();
 
         while (results.next()) {
-            users.add(resultSetMapper.mapRow(results));
+            users.add(new User(results.getInt("UserID"),
+                    results.getString("Email"),
+                    results.getString("ProfilePictureLink"),
+                    results.getString("ProfileDescription"),
+                    results.getDate("RegistrationDate"),
+                    UserType.valueOf(results.getString("AccountType"))));
         }
 
         return users;
@@ -52,14 +89,14 @@ public class UserDAO implements iDAO<User, Integer> { // In future projects, imp
     @Override
     public void save(User user) throws SQLException { // Somewhat violates the SRP. Can refactor to use a UserDAOStatementFactory class but that's too much voodoo
 
-        final String query = "INSERT INTO Users (Email, ProfilePictureLink, ProfileDescription, RegistrationDate, AccountType) VALUES (?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO User (Email, ProfilePictureLink, ProfileDescription, RegistrationDate, AccountType) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
 
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getProfilePictureLink());
         preparedStatement.setString(3, user.getProfileDescription());
         preparedStatement.setDate(4, new java.sql.Date(user.getRegistrationDate().getTime()));
-        preparedStatement.setString(5, user.getUserType().toString());
+        preparedStatement.setString(5, user.getAccountType().toString());
 
         preparedStatement.executeUpdate();
 
@@ -68,14 +105,14 @@ public class UserDAO implements iDAO<User, Integer> { // In future projects, imp
     @Override
     public void update(User user) throws SQLException {
 
-        final String query = "UPDATE Users SET Email=?, ProfilePictureLink=?, ProfileDescription=?, RegistrationDate=?, AccountType=? WHERE UserID=?";
+        final String query = "UPDATE User SET Email=?, ProfilePictureLink=?, ProfileDescription=?, RegistrationDate=?, AccountType=? WHERE UserID=?";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
 
         preparedStatement.setString(1, user.getEmail());
         preparedStatement.setString(2, user.getProfilePictureLink());
         preparedStatement.setString(3, user.getProfileDescription());
         preparedStatement.setDate(4, new java.sql.Date(user.getRegistrationDate().getTime()));
-        preparedStatement.setString(5, user.getUserType().toString());
+        preparedStatement.setString(5, user.getAccountType().toString());
         preparedStatement.setInt(6, user.getUserID()); // Assuming the user object has a userID field
 
         preparedStatement.executeUpdate();
@@ -85,10 +122,10 @@ public class UserDAO implements iDAO<User, Integer> { // In future projects, imp
     @Override
     public void delete(Integer id) throws SQLException {
 
-        final String query = "DELETE FROM Users WHERE ID = ?";
+        final String query = "DELETE FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         statement.setInt(1, id);
-        statement.executeQuery();
+        statement.executeUpdate();
 
     }
 }

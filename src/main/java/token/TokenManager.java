@@ -31,7 +31,7 @@ public class TokenManager implements iTokenManager{
         JWT jwt = new JWT()
                 .setIssuer("joystick-jury.com")
                 .setSubject(String.valueOf(user.getUserID()))
-                .addClaim("role", user.getUserType())
+                .addClaim("role", user.getAccountType())
                 .setIssuedAt(ZonedDateTime.now(ZoneOffset.UTC))
                 .setExpiration(ZonedDateTime.now(ZoneOffset.UTC).plusHours(tokenLifespanHours));
 

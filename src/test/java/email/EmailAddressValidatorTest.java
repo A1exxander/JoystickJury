@@ -26,17 +26,17 @@ class EmailAddressValidatorTest {
     class isValidEmailTester {
 
         @Test
-        void should_ReturnFalse_WhenNoEmail() { assertFalse(emailAddressValidator.isValidEmailAddress(null)); }
+        void should_ReturnFalse_When_NoEmail() { assertFalse(emailAddressValidator.isValidEmailAddress(null)); }
 
         @ParameterizedTest
         @ValueSource(strings = { "", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "johnsmithgmail.com", "@!#@mail.com"})
-        void should_ReturnFalse_WhenInvalidEmailFormat(String email) {
+        void should_ReturnFalse_When_InvalidEmailFormat(String email) {
             assertFalse(emailAddressValidator.isValidEmailAddress(email));
         }
 
         @ParameterizedTest
         @ValueSource(strings = { "john.smith@sgmail.com", "raposoalexander@gmail.com" })
-        void should_ReturnTrue_WhenValidEmailFormat(String email) {
+        void should_ReturnTrue_When_ValidEmailFormat(String email) {
             assertTrue(emailAddressValidator.isValidEmailAddress(email));
         }
     }

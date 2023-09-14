@@ -27,7 +27,7 @@ public class TokenManagerTest {
     @Nested
     public class generateTokenTest {
         @Test
-        void should_ReturnValidToken_UponValidGeneration(){
+        void should_ReturnValidToken_When_ValidGeneration(){
             User u = new User(1,"johnsmith@gmail.com", null,null, new Date(), UserType.ADMIN);
             String generatedToken = tokenManager.generateToken(u);
             assertTrue(tokenManager.isValidToken(generatedToken));

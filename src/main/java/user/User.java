@@ -14,11 +14,11 @@ import java.util.Date;
 @Component
 public class User {
 
-    private int userID;
+    private Integer userID;
     private String email;
     private String profilePictureLink;
     private String profileDescription;
     private Date registrationDate;
-    private UserType userType;
+    private UserType accountType;
 
 }

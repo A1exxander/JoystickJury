@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public interface iDAO<T,I> {
+public interface iDAO<T, I> {
 
         T get(I id) throws SQLException;
         List<T> getAll() throws SQLException;
