@@ -8,6 +8,7 @@ import user.*;
 
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenManagerTest {
@@ -32,5 +33,4 @@ public class TokenManagerTest {
             assertTrue(tokenManager.isValidToken(generatedToken));
         }
     }
-
 }

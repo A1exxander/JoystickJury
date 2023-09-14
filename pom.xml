@@ -38,6 +38,11 @@
 			<version>5.2.4</version>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.resultsetmapper</groupId>
+			<artifactId>resultsetmapper</artifactId>
+			<version>0.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -51,7 +56,13 @@
 			<artifactId>spring-beans</artifactId>
 			<version>6.0.11</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.24.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
