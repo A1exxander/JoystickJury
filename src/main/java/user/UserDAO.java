@@ -15,8 +15,6 @@ import java.util.List;
 public class UserDAO implements iUserDAO { // In future projects, implement your DB w Hibernate - Makes it much simpler & easier to implement and unit test with DBUnit
 
     Connection databaseConnection;
-    @Autowired
-    EmailAddressValidator emailAddressValidator;
 
     public UserDAO() throws SQLException { // Cannot use @NoArgsConstructor w default values assigned to members as setting databaseConnection member with DriverManager can throw an exception
         databaseConnection = DatabaseConnectionManager.getConnection(); // Singleton instance to our DB to prevent multiple instances
@@ -44,7 +42,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
 
     }
 
-    public User getByEmail(String email) throws SQLException {
+    public User get(String email) throws SQLException {
 
         final String query = "SELECT * FROM User WHERE Email = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);

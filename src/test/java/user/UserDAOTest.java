@@ -54,11 +54,11 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         void should_ReturnUID1_When_ReceivingRaposoAlexanderEmail() throws SQLException {
-            assertEquals(1, userDAO.getByEmail("raposoalexander@gmail.com").getUserID());
+            assertEquals(1, userDAO.get("raposoalexander@gmail.com").getUserID());
         }
         @Test
         void should_ReturnNull_When_ReceivingNonExistentEmailAddress() throws SQLException {
-            assertNull(userDAO.getByEmail("L"));
+            assertNull(userDAO.get("L"));
         }
 
     };
@@ -74,7 +74,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
             } catch (SQLIntegrityConstraintViolationException e){
                 System.err.println("Test user already exists. Skipping creation...");
             }
-            assertNotNull(userDAO.getByEmail("test@test.com"));
+            assertNotNull(userDAO.get("test@test.com"));
         }
         @Test
         void should_ThrowException_When_SavingExistingUser(){
@@ -91,7 +91,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         void should_DeleteUser_When_DeletingExistingUser() throws SQLException {
-            User testUser = userDAO.getByEmail("test@test.com");
+            User testUser = userDAO.get("test@test.com");
             userDAO.delete(testUser.getUserID());
             assertNull(userDAO.get(testUser.getUserID()));
         }
