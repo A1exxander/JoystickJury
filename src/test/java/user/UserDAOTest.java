@@ -4,6 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import xyz.joystickjury.backend.user.User;
+import xyz.joystickjury.backend.user.UserDAO;
+import xyz.joystickjury.backend.user.UserType;
+
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.sql.SQLException;

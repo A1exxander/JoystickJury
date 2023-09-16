@@ -4,24 +4,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import user.*;
+import xyz.joystickjury.backend.token.JWTManager;
+import xyz.joystickjury.backend.user.User;
+import xyz.joystickjury.backend.user.UserType;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TokenManagerTest {
+public class JWTManagerTest {
 
-    private TokenManager tokenManager;
+    private JWTManager JWTManager;
 
     @BeforeEach
     void setUp(){
-        tokenManager = new TokenManager();
+        JWTManager = new JWTManager();
     }
     @AfterEach
     void tearDown(){
-        tokenManager = null;
+        JWTManager = null;
     }
 
     @Nested
@@ -29,8 +31,8 @@ public class TokenManagerTest {
         @Test
         void should_ReturnValidToken_When_ValidGeneration(){
             User u = new User(1,"johnsmith@gmail.com", null,null, new Date(), UserType.ADMIN);
-            String generatedToken = tokenManager.generateToken(u);
-            assertTrue(tokenManager.isValidToken(generatedToken));
+            String generatedJWT = JWTManager.generateJWT(u);
+            assertTrue(JWTManager.isValidJWT(generatedJWT));
         }
     }
 }

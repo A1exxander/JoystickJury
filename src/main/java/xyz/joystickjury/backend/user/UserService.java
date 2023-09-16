@@ -1,4 +1,4 @@
-package user;
+package xyz.joystickjury.backend.user;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -39,5 +39,8 @@ public class UserService implements iUserService {
     public void deleteUser(Integer id) throws SQLException {
         userDAO.delete(id);
     }
-
+    @Override
+    public boolean isSameUser(User currentUser, User updatedUser) { // Determines if both user objects share the same read-only data uniquely identifying the same user
+        return (currentUser.getUserID() == updatedUser.getUserID() && currentUser.getRegistrationDate() == updatedUser.getRegistrationDate() && currentUser.getAccountType() == updatedUser.getAccountType());
+    }
 }

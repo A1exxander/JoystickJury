@@ -1,4 +1,4 @@
-package utils;
+package xyz.joystickjury.backend.utils;
 
 import org.springframework.stereotype.Component;
 

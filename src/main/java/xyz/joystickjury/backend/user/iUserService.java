@@ -1,12 +1,8 @@
-package user;
+package xyz.joystickjury.backend.user;
 
 import org.springframework.stereotype.Service;
-import utils.DatabaseConnectionManager;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -17,5 +13,5 @@ public interface iUserService {
     public void saveUser(User user) throws SQLException;
     public void updateUser(User user) throws SQLException;
     public void deleteUser(Integer id) throws SQLException;
-
+    public boolean isSameUser(User currentUser, User updatedUser);
 }

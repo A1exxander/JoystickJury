@@ -1,4 +1,4 @@
-package email;
+package xyz.joystickjury.backend.email;
 
 import org.springframework.stereotype.Component;
 import lombok.*;

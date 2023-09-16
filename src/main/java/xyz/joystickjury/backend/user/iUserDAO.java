@@ -1,7 +1,6 @@
-package user;
+package xyz.joystickjury.backend.user;
 
-import org.springframework.stereotype.Repository;
-import utils.iDAO;
+import xyz.joystickjury.backend.utils.iDAO;
 
 import java.sql.SQLException;
 

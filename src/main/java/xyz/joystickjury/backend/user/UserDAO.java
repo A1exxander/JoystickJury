@@ -1,11 +1,9 @@
-package user;
+package xyz.joystickjury.backend.user;
 
-import email.EmailAddressValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import utils.DatabaseConnectionManager;
-import utils.iDAO;
+import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +40,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
 
     }
 
+    @Override
     public User get(String email) throws SQLException {
 
         final String query = "SELECT * FROM User WHERE Email = ?";
@@ -126,4 +125,5 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
         statement.executeUpdate();
 
     }
+
 }
