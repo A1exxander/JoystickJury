@@ -10,15 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it. Better to just integration test - ONLY RUN TESTS IN TESTING ENVIRONMENT
 
-    UserDAO userDAO;
+    private static UserDAO userDAO;
 
     @BeforeAll
-    public void setUp() throws SQLException {
+    public static void setUp() throws SQLException {
         userDAO = new UserDAO();
     }
 
     @AfterAll
-    public void tearDown() {
+    public static void tearDown() {
         userDAO = null;
     }
 
@@ -68,7 +68,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         public void should_CreateUser_When_SavingNewUser() throws SQLException {
 
             try {
-                User newUser = new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+                User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
                 userDAO.save(newUser);
             } catch (SQLIntegrityConstraintViolationException e){
                 System.err.println("Test user already exists. Skipping creation...");
@@ -80,7 +80,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         @Test
         public void should_ThrowException_When_SavingExistingUser(){
 
-            User newUser = new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
             assertThrows(SQLIntegrityConstraintViolationException.class, () -> {
                 userDAO.save(newUser);
             });
@@ -109,8 +109,5 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         }
     };
-
-
-
 
 }

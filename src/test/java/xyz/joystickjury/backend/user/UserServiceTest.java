@@ -66,7 +66,6 @@ public class UserServiceTest {
 
         @Test
         public void getAllUsers_shouldReturnAllUsers_WhenUsersExists() throws SQLException {
-
             List<User> actual = new ArrayList<>();
 
             User userOne = new User(0, "testOne@test.com", null, null, new Date(), AcccountType.ADMIN);
@@ -77,7 +76,6 @@ public class UserServiceTest {
             when(userDAOMock.getAll()).thenReturn(new ArrayList<User>(Arrays.asList(userOne, userTwo)));
             List<User> result = userService.getAllUsers();
             Assertions.assertEquals(actual, result);
-
         }
 
         @Test

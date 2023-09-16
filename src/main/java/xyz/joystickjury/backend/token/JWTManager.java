@@ -19,8 +19,8 @@ import java.util.Set;
 @AllArgsConstructor @NoArgsConstructor
 public class JWTManager implements iJWTManager {
 
-    private String secretKey = System.getenv("joystick-jury-secret-key");
-    private long tokenLifespanHours = 120;
+    private final String secretKey = System.getenv("joystick-jury-secret-key");
+    private final long tokenLifespanHours = 120;
     private Set<String> invalidTokens = new HashSet<>(); // TODO: Currently causes a memory leak. Switch out to something like an LRU cache & evict expired keys automatically in the future.
 
     @Override
@@ -44,7 +44,8 @@ public class JWTManager implements iJWTManager {
     @Override
     public Boolean isValidJWT(String jwt) { // Validates our token by verifying its signature & checking that it isn't expired
 
-        if(invalidTokens.contains(jwt)){ return false; }
+        if(jwt == null) { throw new IllegalArgumentException(); }
+        else if(invalidTokens.contains(jwt)) { return false; }
 
         Verifier verifier = HMACVerifier.newVerifier(secretKey);
         try {
@@ -65,7 +66,7 @@ public class JWTManager implements iJWTManager {
     @Override
     public String extractBearerJWT(String rawAuthorizationToken) throws IllegalArgumentException { // Maybe consider changing this method to use strategy pattern, where every strategy is dependent on Authorization type instead of being hardcoded to Bearer
 
-        if (rawAuthorizationToken == null || rawAuthorizationToken.length() < 7){
+        if (rawAuthorizationToken == null || !rawAuthorizationToken.startsWith("Bearer")){
             throw new IllegalArgumentException();
         }
 

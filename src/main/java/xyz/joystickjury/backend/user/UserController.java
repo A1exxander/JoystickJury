@@ -1,6 +1,7 @@
 package xyz.joystickjury.backend.user;
 
 import io.jsonwebtoken.JwtException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
     @Autowired
-    private JWTManager jwtManager;
+    private final JWTManager jwtManager;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException {
@@ -85,6 +87,6 @@ public class UserController {
 
     }
 
-    //TODO : AUTH Controller for logins and registrations, ControllerAdvice, adding Interface for UserController, UserController unit tests, more JWTManager Unit tests, consider DTO
+    //TODO : AUTH Controller for logins and registrations, Make User stop using email ( make it apart of credentials ) ControllerAdvice, adding Interface for UserController, UserController unit tests, UserDTO
 
 }
