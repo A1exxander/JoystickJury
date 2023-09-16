@@ -1,22 +1,34 @@
 package xyz.joystickjury.backend.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter @Setter // No need to worry about Setter existing for non-final values, Lombok handles this
 @Component
 public class User {
 
-    private Integer userID;
+    private final Integer userID;
     private String email;
     private String profilePictureLink;
     private String profileDescription;
-    private Date registrationDate;
-    private UserType accountType;
+    private final Date registrationDate;
+    private final AcccountType accountType;
 
+    public User(Integer userID, String email, String profilePictureLink, String profileDescription, Date registrationDate, AcccountType accountType) {
+
+        if (userID == null || email == null || registrationDate == null || accountType == null ){
+            throw new IllegalArgumentException("UserID, Email, Registration Date, & Account Type cannot be null!");
+        }
+
+        this.userID = userID;
+        this.email = email;
+        this.profilePictureLink = profilePictureLink;
+        this.profileDescription = profileDescription;
+        this.registrationDate = registrationDate;
+        this.accountType = accountType;
+
+    }
 }

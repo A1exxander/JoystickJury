@@ -1,5 +1,5 @@
 package xyz.joystickjury.backend.user;
 
-public enum UserType {
+public enum AcccountType {
     REVIEWER, ADMIN
 }

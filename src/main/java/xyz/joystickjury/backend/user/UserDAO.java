@@ -32,7 +32,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
-                    UserType.valueOf(results.getString("AccountType")));
+                    AcccountType.valueOf(results.getString("AccountType")));
         }
         else {
             return null;
@@ -54,7 +54,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
-                    UserType.valueOf(results.getString("AccountType")));
+                    AcccountType.valueOf(results.getString("AccountType")));
         }
         else {
             return null;
@@ -76,7 +76,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
-                    UserType.valueOf(results.getString("AccountType"))));
+                    AcccountType.valueOf(results.getString("AccountType"))));
         }
 
         return users;

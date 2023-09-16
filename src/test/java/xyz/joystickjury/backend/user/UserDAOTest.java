@@ -1,9 +1,7 @@
 package xyz.joystickjury.backend.user;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.sql.SQLException;
@@ -14,12 +12,12 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
     UserDAO userDAO;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() throws SQLException {
         userDAO = new UserDAO();
     }
 
-    @AfterEach
+    @AfterAll
     public void tearDown() {
         userDAO = null;
     }
@@ -70,7 +68,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         public void should_CreateUser_When_SavingNewUser() throws SQLException {
 
             try {
-                User newUser = new User(null, "test@test.com", null, null, new Date(), UserType.ADMIN);
+                User newUser = new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
                 userDAO.save(newUser);
             } catch (SQLIntegrityConstraintViolationException e){
                 System.err.println("Test user already exists. Skipping creation...");
@@ -82,7 +80,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         @Test
         public void should_ThrowException_When_SavingExistingUser(){
 
-            User newUser = new User(null, "test@test.com", null, null, new Date(), UserType.ADMIN);
+            User newUser = new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
             assertThrows(SQLIntegrityConstraintViolationException.class, () -> {
                 userDAO.save(newUser);
             });

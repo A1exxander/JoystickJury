@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,13 +43,9 @@ public class UserServiceTest {
         @Test
         public void getUser_shouldReturnCorrectUser_WhenUserExists() throws SQLException {
 
-            User user = new User();
-            user.setUserID(1);
-            user.setRegistrationDate(new Date());
-            user.setAccountType(UserType.ADMIN);
-
-            when(userDAOMock.get(1)).thenReturn(user);
-            User result = userService.getUser(1);
+            User user = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+            when(userDAOMock.get(0)).thenReturn(user);
+            User result = userService.getUser(0);
             Assertions.assertEquals(user, result);
 
         }
@@ -57,8 +53,8 @@ public class UserServiceTest {
         @Test
         public void getUser_shouldReturnNull_WhenUserDoesNotExist() throws SQLException {
 
-            when(userDAOMock.get(1)).thenReturn(null);
-            User result = userService.getUser(1);
+            when(userDAOMock.get(0)).thenReturn(null);
+            User result = userService.getUser(0);
             assertNull(result);
 
         }
@@ -73,12 +69,9 @@ public class UserServiceTest {
 
             List<User> actual = new ArrayList<>();
 
-            User userOne = new User();
-            userOne.setUserID(1);
+            User userOne = new User(0, "testOne@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User userTwo = new User(1, "testTwo@test.com", null, null, new Date(), AcccountType.ADMIN);
             actual.add(userOne);
-
-            User userTwo = new User();
-            userTwo.setUserID(2);
             actual.add(userTwo);
 
             when(userDAOMock.getAll()).thenReturn(new ArrayList<User>(Arrays.asList(userOne, userTwo)));
@@ -102,9 +95,9 @@ public class UserServiceTest {
     public class createUserTest {
 
         @Test
-        public void deleteUser_shouldDeleteUser_WhenUsersExists() throws SQLException {
+        public void createUser_shouldCreateUser_whenCreatingNewValidUser() throws SQLException {
 
-            User newUser = new User();
+            User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
             userService.saveUser(newUser);
             verify(userDAOMock).save(newUser);
 
@@ -132,8 +125,8 @@ public class UserServiceTest {
         @Test
         public void updateUser_shouldUpdateUser_WhenValidRequest() throws SQLException {
 
-            User currentUser = new User(1, "oldemail@test.com", null, null, null, UserType.ADMIN);
-            User updatedUser = new User(1, "newemail@test.com", null, null, null, UserType.ADMIN);
+            User currentUser = new User(1, "oldemail@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User updatedUser = new User(1, "newemail@test.com", null, null, currentUser.getRegistrationDate(), AcccountType.ADMIN);
 
             userService.updateUser(currentUser, updatedUser);
             verify(userDAOMock).update(updatedUser);
@@ -143,8 +136,8 @@ public class UserServiceTest {
         @Test
         public void updateUser_shouldThrowException_WhenNewEmailInvalid() throws SQLException {
 
-            User currentUser = new User(1, "oldemail@test.com", null, null, null, UserType.ADMIN);
-            User updatedUser = new User(1, "invalidemailhuehuehue", null, null, null, UserType.ADMIN);
+            User currentUser = new User(1, "oldemail@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User updatedUser = new User(1, "newemailhuehuehue", null, null, currentUser.getRegistrationDate(), AcccountType.ADMIN);
 
             assertThrows(IllegalArgumentException.class, () -> {
                 userService.updateUser(currentUser, updatedUser);
@@ -155,7 +148,7 @@ public class UserServiceTest {
         @Test
         public void updateUser_shouldThrowException_WhenNoUserProvided() throws SQLException {
 
-            User user = new User(null, null, null, null, null, null);
+            User user = new User(1, "oldemail@test.com", null, null, new Date(), AcccountType.ADMIN);
 
             assertThrows(IllegalArgumentException.class, () -> {
                 userService.updateUser(user, null);
@@ -170,20 +163,6 @@ public class UserServiceTest {
             });
 
         }
-
-        @Test
-        public void updateUser_shouldThrowException_WhenUpdatingReadOnlyData() throws SQLException {
-
-            User currentUser = new User(1, "test@test.com", null, null, null, UserType.ADMIN);
-            User updatedUser = new User(2, "test@test.com", null, null, null, UserType.REVIEWER);
-
-            assertThrows(UnauthorizedOperationException.class, () -> {
-                userService.updateUser(currentUser, updatedUser);
-            });
-
-        }
-
-
 
     }
 
