@@ -68,6 +68,7 @@ public class JWTManager implements iJWTManager {
         if (rawAuthorizationToken == null || rawAuthorizationToken.length() < 7){
             throw new IllegalArgumentException();
         }
+
         return rawAuthorizationToken.substring(7);
 
     }

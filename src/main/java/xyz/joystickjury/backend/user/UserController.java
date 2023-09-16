@@ -39,7 +39,7 @@ public class UserController {
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid JWT Provided");
+            throw new JwtException("Invalid Request. Invalid JWT Provided");
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
@@ -48,20 +48,22 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody User updatedUser) throws SQLException {
+    public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) User updatedUser) throws SQLException { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid JWT Provided");
+            throw new JwtException("Invalid Request. Invalid JWT Provided");
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
         User currentUser = userService.getUser(currentUserID);
 
-        if (!userService.isSameUser(currentUser, updatedUser)){ // Used to prevent other users from modifying the data of other users maliciously.
-            throw new UnauthorizedOperationException("Invalid update request. You can only update your own profile.");
+        if (!userService.isSameUser(currentUser, updatedUser)) { // Do not update the user if they change read-only data
+            throw new UnauthorizedOperationException("Invalid update request. You cannot modify read-only data");
         }
+
+        userService.updateUser(currentUser, updatedUser);
 
         return ResponseEntity.ok("Successfully updated user.");
 
@@ -73,7 +75,7 @@ public class UserController {
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid JWT Provided");
+            throw new JwtException("Invalid Request. Invalid JWT Provided");
         }
 
         userService.deleteUser(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
@@ -83,6 +85,6 @@ public class UserController {
 
     }
 
-    //TODO : AUTH Controller for logins and registrations, ControllerAdvice, adding Interface for UserController, UserController unit tests, User Service unit tests, more JWTManager Unit tests
+    //TODO : AUTH Controller for logins and registrations, ControllerAdvice, adding Interface for UserController, UserController unit tests, more JWTManager Unit tests, consider DTO
 
 }

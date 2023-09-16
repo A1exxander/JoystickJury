@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
+import xyz.joystickjury.backend.email.EmailAddressValidator;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,12 +28,20 @@ public class UserService implements iUserService {
     }
 
     @Override
-    public void saveUser(User user) throws SQLException {
-        userDAO.save(user);
+    public void updateUser(User user, User updatedUser) throws SQLException {
+
+        EmailAddressValidator emailAddressValidator = new EmailAddressValidator();
+
+        if (user == null || updatedUser == null) { throw new IllegalArgumentException(); }
+        else if (!emailAddressValidator.isValidEmailAddress(updatedUser.getEmail())) { throw new IllegalArgumentException("Invalid update request. New email is invalid."); }
+
+        userDAO.update(updatedUser);
+
     }
 
     @Override
-    public void updateUser(User user) throws SQLException {
+    public void saveUser(User user) throws SQLException {
+        if (user == null) { throw new IllegalArgumentException(); }
         userDAO.save(user);
     }
 
@@ -39,8 +49,10 @@ public class UserService implements iUserService {
     public void deleteUser(Integer id) throws SQLException {
         userDAO.delete(id);
     }
+
     @Override
     public boolean isSameUser(User currentUser, User updatedUser) { // Determines if both user objects share the same read-only data uniquely identifying the same user
-        return (currentUser.getUserID() == updatedUser.getUserID() && currentUser.getRegistrationDate() == updatedUser.getRegistrationDate() && currentUser.getAccountType() == updatedUser.getAccountType());
+        return ( currentUser.getUserID() == updatedUser.getUserID() && currentUser.getRegistrationDate() == updatedUser.getRegistrationDate() && currentUser.getAccountType() == updatedUser.getAccountType());
     }
+
 }

@@ -1,4 +1,4 @@
-package token;
+package xyz.joystickjury.backend.token;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,18 +18,18 @@ public class JWTManagerTest {
     private JWTManager JWTManager;
 
     @BeforeEach
-    void setUp(){
+    public void setUp(){
         JWTManager = new JWTManager();
     }
     @AfterEach
-    void tearDown(){
+    public void tearDown(){
         JWTManager = null;
     }
 
     @Nested
     public class generateTokenTest {
         @Test
-        void should_ReturnValidToken_When_ValidGeneration(){
+        public void should_ReturnValidToken_When_ValidGeneration(){
             User u = new User(1,"johnsmith@gmail.com", null,null, new Date(), UserType.ADMIN);
             String generatedJWT = JWTManager.generateJWT(u);
             assertTrue(JWTManager.isValidJWT(generatedJWT));

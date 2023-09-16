@@ -1,4 +1,4 @@
-package email;
+package xyz.joystickjury.backend.email;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
