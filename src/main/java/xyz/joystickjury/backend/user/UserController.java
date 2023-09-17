@@ -35,7 +35,12 @@ public class UserController {
 
     }
 
-    @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other user
+    @GetMapping("/{userID}")
+    public ResponseEntity<User> getSpecificUser(@PathVariable int userID) throws SQLException {
+        return ResponseEntity.ok(userService.getUser(userID));
+    }
+
+    @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
     public ResponseEntity<User> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
@@ -87,6 +92,6 @@ public class UserController {
 
     }
 
-    //TODO : AUTH Controller for logins and registrations, Make User stop using email ( make it apart of credentials ) ControllerAdvice, adding Interface for UserController, UserController unit tests, UserDTO
+    //TODO : AUTH Controller for logins and registrations, Make User stop using email ( make it apart of credentials ) ControllerAdvice, adding Interface for UserController, UserController unit tests, UserDTO, Refactor User & Email to validate with annotations
 
 }

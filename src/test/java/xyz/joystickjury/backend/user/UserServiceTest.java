@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import xyz.joystickjury.backend.cexceptions.ResourceDoesNotExistException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,11 +52,12 @@ public class UserServiceTest {
         }
 
         @Test
-        public void getUser_shouldReturnNull_WhenUserDoesNotExist() throws SQLException {
+        public void getUser_shouldThrowException_WhenUserDoesNotExist() throws SQLException {
 
             when(userDAOMock.get(0)).thenReturn(null);
-            User result = userService.getUser(0);
-            assertNull(result);
+            assertThrows(ResourceDoesNotExistException.class, () -> {
+                userService.getUser(0);
+            });
 
         }
 
@@ -95,7 +97,7 @@ public class UserServiceTest {
         @Test
         public void createUser_shouldCreateUser_whenCreatingNewValidUser() throws SQLException {
 
-            User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User newUser = new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
             userService.saveUser(newUser);
             verify(userDAOMock).save(newUser);
 
@@ -110,6 +112,8 @@ public class UserServiceTest {
         public void deleteUser_shouldDeleteUser_WhenUsersExists() throws SQLException {
 
             Integer userID = 0;
+            when(userDAOMock.get(userID)).thenReturn(new User(null, "test@test.com", null, null, new Date(), AcccountType.ADMIN));
+            doNothing().when(userDAOMock).delete(userID);
             userService.deleteUser(userID);
             verify(userDAOMock).delete(userID);
 
@@ -125,7 +129,7 @@ public class UserServiceTest {
 
             User currentUser = new User(1, "oldemail@test.com", null, null, new Date(), AcccountType.ADMIN);
             User updatedUser = new User(1, "newemail@test.com", null, null, currentUser.getRegistrationDate(), AcccountType.ADMIN);
-
+            when(userDAOMock.get(1)).thenReturn(currentUser);
             userService.updateUser(currentUser, updatedUser);
             verify(userDAOMock).update(updatedUser);
 
