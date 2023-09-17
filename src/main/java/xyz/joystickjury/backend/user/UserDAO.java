@@ -1,6 +1,8 @@
 package xyz.joystickjury.backend.user;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
 
@@ -9,14 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class UserDAO implements iUserDAO { // In future projects, implement your DB w Hibernate - Makes it much simpler & easier to implement and unit test with DBUnit
 
-    Connection databaseConnection;
-
-    public UserDAO() throws SQLException { // Cannot use @NoArgsConstructor w default values assigned to members as setting databaseConnection member with DriverManager can throw an exception
-        databaseConnection = DatabaseConnectionManager.getConnection(); // Singleton instance to our DB to prevent multiple instances
-    }
+    private Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
     public User get(Integer id) throws SQLException {

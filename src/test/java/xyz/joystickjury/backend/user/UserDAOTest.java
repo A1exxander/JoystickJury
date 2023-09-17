@@ -1,6 +1,7 @@
 package xyz.joystickjury.backend.user;
 
 import org.junit.jupiter.api.*;
+import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
@@ -14,7 +15,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
     @BeforeAll
     public static void setUp() throws SQLException {
-        userDAO = new UserDAO();
+        userDAO = new UserDAO(DatabaseConnectionManager.getConnection());
     }
 
     @AfterAll
