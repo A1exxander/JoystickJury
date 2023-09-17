@@ -28,7 +28,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
 
         if (results.next()){
             return new User(results.getInt("UserID"), // Ideally switch to Mapper
-                    results.getString("Email"),
+                    results.getString("DisplayName"),
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
@@ -41,16 +41,16 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     }
 
     @Override
-    public User get(String email) throws SQLException {
+    public User get(String displayName) throws SQLException {
 
-        final String query = "SELECT * FROM User WHERE Email = ?";
+        final String query = "SELECT * FROM User WHERE DisplayName = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        statement.setString(1, email);
+        statement.setString(1, displayName);
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
             return new User(results.getInt("UserID"), // Ideally switch to Mapper
-                    results.getString("Email"),
+                    results.getString("DisplayName"),
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
@@ -72,7 +72,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
 
         while (results.next()) {
             users.add(new User(results.getInt("UserID"),
-                    results.getString("Email"),
+                    results.getString("DisplayName"),
                     results.getString("ProfilePictureLink"),
                     results.getString("ProfileDescription"),
                     results.getDate("RegistrationDate"),
@@ -86,10 +86,10 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     @Override
     public void save(User user) throws SQLException { // Somewhat violates the SRP. Can refactor to use a UserDAOStatementFactory class but that's too much voodoo
 
-        final String query = "INSERT INTO User (Email, ProfilePictureLink, ProfileDescription, RegistrationDate, AccountType) VALUES (?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO User (DisplayName, ProfilePictureLink, ProfileDescription, RegistrationDate, AccountType) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
 
-        preparedStatement.setString(1, user.getEmail());
+        preparedStatement.setString(1, user.getDisplayName());
         preparedStatement.setString(2, user.getProfilePictureLink());
         preparedStatement.setString(3, user.getProfileDescription());
         preparedStatement.setDate(4, new java.sql.Date(user.getRegistrationDate().getTime()));
@@ -102,10 +102,10 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     @Override
     public void update(User user) throws SQLException {
 
-        final String query = "UPDATE User SET Email=?, ProfilePictureLink=?, ProfileDescription=?, RegistrationDate=?, AccountType=? WHERE UserID=?";
+        final String query = "UPDATE User SET DisplayName=?, ProfilePictureLink=?, ProfileDescription=?, RegistrationDate=?, AccountType=? WHERE UserID=?";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
 
-        preparedStatement.setString(1, user.getEmail());
+        preparedStatement.setString(1, user.getDisplayName());
         preparedStatement.setString(2, user.getProfilePictureLink());
         preparedStatement.setString(3, user.getProfileDescription());
         preparedStatement.setDate(4, new java.sql.Date(user.getRegistrationDate().getTime()));

@@ -14,13 +14,14 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController implements iUserController {
 
     @Autowired
     private final UserService userService;
     @Autowired
     private final JWTManager jwtManager;
 
+    @Override
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException {
 
@@ -35,11 +36,13 @@ public class UserController {
 
     }
 
+    @Override
     @GetMapping("/{userID}")
     public ResponseEntity<User> getSpecificUser(@PathVariable int userID) throws SQLException {
         return ResponseEntity.ok(userService.getUser(userID));
     }
 
+    @Override
     @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
     public ResponseEntity<User> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
 
@@ -54,6 +57,7 @@ public class UserController {
 
     }
 
+    @Override
     @PutMapping
     public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) User updatedUser) throws SQLException { // Determine what happens with a null body
 
@@ -76,6 +80,7 @@ public class UserController {
 
     }
 
+    @Override
     @DeleteMapping
     public ResponseEntity<String> deleteCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
 
@@ -92,6 +97,6 @@ public class UserController {
 
     }
 
-    //TODO : AUTH Controller for logins and registrations, Make User stop using email ( make it apart of credentials ) ControllerAdvice, adding Interface for UserController, UserController unit tests, UserDTO, Refactor User & Email to validate with annotations
+    //TODO : AUTH Controller for logins and registrations using userCredentials, ControllerAdvice, UserController unit tests, UserDTO, Refactor User & Email to validate with annotations
 
 }

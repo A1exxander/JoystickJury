@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.cexceptions.ResourceDoesNotExistException;
+import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
 import xyz.joystickjury.backend.email.EmailAddressValidator;
 
 import java.sql.SQLException;
@@ -32,10 +33,8 @@ public class UserService implements iUserService {
     @Override
     public void updateUser(User user, User updatedUser) throws SQLException {
 
-        EmailAddressValidator emailAddressValidator = new EmailAddressValidator();
-
         if (user == null || updatedUser == null) { throw new IllegalArgumentException("User and updated user cannot be null."); }
-        else if (!emailAddressValidator.isValidEmailAddress(updatedUser.getEmail())) { throw new IllegalArgumentException("Invalid update request. New email is invalid."); }
+        else if (isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("Invalid update request. UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
         else if (!userExists(user.getUserID())) { throw new ResourceDoesNotExistException("Invalid update request. User ID : " + user.getUserID() + " does not exist."); };
 
         userDAO.update(updatedUser);
@@ -57,7 +56,7 @@ public class UserService implements iUserService {
 
     @Override
     public boolean isSameUser(User currentUser, User updatedUser) { // Determines if both user objects share the same read-only data uniquely identifying the same user
-        return ( currentUser.getUserID() == updatedUser.getUserID() && currentUser.getRegistrationDate() == updatedUser.getRegistrationDate() && currentUser.getAccountType() == updatedUser.getAccountType());
+        return ( currentUser.getUserID() == updatedUser.getUserID() && currentUser.getRegistrationDate() == updatedUser.getRegistrationDate() && currentUser.getAccountType() == updatedUser.getAccountType() && currentUser.getDisplayName() == updatedUser.getDisplayName());
     }
 
     private boolean userExists(int userID) throws SQLException {

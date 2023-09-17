@@ -28,7 +28,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         @Test
         public void should_GetCorrectUser_When_RequestingExistingUser() throws SQLException {
             User user = userDAO.get(1);
-            assertEquals("raposoalexander@gmail.com", user.getEmail());
+            assertEquals("raposoalexander", user.getDisplayName());
         }
         @Test
         public void should_ReturnNull_When_RequestingNonExistentUser() throws SQLException {
@@ -52,7 +52,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         public void should_ReturnUID1_When_ReceivingRaposoAlexanderEmail() throws SQLException {
-            assertEquals(1, userDAO.get("raposoalexander@gmail.com").getUserID());
+            assertEquals(1, userDAO.get("raposoalexander").getUserID());
         }
         @Test
         public void should_ReturnNull_When_ReceivingNonExistentEmailAddress() throws SQLException {
@@ -68,19 +68,19 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         public void should_CreateUser_When_SavingNewUser() throws SQLException {
 
             try {
-                User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+                User newUser = new User(null, "test", null, null, new Date(), AcccountType.ADMIN);
                 userDAO.save(newUser);
             } catch (SQLIntegrityConstraintViolationException e){
                 System.err.println("Test user already exists. Skipping creation...");
             }
 
-            assertNotNull(userDAO.get("test@test.com"));
+            assertNotNull(userDAO.get("test"));
 
         }
         @Test
         public void should_ThrowException_When_SavingExistingUser(){
 
-            User newUser = new User(0, "test@test.com", null, null, new Date(), AcccountType.ADMIN);
+            User newUser = new User(null, "test", null, null, new Date(), AcccountType.ADMIN);
             assertThrows(SQLIntegrityConstraintViolationException.class, () -> {
                 userDAO.save(newUser);
             });
@@ -95,11 +95,12 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         @Test
         public void should_DeleteUser_When_DeletingExistingUser() throws SQLException {
 
-            User testUser = userDAO.get("test@test.com");
+            User testUser = userDAO.get("test");
             userDAO.delete(testUser.getUserID());
             assertNull(userDAO.get(testUser.getUserID()));
 
         }
+
         @Test
         public void should_ThrowException_When_DeletingNonExistentUser() {
 
