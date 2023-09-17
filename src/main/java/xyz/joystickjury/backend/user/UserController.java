@@ -2,14 +2,17 @@ package xyz.joystickjury.backend.user;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
 import xyz.joystickjury.backend.token.JWTManager;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -20,31 +23,34 @@ public class UserController implements iUserController {
     private final UserService userService;
     @Autowired
     private final JWTManager jwtManager;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException {
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException {
 
         List<User> users = userService.getAllUsers();
+        List<UserDTO> userDTOs = null;
 
-        if (limit == null || limit != null && limit > users.size()) {
-            return ResponseEntity.ok(users);
+        if (limit == null || limit > users.size()) {
+            userDTOs = users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+        } else {
+            userDTOs = users.subList(0, limit).stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
         }
-        else {
-            return ResponseEntity.ok(users.subList(0, limit));
-        }
+
+        return ResponseEntity.ok(userDTOs);
 
     }
 
     @Override
     @GetMapping("/{userID}")
-    public ResponseEntity<User> getSpecificUser(@PathVariable int userID) throws SQLException {
-        return ResponseEntity.ok(userService.getUser(userID));
+    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable int userID) throws SQLException {
+        return ResponseEntity.ok(modelMapper.map(userService.getUser(userID), UserDTO.class));
     }
 
     @Override
     @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
-    public ResponseEntity<User> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
+    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -53,15 +59,16 @@ public class UserController implements iUserController {
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
-        return ResponseEntity.ok(userService.getUser(currentUserID));
+        return ResponseEntity.ok(modelMapper.map(userService.getUser(currentUserID), UserDTO.class));
 
     }
 
     @Override
     @PutMapping
-    public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) User updatedUser) throws SQLException { // Determine what happens with a null body
+    public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
+        User updatedUser = modelMapper.map(updatedUserDTO, User.class);
 
         if (!jwtManager.isValidJWT(jwt)) {
             throw new JwtException("Invalid Request. Invalid JWT Provided");
@@ -76,7 +83,7 @@ public class UserController implements iUserController {
 
         userService.updateUser(currentUser, updatedUser);
 
-        return ResponseEntity.ok("Successfully updated user.");
+        return ResponseEntity.ok(null);
 
     }
 
@@ -93,10 +100,8 @@ public class UserController implements iUserController {
         userService.deleteUser(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
         jwtManager.invalidateJWT(jwt);
 
-        return ResponseEntity.ok("Successfully deleted user.");
+        return ResponseEntity.ok(null);
 
     }
-
-    //TODO : AUTH Controller for logins and registrations using userCredentials, ControllerAdvice, UserController unit tests, UserDTO, Refactor User & Email to validate with annotations
 
 }
