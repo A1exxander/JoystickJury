@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public interface iDAO<T, I> {
+public interface iDAO<I, T> {
 
-        T get(I id) throws SQLException;
-        List<T> getAll() throws SQLException;
-        void save(T t) throws SQLException;
-        void update(T t) throws SQLException;
-        void delete(I id) throws SQLException;
+        public T get(I id) throws SQLException;
+        public List<T> getAll() throws SQLException;
+        public void save(T t) throws SQLException;
+        public void update(T t) throws SQLException;
+        public void delete(I id) throws SQLException;
+
 }

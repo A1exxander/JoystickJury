@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RequestMapping("/api/user")
+@RestController
 public interface iUserController {
 
     @GetMapping
