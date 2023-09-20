@@ -10,7 +10,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public interface iAuthController {
     @PostMapping("/token")
-    ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO);
-    @PutMapping
-    ResponseEntity<String> register(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO, @RequestBody @Valid UserDTO newUser);
+    public ResponseEntity<String> login(@RequestBody @Valid RawUserCredentialsDTO rawUserCredentialsDTO);
+    @PostMapping
+    public ResponseEntity<String> register(@RequestBody @Valid RawUserCredentialsDTO rawUserCredentialsDTO, @RequestBody @Valid UserDTO newUser);
 }

@@ -27,7 +27,24 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
-            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"), results.getString("PasswordSalt"));
+            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
+        }
+        else {
+            return null;
+        }
+
+    }
+
+    @Override
+    public HashedUserCredentials getByUserID(Integer id) throws SQLException {
+
+        final String query = "SELECT * FROM UserCredential WHERE UserID = ?";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        statement.setInt(1, id);
+        ResultSet results = statement.executeQuery();
+
+        if (results.next()){
+            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
         }
         else {
             return null;
@@ -44,7 +61,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
-            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"), results.getString("PasswordSalt"));
+            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
         }
         else {
             return null;
@@ -61,7 +78,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         while (results.next()) {
-            hashedUserCredentials.add(new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"), results.getString("PasswordSalt")));
+            hashedUserCredentials.add(new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword")));
         }
 
         return hashedUserCredentials;
@@ -71,11 +88,11 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     @Override
     public void save(HashedUserCredentials hashedUserCredential) throws SQLException {
 
-        final String query = "INSERT INTO UserCredential(UserID, Email, PasswordSalt, HashedPassword) VALUES(?, ?, ?)";
+        final String query = "INSERT INTO UserCredential(UserID, Email, HashedPassword) VALUES(?, ?, ?)";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        statement.setString(1, hashedUserCredential.getEmail());
-        statement.setString(2, hashedUserCredential.getPasswordSalt());
-        statement.setString(3, hashedUserCredential.getPassword());
+        statement.setInt(1, hashedUserCredential.getUserID());
+        statement.setString(2, hashedUserCredential.getEmail());
+        statement.setString(3, hashedUserCredential.getHashedPassword());
 
         statement.executeUpdate();
 
@@ -85,13 +102,12 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     @Override
     public void update(HashedUserCredentials hashedUserCredential) throws SQLException {
 
-        final String query = "UPDATE UserCredential SET Email = ?, PasswordSalt = ?, HashedPassword = ? WHERE UserID = ?";
+        final String query = "UPDATE UserCredential SET Email = ? HashedPassword = ? WHERE UserID = ?";
 
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         statement.setString(1, hashedUserCredential.getEmail());
-        statement.setString(2, hashedUserCredential.getPasswordSalt());
-        statement.setString(3, hashedUserCredential.getPassword());
-        statement.setInt(4, hashedUserCredential.getUserID());
+        statement.setString(2, hashedUserCredential.getHashedPassword());
+        statement.setInt(3, hashedUserCredential.getUserID());
 
         statement.executeUpdate();
 
