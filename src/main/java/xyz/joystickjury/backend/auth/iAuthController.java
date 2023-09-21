@@ -2,7 +2,7 @@ package xyz.joystickjury.backend.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.joystickjury.backend.user.UserDTO;
+
 import javax.validation.Valid;
 import java.sql.SQLException;
 
@@ -12,9 +12,9 @@ import java.sql.SQLException;
 public interface iAuthController {
 
     @PostMapping("/token")
-    public ResponseEntity<String> login(@RequestBody @Valid CredentialsDTO credentialsDTO) throws SQLException;
+    public ResponseEntity<String> loginUser(@RequestBody @Valid CredentialsDTO credentialsDTO) throws SQLException;
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException;
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException;
 
 }
 

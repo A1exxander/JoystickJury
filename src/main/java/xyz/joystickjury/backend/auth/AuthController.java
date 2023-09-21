@@ -1,16 +1,18 @@
 package xyz.joystickjury.backend.auth;
 
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.joystickjury.backend.exception.InvalidCredentialsException;
 import xyz.joystickjury.backend.exception.ResourceAlreadyExistsException;
 import xyz.joystickjury.backend.token.JWTManager;
 import xyz.joystickjury.backend.user.User;
+import xyz.joystickjury.backend.user.UserMapper;
 import xyz.joystickjury.backend.user.UserService;
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.Date;
 
 
 @RestController
@@ -24,28 +26,33 @@ public class AuthController implements iAuthController{
     private final UserService userService;
     @Autowired
     private final JWTManager jwtManager;
+    @Autowired
+    private final UserMapper userMapper;
+    @Autowired
+    private final CredentialsMapper credentialsMapper;
 
     @Override
     @PostMapping("/token")
-    public ResponseEntity<String> login(@RequestBody(required = true) @Valid CredentialsDTO credentialsDTO) throws SQLException {
+    public ResponseEntity<String> loginUser(@RequestBody(required = true) @Valid CredentialsDTO credentialsDTO) throws SQLException {
 
-        //UserCredentials rawUserCredentials = modelMapper.map(credentialsDTO, RawUserCredentials.class);
-        //UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(UserCredentials.getEmail());
+        UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(credentialsDTO);
+        UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
 
-        //if (!credentialsService.areValidCredentials(UserCredentials, hashedUserCredentials)){
-            //throw new InvalidCredentialsException("Invalid request. User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
-       // }
+        if (!credentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)){
+            throw new InvalidCredentialsException("Invalid request. User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
+        }
 
-        //return ResponseEntity.ok(jwtManager.generateJWT(userService.getUser(hashedUserCredentials.getUserID())));
-        return ResponseEntity.ok("Okay big guy");
+        return ResponseEntity.ok(jwtManager.generateJWT(userService.getUser(hashedUserCredentials.getUserID())));
+
     }
 
     @Override
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
-        /*
-        UserCredentials rawUserCredentials = modelMapper.map(registrationRequestDTO.getLoginRequestDTO(), UserCredentials.class);
-        User newUser = userMapper.userDTOToUser(registrationRequestDTO.getUserDTO());
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
+
+        UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(registrationRequestDTO.getCredentialsDTO());
+        User newUser = userMapper.dtoToEntity(registrationRequestDTO.getUserDTO());
+        newUser.setRegistrationDate(new Date()); // We do not want to use the one provided by userDTO for security purposes & in the future, our DTO will likely not have a date
 
         if (credentialsService.emailExists(rawUserCredentials.getEmail())){
             throw new ResourceAlreadyExistsException("Invalid request. Email address already exists");
@@ -58,8 +65,8 @@ public class AuthController implements iAuthController{
         newUser.setUserID(userService.getUser(newUser.getDisplayName()).getUserID());
         UserCredentials hashedUserCredentials = credentialsService.createHashedUserCredentials(newUser.getUserID(), rawUserCredentials);
         credentialsService.saveCredentials(hashedUserCredentials);
-*/
-        return ResponseEntity.ok(null);
+
+        return ResponseEntity.ok("Request executed. Successfully created user.");
 
     }
 

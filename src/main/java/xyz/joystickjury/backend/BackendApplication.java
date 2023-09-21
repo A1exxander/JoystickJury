@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) { SpringApplication.run(BackendApplication.class, args); }
-	// TODO : ControllerAdvice, Controller unit tests
+	// TODO : ControllerAdvice, Controller unit tests, Auth package unit tests, finish login method, make userController use UserMapper
 
 }
