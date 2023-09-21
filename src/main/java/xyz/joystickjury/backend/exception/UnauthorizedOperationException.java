@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.cexceptions;
+package xyz.joystickjury.backend.exception;
 
 public class UnauthorizedOperationException extends RuntimeException {
     public UnauthorizedOperationException(String message) {

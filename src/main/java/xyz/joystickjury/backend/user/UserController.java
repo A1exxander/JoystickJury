@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
+import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
 import xyz.joystickjury.backend.token.JWTManager;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -51,7 +51,7 @@ public class UserController implements iUserController {
 
     @Override
     @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
-    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
+    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) throws SQLException {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -66,7 +66,7 @@ public class UserController implements iUserController {
 
     @Override
     @PutMapping
-    public ResponseEntity<String> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
+    public ResponseEntity<String> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
         User updatedUser = modelMapper.map(updatedUserDTO, User.class);
@@ -90,7 +90,7 @@ public class UserController implements iUserController {
 
     @Override
     @DeleteMapping
-    public ResponseEntity<String> deleteCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException {
+    public ResponseEntity<String> deleteCurrentUser(@RequestHeader String Authorization) throws SQLException {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 

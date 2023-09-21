@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import xyz.joystickjury.backend.cexceptions.ResourceDoesNotExistException;
+import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

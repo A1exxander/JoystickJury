@@ -13,13 +13,12 @@ import java.util.List;
 
 
 @Repository
-@NoArgsConstructor @AllArgsConstructor
-public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
+public class UserCredentialsDAO implements iUserCredentialsDAO {
 
     private final Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
-    public HashedUserCredentials get(Integer id) throws SQLException {
+    public UserCredentials get(Integer id) throws SQLException {
 
         final String query = "SELECT * FROM UserCredential WHERE UserCredentialID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
@@ -27,7 +26,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
-            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
+            return new UserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
         }
         else {
             return null;
@@ -36,7 +35,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     }
 
     @Override
-    public HashedUserCredentials getByUserID(Integer id) throws SQLException {
+    public UserCredentials getByUserID(Integer id) throws SQLException {
 
         final String query = "SELECT * FROM UserCredential WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
@@ -44,7 +43,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
-            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
+            return new UserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
         }
         else {
             return null;
@@ -53,7 +52,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     }
 
     @Override
-    public HashedUserCredentials get(String email) throws SQLException {
+    public UserCredentials get(String email) throws SQLException {
 
         final String query = "SELECT * FROM UserCredential WHERE Email = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
@@ -61,7 +60,7 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
         ResultSet results = statement.executeQuery();
 
         if (results.next()){
-            return new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
+            return new UserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword"));
         }
         else {
             return null;
@@ -70,15 +69,15 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     }
 
     @Override
-    public List<HashedUserCredentials> getAll() throws SQLException {
+    public List<UserCredentials> getAll() throws SQLException {
 
         final String query = "SELECT * FROM UserCredential";
-        List<HashedUserCredentials> hashedUserCredentials = new LinkedList<HashedUserCredentials>();
+        List<UserCredentials> hashedUserCredentials = new LinkedList<UserCredentials>();
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         ResultSet results = statement.executeQuery();
 
         while (results.next()) {
-            hashedUserCredentials.add(new HashedUserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword")));
+            hashedUserCredentials.add(new UserCredentials(results.getInt("UserID"), results.getString("Email"), results.getString("HashedPassword")));
         }
 
         return hashedUserCredentials;
@@ -86,33 +85,31 @@ public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
     }
 
     @Override
-    public void save(HashedUserCredentials hashedUserCredential) throws SQLException {
+    public void save(UserCredentials hashedUserCredential) throws SQLException {
 
         final String query = "INSERT INTO UserCredential(UserID, Email, HashedPassword) VALUES(?, ?, ?)";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         statement.setInt(1, hashedUserCredential.getUserID());
         statement.setString(2, hashedUserCredential.getEmail());
-        statement.setString(3, hashedUserCredential.getHashedPassword());
+        statement.setString(3, hashedUserCredential.getPassword());
 
         statement.executeUpdate();
 
     }
 
-
     @Override
-    public void update(HashedUserCredentials hashedUserCredential) throws SQLException {
+    public void update(UserCredentials hashedUserCredential) throws SQLException {
 
         final String query = "UPDATE UserCredential SET Email = ? HashedPassword = ? WHERE UserID = ?";
 
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         statement.setString(1, hashedUserCredential.getEmail());
-        statement.setString(2, hashedUserCredential.getHashedPassword());
+        statement.setString(2, hashedUserCredential.getPassword());
         statement.setInt(3, hashedUserCredential.getUserID());
 
         statement.executeUpdate();
 
     }
-
 
     @Override
     public void delete(Integer id) throws SQLException {
