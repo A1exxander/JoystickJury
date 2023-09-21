@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.cexceptions.ResourceDoesNotExistException;
 import xyz.joystickjury.backend.cexceptions.UnauthorizedOperationException;
+
+import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,15 +26,21 @@ public class UserService implements iUserService {
     }
 
     @Override
+    public User getUser(String displayName) throws SQLException { // Make it take an int not Integer to make sure that this does not get called with a null argument w/o having to check
+        User user = userDAO.get(displayName);
+        if (user == null) { throw new ResourceDoesNotExistException("Invalid request. Username : " + displayName + " does not exist."); } // Do this instead of calling doesUserExist which will call the DAO twice for no real reason
+        return user;
+    }
+
+    @Override
     public List<User> getAllUsers() throws SQLException {
         return userDAO.getAll();
     }
 
     @Override
-    public void updateUser(User user, User updatedUser) throws SQLException {
+    public void updateUser(@NotNull User user, @NotNull User updatedUser) throws SQLException {
 
-        if (user == null || updatedUser == null) { throw new IllegalArgumentException("User and updated user cannot be null."); }
-        else if (isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("Invalid request. UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
+        if (isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("Invalid request. UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
         else if (!userExists(user.getUserID())) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + user.getUserID() + " does not exist."); };
 
         userDAO.update(updatedUser);
@@ -40,9 +48,8 @@ public class UserService implements iUserService {
     }
 
     @Override
-    public void saveUser(User user) throws SQLException {
-        if (user == null) { throw new IllegalArgumentException("User cannot be null."); }
-        else if (user.getUserID() != null) { throw new IllegalArgumentException("Invalid request. User ID : " + user.getUserID() + " already exists."); }
+    public void saveUser(@NotNull User user) throws SQLException {
+        if (user.getUserID() != null) { throw new IllegalArgumentException("Invalid request. User ID : " + user.getUserID() + " already exists."); }
         userDAO.save(user);
     }
 

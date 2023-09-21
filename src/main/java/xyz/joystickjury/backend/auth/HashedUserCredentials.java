@@ -3,12 +3,13 @@ package xyz.joystickjury.backend.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import xyz.joystickjury.backend.user.User;
 
 import javax.validation.constraints.*;
 
 
-@Getter
+@Getter @Setter
 public class HashedUserCredentials extends UserCredentials {
 
     @Null
@@ -21,4 +22,5 @@ public class HashedUserCredentials extends UserCredentials {
         this.userID = userID;
         this.hashedPassword = hashedPassword;
     }
+    
 }
