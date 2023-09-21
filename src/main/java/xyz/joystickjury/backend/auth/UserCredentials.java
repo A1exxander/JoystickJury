@@ -2,8 +2,8 @@ package xyz.joystickjury.backend.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import javax.validation.constraints.*;
+
 
 @AllArgsConstructor @Getter
 public class UserCredentials {

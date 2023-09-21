@@ -14,9 +14,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/user")
+@AllArgsConstructor
 public class UserController implements iUserController {
 
     @Autowired

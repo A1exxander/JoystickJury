@@ -1,11 +1,7 @@
 package xyz.joystickjury.backend.auth;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import xyz.joystickjury.backend.user.User;
-
 import javax.validation.constraints.*;
 
 
@@ -22,5 +18,5 @@ public class HashedUserCredentials extends UserCredentials {
         this.userID = userID;
         this.hashedPassword = hashedPassword;
     }
-    
+
 }

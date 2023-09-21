@@ -2,11 +2,11 @@ package xyz.joystickjury.backend.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
 
 @AllArgsConstructor @Getter
 public class RawUserCredentialsDTO {

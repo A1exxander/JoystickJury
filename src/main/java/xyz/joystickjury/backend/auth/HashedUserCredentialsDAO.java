@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +11,12 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+
 @Repository
 @NoArgsConstructor @AllArgsConstructor
 public class HashedUserCredentialsDAO implements iHashedUserCredentialsDAO {
 
-    private Connection databaseConnection = DatabaseConnectionManager.getConnection();
+    private final Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
     public HashedUserCredentials get(Integer id) throws SQLException {

@@ -11,6 +11,6 @@ public interface iJWTManager { // Consider setting up a cache
     public void invalidateJWT(String jwt);
     public Boolean isValidJWT(String jwt);
     public JWT decodeJWT(String encodedJWT);
-    String extractBearerJWT(String rawAuthorizationToken) throws IllegalArgumentException;
+    public String extractBearerJWT(String rawAuthorizationToken) throws IllegalArgumentException;
 
 }

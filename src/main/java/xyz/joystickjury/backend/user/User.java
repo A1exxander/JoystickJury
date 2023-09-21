@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+
 @Getter @Setter @AllArgsConstructor // No need to worry about Setter existing for non-final values, Lombok handles this
 public class User {
 
