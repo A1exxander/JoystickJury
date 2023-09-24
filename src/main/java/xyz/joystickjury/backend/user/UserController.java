@@ -11,6 +11,7 @@ import xyz.joystickjury.backend.token.JWTManager;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,8 @@ public class UserController implements iUserController {
     private final UserService userService;
     @Autowired
     private final JWTManager jwtManager;
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private final UserMapper userMapper;
 
     @Override
     @GetMapping
@@ -34,9 +36,9 @@ public class UserController implements iUserController {
         List<UserDTO> userDTOs = null;
 
         if (limit == null || limit > users.size()) {
-            userDTOs = users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+            userDTOs = users.stream().map(user -> userMapper.entityToDTO(user)).collect(Collectors.toList());
         } else {
-            userDTOs = users.subList(0, limit).stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+            userDTOs = users.subList(0, limit).stream().map(user -> userMapper.entityToDTO(user)).collect(Collectors.toList());
         }
 
         return ResponseEntity.ok(userDTOs);
@@ -46,7 +48,7 @@ public class UserController implements iUserController {
     @Override
     @GetMapping("/{userID}")
     public ResponseEntity<UserDTO> getSpecificUser(@PathVariable int userID) throws SQLException {
-        return ResponseEntity.ok(modelMapper.map(userService.getUser(userID), UserDTO.class));
+        return ResponseEntity.ok(userMapper.entityToDTO(userService.getUser(userID)));
     }
 
     @Override
@@ -60,7 +62,7 @@ public class UserController implements iUserController {
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
-        return ResponseEntity.ok(modelMapper.map(userService.getUser(currentUserID), UserDTO.class));
+        return ResponseEntity.ok(userMapper.entityToDTO(userService.getUser(currentUserID)));
 
     }
 
@@ -69,7 +71,7 @@ public class UserController implements iUserController {
     public ResponseEntity<String> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
-        User updatedUser = modelMapper.map(updatedUserDTO, User.class);
+        User updatedUser = userMapper.dtoToEntity(updatedUserDTO);
 
         if (!jwtManager.isValidJWT(jwt)) {
             throw new JwtException("Invalid Request. Invalid JWT Provided");

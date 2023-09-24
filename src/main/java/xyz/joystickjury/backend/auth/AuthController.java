@@ -33,7 +33,7 @@ public class AuthController implements iAuthController{
 
     @Override
     @PostMapping("/token")
-    public ResponseEntity<String> loginUser(@RequestBody(required = true) @Valid CredentialsDTO credentialsDTO) throws SQLException {
+    public ResponseEntity<String> login(@RequestBody @Valid CredentialsDTO credentialsDTO) throws SQLException {
 
         UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(credentialsDTO);
         UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
@@ -48,13 +48,13 @@ public class AuthController implements iAuthController{
 
     @Override
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
+    public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
 
         UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(registrationRequestDTO.getCredentialsDTO());
         User newUser = userMapper.dtoToEntity(registrationRequestDTO.getUserDTO());
         newUser.setRegistrationDate(new Date()); // We do not want to use the one provided by userDTO for security purposes & in the future, our DTO will likely not have a date
 
-        if (credentialsService.emailExists(rawUserCredentials.getEmail())){
+        if (credentialsService.emailExists(rawUserCredentials.getEmail())) {
             throw new ResourceAlreadyExistsException("Invalid request. Email address already exists");
         }
         else if (userService.userExists(newUser.getDisplayName())) {
@@ -66,7 +66,7 @@ public class AuthController implements iAuthController{
         UserCredentials hashedUserCredentials = credentialsService.createHashedUserCredentials(newUser.getUserID(), rawUserCredentials);
         credentialsService.saveCredentials(hashedUserCredentials);
 
-        return ResponseEntity.ok("Request executed. Successfully created user.");
+        return ResponseEntity.ok(jwtManager.generateJWT(userService.getUser(hashedUserCredentials.getUserID())));
 
     }
 
