@@ -248,7 +248,3 @@ class UserCredentialsServiceTest {
     }
 
 }
-
-    /*
-    public void updateUserCredentials(@NotNull UserCredentials hashedUserCredentials) throws EmailMismatchException, SQLException;
-     */
