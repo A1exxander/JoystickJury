@@ -7,11 +7,10 @@ import java.sql.SQLException;
 
 
 @Service
-public interface iCredentialsService {
+public interface iUserCredentialsService {
 
     public UserCredentials getHashedUserCredentials(@NotNull String email) throws SQLException;
     public UserCredentials createHashedUserCredentials(@NotNull UserCredentials userCredentials);
-    public UserCredentials createHashedUserCredentials(Integer userID, @NotNull UserCredentials userCredentials);
     public void saveCredentials(@NotNull UserCredentials hashedUserCredentials) throws SQLException;
     public boolean emailExists(String email) throws SQLException;
     public boolean areValidCredentials(@NotNull UserCredentials userCredentials, @NotNull UserCredentials hashedUserCredentials);

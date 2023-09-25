@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 @Service
 @AllArgsConstructor
-public class CredentialsService implements iCredentialsService {
+public class UserCredentialsService implements iUserCredentialsService {
 
     @Autowired
     private final UserCredentialsDAO userCredentialsDAO;
@@ -35,19 +35,14 @@ public class CredentialsService implements iCredentialsService {
     }
 
     @Override
-    public UserCredentials createHashedUserCredentials(@NotNull UserCredentials userCredentials) { // Used for registration, not logging in!
-        return createHashedUserCredentials(null, userCredentials);
-    }
-
-    @Override
-    public UserCredentials createHashedUserCredentials(Integer userID, @NotNull UserCredentials userCredentials) {
+    public UserCredentials createHashedUserCredentials(@NotNull UserCredentials userCredentials) {
         String hashedPassword = passwordEncoder.encode(userCredentials.getPassword());
-        return new UserCredentials(userID, userCredentials.getEmail(), hashedPassword);
+        return new UserCredentials(userCredentials.getUserID(), userCredentials.getEmail(), hashedPassword);
     }
 
     @Override
     public void saveCredentials(@NotNull UserCredentials hashedUserCredentials) throws SQLException {
-        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("Invalid request. UserID inside of UserCredentials cannot be NULL."); }
+        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("Invalid request. UserID inside of UserCredentials cannot be NULL."); } // UserID inside UserCredentials can be null sometimes but not when saving
         userCredentialsDAO.save(hashedUserCredentials);
     }
 

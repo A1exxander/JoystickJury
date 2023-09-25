@@ -10,7 +10,7 @@ import xyz.joystickjury.backend.user.UserDTO;
 public class RegistrationRequestDTO {
 
     @Valid
-    private CredentialsDTO credentialsDTO;
+    private UserCredentialsDTO userCredentialsDTO;
     @Valid
     private UserDTO userDTO;
 

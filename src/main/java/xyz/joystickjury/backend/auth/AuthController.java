@@ -21,7 +21,7 @@ import java.util.Date;
 public class AuthController implements iAuthController{
 
     @Autowired
-    private final CredentialsService credentialsService;
+    private final UserCredentialsService credentialsService;
     @Autowired
     private final UserService userService;
     @Autowired
@@ -29,13 +29,13 @@ public class AuthController implements iAuthController{
     @Autowired
     private final UserMapper userMapper;
     @Autowired
-    private final CredentialsMapper credentialsMapper;
+    private final UserCredentialsMapper userCredentialsMapper;
 
     @Override
     @PostMapping("/token")
-    public ResponseEntity<String> login(@RequestBody @Valid CredentialsDTO credentialsDTO) throws SQLException {
+    public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO) throws SQLException {
 
-        UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(credentialsDTO);
+        UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(userCredentialsDTO);
         UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
 
         if (!credentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)){
@@ -50,7 +50,7 @@ public class AuthController implements iAuthController{
     @PostMapping
     public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
 
-        UserCredentials rawUserCredentials = credentialsMapper.dtoToEntity(registrationRequestDTO.getCredentialsDTO());
+        UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(registrationRequestDTO.getUserCredentialsDTO());
         User newUser = userMapper.dtoToEntity(registrationRequestDTO.getUserDTO());
         newUser.setRegistrationDate(new Date()); // We do not want to use the one provided by userDTO for security purposes & in the future, our DTO will likely not have a date
 
@@ -62,8 +62,9 @@ public class AuthController implements iAuthController{
         }
 
         userService.saveUser(newUser);
-        newUser.setUserID(userService.getUser(newUser.getDisplayName()).getUserID());
-        UserCredentials hashedUserCredentials = credentialsService.createHashedUserCredentials(newUser.getUserID(), rawUserCredentials);
+        rawUserCredentials.setUserID(userService.getUser(newUser.getDisplayName()).getUserID());
+
+        UserCredentials hashedUserCredentials = credentialsService.createHashedUserCredentials(rawUserCredentials);
         credentialsService.saveCredentials(hashedUserCredentials);
 
         return ResponseEntity.ok(jwtManager.generateJWT(userService.getUser(hashedUserCredentials.getUserID())));
