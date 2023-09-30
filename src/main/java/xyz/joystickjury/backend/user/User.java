@@ -10,17 +10,17 @@ import javax.validation.constraints.Null;
 import java.util.Date;
 
 
-@Getter @Setter @AllArgsConstructor // No need to worry about Setter existing for non-final values, Lombok handles this
+@AllArgsConstructor @Getter @Setter
 public class User {
 
     @Null @Min(1)
     private Integer userID;
     @NotNull @Min(1) @Max(16)
-    private final String displayName;
+    private String displayName;
     private String profilePictureLink;
     private String profileDescription;
     private Date registrationDate;
     @NotNull
-    private final AcccountType accountType;
+    private AcccountType accountType;
 
 }
