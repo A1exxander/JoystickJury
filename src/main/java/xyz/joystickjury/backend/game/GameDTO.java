@@ -1,14 +1,13 @@
 package xyz.joystickjury.backend.game;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
-@Data @SuperBuilder @AllArgsConstructor @Getter
-public class DetailedGameDTO { // Detailed GameDTO is used to get all information of a released game
+@AllArgsConstructor @Getter
+public class GameDTO { // Detailed GameDTO is used to get all information of a released game
 
     @NotNull @Min(1)
     private final int gameID;

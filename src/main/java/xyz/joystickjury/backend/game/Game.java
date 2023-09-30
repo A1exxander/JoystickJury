@@ -1,13 +1,12 @@
 package xyz.joystickjury.backend.game;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
-@Data @SuperBuilder @AllArgsConstructor @NoArgsConstructor @Getter @Setter
+@AllArgsConstructor @Getter @Setter
 public class Game {
 
     @NotNull @Min(1)

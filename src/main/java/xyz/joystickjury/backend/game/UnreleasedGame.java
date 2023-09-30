@@ -1,14 +1,20 @@
 package xyz.joystickjury.backend.game;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.Date;
+import java.util.Set;
 
-@Data @SuperBuilder @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode(callSuper = true) @Getter @Setter
+
+@Getter @Setter
 public class UnreleasedGame extends Game {
 
-    @NotNull
+    @Null
     private Date anticipatedReleaseDate;
+
+    public UnreleasedGame(int gameID, String gameTitle, String gameDescription, String gameBannerArtLink, String gameTrailerLink, String developerName, String publisherName, Set<String> gameGenres, Date anticipatedReleaseDate) {
+        super(gameID, gameTitle, gameDescription, gameBannerArtLink, gameTrailerLink, developerName, publisherName, gameGenres, ReleaseStatus.UNRELEASED);
+        this.anticipatedReleaseDate = anticipatedReleaseDate;
+    }
 
 }
