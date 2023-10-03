@@ -83,7 +83,6 @@ public class UserController implements iUserController { // TODO: Add endpoints 
         }
 
         userService.updateUser(currentUser, updatedUser);
-
         return ResponseEntity.noContent().build(); // Used w ResponseEntity<void> controller methods to indicate a 200 Response Type with no body
 
     }

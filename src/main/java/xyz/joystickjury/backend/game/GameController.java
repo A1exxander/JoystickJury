@@ -2,13 +2,11 @@ package xyz.joystickjury.backend.game;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
 import xyz.joystickjury.backend.token.JWTManager;
-import xyz.joystickjury.backend.user.AcccountType;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

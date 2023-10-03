@@ -72,7 +72,7 @@ public class GameDAO implements iGameDAO {
 
         Date currentDate = new Date();
 
-        while(results.next()){
+        while(results.next()) {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
@@ -161,23 +161,171 @@ public class GameDAO implements iGameDAO {
     }
 
     @Override
-    public List<Game> getTrending() {
-        return null;
+    public List<Game> getTrending() throws SQLException {
+
+        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, COUNT(CASE WHEN GR.ReviewPostDate < CURDATE() - 30 then 1 ELSE 0 END) as ReviewsThisMonth FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <=  CURDATE() GROUP BY G.GameID ORDER BY ReleaseDate DESC LIMIT 10";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        List<Game> games = new ArrayList<>();
+        ResultSet results = statement.executeQuery();
+
+        Date currentDate = new Date();
+
+        while (results.next()) {
+
+            Date releaseDate = results.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+
+            if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            }
+            else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            games.add(new Game(
+                    results.getInt("GameID"),
+                    results.getString("GameTitle"),
+                    results.getString("GameDescription"),
+                    results.getString("GameBannerArtLink"),
+                    results.getString("GameTrailerLink"),
+                    results.getString("DeveloperName"),
+                    results.getString("PublisherName"),
+                    new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
+                    releaseStatus,
+                    releaseDate,
+                    results.getFloat("AverageReviewScore"))
+            );
+
+        }
+
+        return games;
+
     }
 
     @Override
-    public List<Game> getUpcoming() {
-        return null;
+    public List<Game> getUpcoming() throws SQLException {
+
+        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate > CURDATE() GROUP BY G.GameID ORDER BY G.ReleaseDate DESC LIMIT 10";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        List<Game> games = new ArrayList<>();
+        ResultSet results = statement.executeQuery();
+
+        Date currentDate = new Date();
+
+        while (results.next()) {
+
+            Date releaseDate = results.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+
+            if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            }
+            else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            games.add(new Game(
+                    results.getInt("GameID"),
+                    results.getString("GameTitle"),
+                    results.getString("GameDescription"),
+                    results.getString("GameBannerArtLink"),
+                    results.getString("GameTrailerLink"),
+                    results.getString("DeveloperName"),
+                    results.getString("PublisherName"),
+                    new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
+                    releaseStatus,
+                    releaseDate,
+                    results.getFloat("AverageReviewScore"))
+            );
+
+        }
+
+        return games;
+
     }
 
     @Override
-    public List<Game> getRecent() {
-        return null;
+    public List<Game> getRecent() throws SQLException {
+
+        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <= CURDATE() GROUP BY G.GameID ORDER BY G.ReleaseDate DESC LIMIT 10";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        List<Game> games = new ArrayList<>();
+        ResultSet results = statement.executeQuery();
+
+        Date currentDate = new Date();
+
+        while (results.next()) {
+
+            Date releaseDate = results.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+
+            if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            }
+            else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            games.add(new Game(
+                    results.getInt("GameID"),
+                    results.getString("GameTitle"),
+                    results.getString("GameDescription"),
+                    results.getString("GameBannerArtLink"),
+                    results.getString("GameTrailerLink"),
+                    results.getString("DeveloperName"),
+                    results.getString("PublisherName"),
+                    new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
+                    releaseStatus,
+                    releaseDate,
+                    results.getFloat("AverageReviewScore"))
+            );
+
+        }
+
+        return games;
+
     }
 
     @Override
-    public List<Game> getHighestRated() {
-        return null;
+    public List<Game> getHighestRated() throws SQLException {
+
+        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID ORDER BY AverageReviewScore DESC LIMIT 10";
+        PreparedStatement statement = databaseConnection.prepareStatement(query);
+        List<Game> games = new ArrayList<>();
+        ResultSet results = statement.executeQuery();
+
+        Date currentDate = new Date();
+
+        while (results.next()) {
+
+            Date releaseDate = results.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+
+            if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            }
+            else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            games.add(new Game(
+                    results.getInt("GameID"),
+                    results.getString("GameTitle"),
+                    results.getString("GameDescription"),
+                    results.getString("GameBannerArtLink"),
+                    results.getString("GameTrailerLink"),
+                    results.getString("DeveloperName"),
+                    results.getString("PublisherName"),
+                    new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
+                    releaseStatus,
+                    releaseDate,
+                    results.getFloat("AverageReviewScore"))
+            );
+
+        }
+
+        return games;
+
     }
 
 

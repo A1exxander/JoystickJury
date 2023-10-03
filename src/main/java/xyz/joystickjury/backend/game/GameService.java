@@ -51,17 +51,17 @@ public class GameService implements iGameService {
     }
 
     @Override
-    public List<Game> getUpcoming() {
+    public List<Game> getUpcoming() throws SQLException {
         return gameDAO.getUpcoming();
     }
 
     @Override
-    public List<Game> getRecent() {
+    public List<Game> getRecent() throws SQLException {
         return gameDAO.getRecent();
     }
 
     @Override
-    public List<Game> getHighestRated() {
+    public List<Game> getHighestRated() throws SQLException {
         return gameDAO.getHighestRated();
     }
 
