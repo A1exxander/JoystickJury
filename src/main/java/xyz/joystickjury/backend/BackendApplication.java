@@ -3,10 +3,11 @@ package xyz.joystickjury.backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class BackendApplication {
 
 	public static void main(String[] args) { SpringApplication.run(BackendApplication.class, args); }
-	// TODO : ControllerAdvice, Controller unit tests, Games Package
+	// TODO : ControllerAdvice, Controller unit tests, GameDAO, GameRecommendationService
 
 }

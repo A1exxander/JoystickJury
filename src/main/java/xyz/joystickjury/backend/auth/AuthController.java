@@ -13,7 +13,7 @@ import java.util.Date;
 
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 @AllArgsConstructor
 public class AuthController implements iAuthController{
 

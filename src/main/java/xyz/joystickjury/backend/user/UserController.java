@@ -2,7 +2,6 @@ package xyz.joystickjury.backend.user;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +10,14 @@ import xyz.joystickjury.backend.token.JWTManager;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 @AllArgsConstructor
-public class UserController implements iUserController {
+public class UserController implements iUserController { // TODO: Add endpoints to delete or update ANY user as an admin
 
     @Autowired
     private final UserService userService;
@@ -30,12 +28,12 @@ public class UserController implements iUserController {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException {
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false) @Min(0) Integer limit) throws SQLException {
 
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = null;
 
-        if (limit == null || limit > users.size()) {
+        if (limit == null || limit > users.size()) { // Would be better to simply just fetch limit users from our database
             userDTOs = users.stream().map(user -> userMapper.entityToDTO(user)).collect(Collectors.toList());
         } else {
             userDTOs = users.subList(0, limit).stream().map(user -> userMapper.entityToDTO(user)).collect(Collectors.toList());
@@ -47,7 +45,7 @@ public class UserController implements iUserController {
 
     @Override
     @GetMapping("/{userID}")
-    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable int userID) throws SQLException {
+    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable @Min(1) int userID) throws SQLException {
         return ResponseEntity.ok(userMapper.entityToDTO(userService.getUser(userID)));
     }
 
@@ -68,7 +66,7 @@ public class UserController implements iUserController {
 
     @Override
     @PutMapping
-    public ResponseEntity<String> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
+    public ResponseEntity<Void> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
         User updatedUser = userMapper.dtoToEntity(updatedUserDTO);
@@ -86,13 +84,13 @@ public class UserController implements iUserController {
 
         userService.updateUser(currentUser, updatedUser);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build(); // Used w ResponseEntity<void> controller methods to indicate a 200 Response Type with no body
 
     }
 
     @Override
     @DeleteMapping
-    public ResponseEntity<String> deleteCurrentUser(@RequestHeader String Authorization) throws SQLException {
+    public ResponseEntity<Void> deleteCurrentUser(@RequestHeader String Authorization) throws SQLException {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -103,7 +101,7 @@ public class UserController implements iUserController {
         userService.deleteUser(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
         jwtManager.invalidateJWT(jwt);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
 
     }
 
