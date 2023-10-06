@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
+
+import javax.validation.constraints.Min;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     private Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
-    public User get(Integer id) throws SQLException {
+    public User get(@Min(1) Integer id) throws SQLException {
 
         final String query = "SELECT * FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
@@ -114,7 +116,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     }
 
     @Override
-    public void delete(Integer id) throws SQLException {
+    public void delete(@Min(1) Integer id) throws SQLException {
 
         final String query = "DELETE FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);

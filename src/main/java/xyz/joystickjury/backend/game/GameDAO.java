@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
+import javax.validation.constraints.Min;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ public class GameDAO implements iGameDAO {
     public GameDAO(){ this.databaseConnection = DatabaseConnectionManager.getConnection(); }
 
     @Override
-    public Game get(Integer id) throws SQLException {
+    public Game get(@Min(1) Integer id) throws SQLException {
 
         final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID WHERE G.GameID = ?";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
@@ -151,7 +152,7 @@ public class GameDAO implements iGameDAO {
     }
 
     @Override
-    public void delete(Integer id) throws SQLException {
+    public void delete(@Min(1) Integer id) throws SQLException {
 
         final String query = "DELETE FROM Game WHERE GameID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);

@@ -7,7 +7,7 @@ import javax.validation.constraints.Null;
 import java.util.Date;
 
 
-@Getter @AllArgsConstructor
+@AllArgsConstructor @Getter
 public class UserDTO { // Even though it is a 1:1 mirror of User, it is still worth doing this to be more consistent, follow best practices, and maintainability (in case User class changes in the future, but we want to maintain this as the user presentation).
 
     @Null

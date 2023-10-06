@@ -2,7 +2,6 @@ package xyz.joystickjury.backend.game;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -11,7 +10,7 @@ import java.util.Date;
 import java.util.Set;
 
 
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor @Getter
 public class GameDTO {
 
     @Null @Min(1)
