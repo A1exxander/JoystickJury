@@ -17,8 +17,9 @@ public class GameService implements iGameService {
 
     @Override
     public Game getGame(@Min(1) int id) throws SQLException {
-        if (!gameExists(id)){ throw new ResourceDoesNotExistException("Error. A game with the gameID of " + id + " could not be found."); }
-        return gameDAO.get(id);
+        Game game = gameDAO.get(id);
+        if (game == null) { throw new ResourceDoesNotExistException("Error. A game with the gameID of " + id + " could not be found."); }
+        return game;
     }
 
     @Override
@@ -66,6 +67,13 @@ public class GameService implements iGameService {
     }
 
     @Override
-    public boolean gameExists(@Min(1) int id) throws SQLException { return gameDAO.get(id) != null; }
+    public boolean gameExists(@Min(1) int id) throws SQLException { return gameDAO.get(id) != null; } // If you simply want to check gameExists in other classes, use this, else if you actually need the game after, simply use get and check if its null
+
+    @Override
+    public boolean gameIsReleased(@Min(1) int gameID) throws SQLException {
+        Game game = gameDAO.get(gameID);
+        if (game == null) { throw new ResourceDoesNotExistException("Error. A game with the gameID of " + gameID + " could not be found."); }
+        return game.getReleaseStatus() == ReleaseStatus.RELEASED;
+    }
 
 }

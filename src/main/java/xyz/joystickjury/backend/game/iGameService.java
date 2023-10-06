@@ -17,5 +17,6 @@ public interface iGameService {
     public List<Game> getRecent() throws SQLException;
     public List<Game> getHighestRated() throws SQLException;
     public boolean gameExists(@Min(1) int id) throws SQLException;
+    public boolean gameIsReleased(@Min(1) int gameID) throws SQLException;
 
 }

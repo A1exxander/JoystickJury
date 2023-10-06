@@ -1,15 +1,15 @@
 package xyz.joystickjury.backend.GameReview;
 
-import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.utils.iDAO;
 
-import javax.validation.constraints.Min;
+import java.sql.SQLException;
 import java.util.List;
 
 
 public interface iGameReviewDAO extends iDAO<Integer, GameReview> {
 
-    public List<GameReview> getAllByGameID(@Min(1) int gameID);
-    public List<GameReview> getAllByUserID(@Min(1) int userID);
+    public GameReview get(int gameID, int userID) throws SQLException;
+    public List<GameReview> getAllByGameID(int gameID) throws SQLException;
+    public List<GameReview> getAllByUserID(int userID) throws SQLException;
 
 }

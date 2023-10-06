@@ -21,8 +21,9 @@ public class UserService implements iUserService {
 
     @Override
     public User getUser(int userID) throws SQLException { // Make it take an int not Integer to make sure that this does not get called with a null argument w/o having to check
-        if (!userExists(userID)) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + userID + " does not exist."); }
-        return userDAO.get(userID);
+        User user = userDAO.get(userID);
+        if (user == null) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + userID + " does not exist."); }
+        return user;
     }
 
     @Override

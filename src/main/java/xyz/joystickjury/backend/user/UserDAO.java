@@ -18,7 +18,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     private Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
-    public User get(@Min(1) Integer id) throws SQLException {
+    public User get(Integer id) throws SQLException {
 
         final String query = "SELECT * FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
@@ -116,7 +116,7 @@ public class UserDAO implements iUserDAO { // In future projects, implement your
     }
 
     @Override
-    public void delete(@Min(1) Integer id) throws SQLException {
+    public void delete(Integer id) throws SQLException {
 
         final String query = "DELETE FROM User WHERE UserID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
