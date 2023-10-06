@@ -36,8 +36,7 @@ public class AuthController implements iAuthController{
         UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
 
         User authenticatedUser = authService.login(rawUserCredentials, hashedUserCredentials);
-
-        return ResponseEntity.ok(jwtManager.generateJWT(authenticatedUser));
+        return ResponseEntity.ok("Bearer " + jwtManager.generateJWT(authenticatedUser));
 
     }
 
@@ -52,7 +51,7 @@ public class AuthController implements iAuthController{
         int userID = authService.register(rawUserCredentials, newUser);
         newUser.setUserID(userID);
 
-        return ResponseEntity.ok(jwtManager.generateJWT(newUser));
+        return ResponseEntity.ok("Bearer " + jwtManager.generateJWT(newUser));
 
     }
 

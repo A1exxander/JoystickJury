@@ -19,12 +19,12 @@ import java.util.Set;
 
 
 @Service
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
 public class JWTManager implements iJWTManager {
 
     private final String secretKey = System.getenv("joystick-jury-secret-key");
     private final long tokenLifespanHours = 120;
-    private Set<String> invalidTokens = new HashSet<>(); // TODO: Currently causes a memory leak. Switch out to something like an LRU cache & evict expired keys automatically in the future.
+    private final Set<String> invalidTokens = new HashSet<>(); // TODO: Currently causes a memory leak. Switch out to something like an LRU cache & evict expired keys automatically in the future.
 
     @Override
     public String generateJWT(@NotNull User user) {
@@ -60,21 +60,15 @@ public class JWTManager implements iJWTManager {
     }
 
     @Override
-    public JWT decodeJWT(String encodedJWT){
+    public JWT decodeJWT(@NotNull String encodedJWT){
         Verifier verifier = HMACVerifier.newVerifier(secretKey);
         return JWT.getDecoder().decode(encodedJWT, verifier);
     }
 
     @Override
-    public String extractBearerJWT(String rawAuthorizationToken) throws IllegalArgumentException { // Maybe consider changing this method to use strategy pattern, where every strategy is dependent on Authorization type instead of being hardcoded to Bearer
-
-        if (rawAuthorizationToken == null || !rawAuthorizationToken.startsWith("Bearer")){
-            throw new IllegalArgumentException();
-        }
-
+    public String extractBearerJWT(@NotNull String rawAuthorizationToken) throws IllegalArgumentException { // Maybe consider changing this method to use strategy pattern, where every strategy is dependent on Authorization type instead of being hardcoded to Bearer
+        if (!rawAuthorizationToken.startsWith("Bearer")) { throw new IllegalArgumentException("Error. Token did not start with expected \"Bearer\" prefix."); }
         return rawAuthorizationToken.substring(7);
-
     }
-
 
 }

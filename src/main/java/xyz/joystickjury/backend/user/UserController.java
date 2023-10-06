@@ -28,7 +28,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
 
     @Override
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false) @Min(0) Integer limit) throws SQLException {
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
 
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = null;
