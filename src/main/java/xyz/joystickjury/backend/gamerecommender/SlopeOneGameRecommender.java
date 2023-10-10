@@ -35,9 +35,9 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
         List<Game> allGames = gameService.getAllGames();
 
         HashMap<Pair<Integer, Integer>, Float> avgPrefDiffs = computeAvgPrefDiffs(allGames);
-        HashMap<Game, Float> predictedPreferenceDiffs = predictPreferenceDiffs(allGames, userGameReviews, avgPrefDiffs);
+        HashMap<Game, Float> predictedPrefDiffs = predictPrefDiffs(allGames, userGameReviews, avgPrefDiffs);
 
-        List<Game> recommendedGames = predictedPreferenceDiffs.entrySet()
+        List<Game> recommendedGames = predictedPrefDiffs.entrySet()
                 .stream()
                 .sorted(Map.Entry.<Game, Float>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
@@ -92,7 +92,7 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
 
     }
 
-    private HashMap<Game, Float> predictPreferenceDiffs(@NotNull List<Game> allGames, @NotNull List<GameReview> userGameReviews, @NotNull HashMap<Pair<Integer, Integer>, Float> avgPreferenceDiffs) throws SQLException {
+    private HashMap<Game, Float> predictPrefDiffs(@NotNull List<Game> allGames, @NotNull List<GameReview> userGameReviews, @NotNull HashMap<Pair<Integer, Integer>, Float> avgPreferenceDiffs) throws SQLException {
 
         Set<Integer> reviewedGameIDs = userGameReviews.stream().map(currentGame -> currentGame.getGameID()).collect(Collectors.toSet());
         HashMap<Game, Float> predictedPrefDiffs = new HashMap<>();
@@ -100,7 +100,7 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
         for (Game currentGame : allGames) {
 
             if (reviewedGameIDs.contains(currentGame.getGameID())) { continue; }
-            Float predictPrefDiff = predictPreferenceDiff(currentGame.getGameID(), userGameReviews, avgPreferenceDiffs);
+            Float predictPrefDiff = predictPrefDiff(currentGame.getGameID(), userGameReviews, avgPreferenceDiffs);
             predictedPrefDiffs.put(currentGame, predictPrefDiff);
 
         }
@@ -109,7 +109,7 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
 
     }
 
-    private Float predictPreferenceDiff(@Min(1) int currentGameID, @NotNull List<GameReview> userGameReviews, @NotNull HashMap<Pair<Integer, Integer>, Float> avgPreferenceDiffs) throws SQLException {
+    private Float predictPrefDiff(@Min(1) int currentGameID, @NotNull List<GameReview> userGameReviews, @NotNull HashMap<Pair<Integer, Integer>, Float> avgPreferenceDiffs) throws SQLException {
 
         float totalAvgPrefDiffs = 0.0f;
         int totalAvgPrefDiffsCount = 0;
