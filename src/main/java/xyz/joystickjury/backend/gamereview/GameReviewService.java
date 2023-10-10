@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.GameReview;
+package xyz.joystickjury.backend.gamereview;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.joystickjury.backend.exception.IllegalOperationException;

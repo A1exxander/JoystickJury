@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.GameReview;
+package xyz.joystickjury.backend.gamereview;
 
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GameReviewDAO implements iGameReviewDAO {
 
-    private Connection databaseConnection = DatabaseConnectionManager.getConnection();
+    private final Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
     public GameReview get(Integer id) throws SQLException {
@@ -113,7 +113,7 @@ public class GameReviewDAO implements iGameReviewDAO {
     @Override
     public List<GameReview> getAllByGameID(int gameID) throws SQLException {
 
-        final String query = "SELECT * FROM GameReview WHERE GameID = ?";
+        final String query = "SELECT * FROM GameReview WHERE GameID = ? ORDER BY ReviewPostDate DESC";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
         preparedStatement.setInt(1, gameID);
         ResultSet result = preparedStatement.executeQuery();

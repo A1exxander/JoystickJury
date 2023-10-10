@@ -1,8 +1,6 @@
-package xyz.joystickjury.backend.GameReview;
+package xyz.joystickjury.backend.gamereview;
 
-import xyz.joystickjury.backend.game.Game;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 import java.util.List;
 

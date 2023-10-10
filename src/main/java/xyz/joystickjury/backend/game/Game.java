@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
-public class Game {
+public class Game { // Should prob have derived classes named ReleasedGame & UnreleasedGame that inherit this but not worth it as its alot more complex + this is already done
 
     @Null @Min(1) // Can be null if were inserting a new game
     private Integer gameID;

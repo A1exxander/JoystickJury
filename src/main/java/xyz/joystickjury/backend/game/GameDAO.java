@@ -17,9 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class GameDAO implements iGameDAO {
 
-    private Connection databaseConnection;
-
-    public GameDAO(){ this.databaseConnection = DatabaseConnectionManager.getConnection(); }
+    private final Connection databaseConnection = DatabaseConnectionManager.getConnection();
 
     @Override
     public Game get(Integer id) throws SQLException {

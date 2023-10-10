@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.GameReview;
+package xyz.joystickjury.backend.gamereview;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

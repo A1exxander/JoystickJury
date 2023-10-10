@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.GameReview;
+package xyz.joystickjury.backend.gamereview;
 
 import xyz.joystickjury.backend.utils.iDAO;
 
