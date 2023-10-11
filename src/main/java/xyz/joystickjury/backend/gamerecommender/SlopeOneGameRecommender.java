@@ -49,8 +49,6 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
 
     private HashMap<Pair<Integer, Integer>, Float> computeAvgPrefDiffs(@NotNull List<Game> allGames) throws SQLException {
 
-        if (allGames.isEmpty()) { throw new IllegalArgumentException("Error. List of games is empty."); }
-
         HashMap<Integer, List<GameReview>> allGameReviews = new HashMap<>(gameReviewService.getAllGameReviews().stream().collect(Collectors.groupingBy(GameReview::getGameID, Collectors.toList())));
         HashMap<Pair<Integer, Integer>, Float> avgPrefDiffs = new HashMap<>(); // Determines how much better or worse GameOne is to GameTwo on average
 
@@ -69,8 +67,6 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
     }
 
     private Float computeAvgPrefDiff(@NotNull List<GameReview> gameOneReviews, @NotNull List<GameReview> gameTwoReviews) throws SQLException {
-
-        if (gameOneReviews.equals(gameOneReviews)){ throw new IllegalOperationException("Error. Cannot compute the preference difference of the same game."); } // We are expecting 2 lists representing reviews of 2 SEPARATE games
 
         Set<Integer> gameOneReviewers = gameOneReviews.stream().map(currentGameReview -> currentGameReview.getUserID()).collect(Collectors.toSet());
         Set<Integer> gameTwoReviewers = gameTwoReviews.stream().map(currentGameReview -> currentGameReview.getUserID()).collect(Collectors.toSet());

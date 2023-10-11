@@ -1,6 +1,10 @@
 package xyz.joystickjury.backend.gamereview;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.exception.IllegalOperationException;
 import xyz.joystickjury.backend.exception.ResourceAlreadyExistsException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
@@ -10,7 +14,8 @@ import javax.validation.constraints.Min;
 import java.sql.SQLException;
 import java.util.List;
 
-
+@Service
+@AllArgsConstructor
 public class GameReviewService implements iGameReviewService {
 
     @Autowired

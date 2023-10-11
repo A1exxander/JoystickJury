@@ -10,7 +10,9 @@ import xyz.joystickjury.backend.token.JWTManager;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/games")
 @AllArgsConstructor
-public class GameController implements iGameController{
+public class GameController implements iGameController {
 
     @Autowired
     private GameService gameService;
@@ -28,15 +30,10 @@ public class GameController implements iGameController{
     @Autowired
     private JWTManager jwtManager;
 
-    private ResponseEntity<List<GameDTO>> getGamesByType(Integer limit, List<Game> games) {
+    private ResponseEntity<List<GameDTO>> getGamesByType(@Null Integer limit, @NotNull List<Game> games) { // Consider moving this
 
-        List<GameDTO> gamesDTO = null;
-
-        if (limit == null || limit > games.size()) {
-            gamesDTO = games.stream().map(game -> gameMapper.entityToDTO(game)).collect(Collectors.toList());
-        } else {
-            gamesDTO = games.subList(0, limit).stream().map(user -> gameMapper.entityToDTO(user)).collect(Collectors.toList());
-        }
+        List<GameDTO> gamesDTO = games.stream().map(game -> gameMapper.entityToDTO(game)).collect(Collectors.toList());
+        if (limit != null && limit < gamesDTO.size()) { gamesDTO = gamesDTO.subList(0, limit); }
 
         return ResponseEntity.ok(gamesDTO);
 
@@ -74,15 +71,9 @@ public class GameController implements iGameController{
 
     @Override
     @GetMapping("/{gameID}")
-    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable @Min(1) int gameID, @RequestParam(name = "fields", required = false) Set<String> fields) throws SQLException {
+    public ResponseEntity<GameDTO> getSpecificGame(@PathVariable @Min(1) int gameID) throws SQLException {
 
-        Game game = gameService.getGame(gameID);
-
-        if (fields == null || fields != null && fields.size() == 0) {
-            return ResponseEntity.ok(gameMapper.entityToDTO(game));
-        } else {
-            return ResponseEntity.ok(gameMapper.entityToDTO(game, fields));
-        }
+        return ResponseEntity.ok(gameMapper.entityToDTO(gameService.getGame(gameID)));
 
     }
 

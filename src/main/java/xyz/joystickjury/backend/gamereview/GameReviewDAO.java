@@ -1,12 +1,16 @@
 package xyz.joystickjury.backend.gamereview;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-
+@Repository
+@NoArgsConstructor
 public class GameReviewDAO implements iGameReviewDAO {
 
     private final Connection databaseConnection = DatabaseConnectionManager.getConnection();
