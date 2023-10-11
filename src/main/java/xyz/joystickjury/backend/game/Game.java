@@ -17,6 +17,7 @@ public class Game { // Should prob have derived classes named ReleasedGame & Unr
     @NotNull
     private String gameTitle;
     private String gameDescription;
+    private String gameCoverArtLink;
     private String gameBannerArtLink;
     private String gameTrailerLink;
     @NotNull

@@ -32,6 +32,7 @@ public class GameDAO implements iGameDAO {
             Date currentDate = new Date();
             Date releaseDate = result.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (result.getDate("ReleaseDate") == null || currentDate.before(result.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -40,10 +41,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && result.getFloat("AverageReviewScore") == 0.0f){
+                averageGameScore = result.getFloat("AverageReviewScore");
+            }
+
             return new Game(
                     result.getInt("GameID"),
                     result.getString("GameTitle"),
                     result.getString("GameDescription"),
+                    result.getString("GameCoverArtLink"),
                     result.getString("GameBannerArtLink"),
                     result.getString("GameTrailerLink"),
                     result.getString("DeveloperName"),
@@ -51,7 +57,7 @@ public class GameDAO implements iGameDAO {
                     new HashSet<String>(List.of(result.getString("GameGenres").split(","))),
                     releaseStatus,
                     releaseDate,
-                    result.getFloat("AverageReviewScore")
+                    averageGameScore
             );
 
         }
@@ -75,6 +81,7 @@ public class GameDAO implements iGameDAO {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -83,10 +90,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") == 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
                     results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
                     results.getString("GameBannerArtLink"),
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
@@ -133,17 +145,18 @@ public class GameDAO implements iGameDAO {
     @Override
     public void update(Game game) throws SQLException {
 
-        final String query  = "UPDATE Game SET GameTitle = ?, GameDescription = ?, GameTrailerLink = ?, GameBannerArtLink = ?, DeveloperName = ?, PublisherName = ?, ReleaseDate = ? WHERE GameID = ?";
+        final String query  = "UPDATE Game SET GameTitle = ?, GameDescription = ?, GameTrailerLink = ?, GameCoverArtLink = ?, GameBannerArtLink = ?, DeveloperName = ?, PublisherName = ?, ReleaseDate = ? WHERE GameID = ?";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
 
         statement.setString(1, game.getGameTitle());
         statement.setString(2, game.getGameDescription());
         statement.setString(3, game.getGameTrailerLink());
-        statement.setString(4, game.getGameBannerArtLink());
-        statement.setString(5, game.getDeveloperName());
-        statement.setString(6, game.getPublisherName());
-        statement.setDate(7, (java.sql.Date)game.getReleaseDate());
-        statement.setInt(8, game.getGameID());
+        statement.setString(4, game.getGameCoverArtLink());
+        statement.setString(5, game.getGameBannerArtLink());
+        statement.setString(6, game.getDeveloperName());
+        statement.setString(7, game.getPublisherName());
+        statement.setDate(8, (java.sql.Date)game.getReleaseDate());
+        statement.setInt(9, game.getGameID());
 
         statement.executeUpdate();
 
@@ -173,6 +186,7 @@ public class GameDAO implements iGameDAO {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -181,10 +195,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
                     results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
                     results.getString("GameBannerArtLink"),
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
@@ -192,7 +211,7 @@ public class GameDAO implements iGameDAO {
                     new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
                     releaseStatus,
                     releaseDate,
-                    results.getFloat("AverageReviewScore"))
+                    averageGameScore)
             );
 
         }
@@ -215,6 +234,7 @@ public class GameDAO implements iGameDAO {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -223,10 +243,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
                     results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
                     results.getString("GameBannerArtLink"),
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
@@ -234,7 +259,7 @@ public class GameDAO implements iGameDAO {
                     new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
                     releaseStatus,
                     releaseDate,
-                    results.getFloat("AverageReviewScore"))
+                    averageGameScore)
             );
 
         }
@@ -257,6 +282,7 @@ public class GameDAO implements iGameDAO {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -265,10 +291,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
                     results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
                     results.getString("GameBannerArtLink"),
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
@@ -276,7 +307,7 @@ public class GameDAO implements iGameDAO {
                     new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
                     releaseStatus,
                     releaseDate,
-                    results.getFloat("AverageReviewScore"))
+                    averageGameScore)
             );
 
         }
@@ -299,6 +330,7 @@ public class GameDAO implements iGameDAO {
 
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -307,10 +339,15 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
                     results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
                     results.getString("GameBannerArtLink"),
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
@@ -318,7 +355,7 @@ public class GameDAO implements iGameDAO {
                     new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
                     releaseStatus,
                     releaseDate,
-                    results.getFloat("AverageReviewScore"))
+                    averageGameScore)
             );
 
         }

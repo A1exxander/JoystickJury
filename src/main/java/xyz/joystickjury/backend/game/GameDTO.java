@@ -18,6 +18,7 @@ public class GameDTO {
     @NotNull
     private final String gameTitle;
     @NotNull
+    private final String gameCoverArtLink;
     private final String gameBannerArtLink;
     private final String gameDescription;
     private final String gameTrailerLink;
