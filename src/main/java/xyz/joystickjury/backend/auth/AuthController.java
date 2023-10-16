@@ -18,8 +18,6 @@ import java.util.Date;
 public class AuthController implements iAuthController{
 
     @Autowired
-    private final UserCredentialsService credentialsService;
-    @Autowired
     private final JWTManager jwtManager;
     @Autowired
     private final UserMapper userMapper;
@@ -33,9 +31,7 @@ public class AuthController implements iAuthController{
     public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO) throws SQLException {
 
         UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(userCredentialsDTO);
-        UserCredentials hashedUserCredentials = credentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
-
-        User authenticatedUser = authService.login(rawUserCredentials, hashedUserCredentials);
+        User authenticatedUser = authService.login(rawUserCredentials);
         return ResponseEntity.ok("Bearer " + jwtManager.generateJWT(authenticatedUser));
 
     }

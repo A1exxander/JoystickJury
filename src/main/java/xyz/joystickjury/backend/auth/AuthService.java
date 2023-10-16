@@ -22,7 +22,9 @@ public class AuthService implements iAuthServices{
     private final UserService userService;
 
     @Override
-    public User login(UserCredentials rawUserCredentials, UserCredentials hashedUserCredentials) throws SQLException {
+    public User login(UserCredentials rawUserCredentials) throws SQLException {
+
+        UserCredentials hashedUserCredentials = userCredentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
 
         if (!userCredentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)){
             throw new InvalidCredentialsException("Invalid request. User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
