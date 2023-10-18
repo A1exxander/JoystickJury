@@ -7,7 +7,7 @@ import xyz.joystickjury.backend.user.UserDTO;
 
 
 @AllArgsConstructor @Getter
-public class RegistrationRequestDTO {
+public class PostUserDTO {
 
     @Valid
     private final UserCredentialsDTO userCredentialsDTO;

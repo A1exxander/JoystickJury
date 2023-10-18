@@ -38,10 +38,10 @@ public class AuthController implements iAuthController{
 
     @Override
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO registrationRequestDTO) throws SQLException {
+    public ResponseEntity<String> register(@RequestBody @Valid PostUserDTO postUserDTO) throws SQLException {
 
-        UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(registrationRequestDTO.getUserCredentialsDTO());
-        User newUser = userMapper.dtoToEntity(registrationRequestDTO.getUserDTO());
+        UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(postUserDTO.getUserCredentialsDTO());
+        User newUser = userMapper.dtoToEntity(postUserDTO.getUserDTO());
         newUser.setRegistrationDate(new Date()); // We do not want to use the one provided by userDTO for security purposes & in the future, our DTO will likely not have a date
 
         int userID = authService.register(rawUserCredentials, newUser);
