@@ -2,6 +2,7 @@ package xyz.joystickjury.backend.game;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,36 +38,42 @@ public class GameController implements iGameController {
     }
 
     @Override
+    @SneakyThrows
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
         return getGamesByType(limit, gameService.getAllGames());
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/latest")
-    public ResponseEntity<List<GameDTO>> getNewGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getNewGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
         return getGamesByType(limit, gameService.getRecent());
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/upcoming")
-    public ResponseEntity<List<GameDTO>> getUpcomingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getUpcomingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
         return getGamesByType(limit, gameService.getUpcoming());
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/highest-rated")
-    public ResponseEntity<List<GameDTO>> getHighestRatedGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getHighestRatedGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
         return getGamesByType(limit, gameService.getHighestRated());
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/trending")
-    public ResponseEntity<List<GameDTO>> getTrendingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getTrendingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
         return getGamesByType(limit, gameService.getTrending());
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/{gameID}")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable @Min(1) int gameID) throws SQLException {
 
@@ -75,8 +82,9 @@ public class GameController implements iGameController {
     }
 
     @Override
+    @SneakyThrows
     @PostMapping
-    public ResponseEntity<Void> saveGame(@RequestHeader @NotNull String Authorization, @RequestBody @Valid GameDTO newGameDTO) throws SQLException {
+    public ResponseEntity<Void> saveGame(@RequestHeader @NotNull String Authorization, @RequestBody @Valid GameDTO newGameDTO) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
         Game newGame = gameMapper.dtoToEntity(newGameDTO);
@@ -94,8 +102,9 @@ public class GameController implements iGameController {
     }
 
     @Override
+    @SneakyThrows
     @PutMapping
-    public ResponseEntity<Void> updateGame(@RequestHeader @NotNull String Authorization, @RequestBody @Valid GameDTO updatedGameDTO) throws SQLException {
+    public ResponseEntity<Void> updateGame(@RequestHeader @NotNull String Authorization, @RequestBody @Valid GameDTO updatedGameDTO) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
         Game updatedGame = gameMapper.dtoToEntity(updatedGameDTO);
@@ -113,8 +122,9 @@ public class GameController implements iGameController {
     }
 
     @Override
+    @SneakyThrows
     @DeleteMapping
-    public ResponseEntity<Void> deleteGame(@RequestHeader @NotNull String Authorization, @RequestParam @Min(1) int gameID) throws SQLException {
+    public ResponseEntity<Void> deleteGame(@RequestHeader @NotNull String Authorization, @RequestParam @Min(1) int gameID) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 

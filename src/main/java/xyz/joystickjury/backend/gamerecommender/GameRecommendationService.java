@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor @NoArgsConstructor @Setter
-public class GameRecommenderService implements iGameRecommenderService {
+public class GameRecommendationService implements iGameRecommendationService {
 
     @Autowired
     private GameRecommenderStrategyFactory gameRecommenderStrategyFactory; // Use strategy pattern as we may want to recommend users popular games instead of personalized recommendations someday

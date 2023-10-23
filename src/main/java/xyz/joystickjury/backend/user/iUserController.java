@@ -14,15 +14,15 @@ import java.util.List;
 public interface iUserController {
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit) throws SQLException;
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false ) @Min(0) Integer limit);
     @GetMapping("/{userID}")
-    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable int userID) throws SQLException;
+    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable int userID);
     @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
-    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException;
+    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader(required = true) String Authorization);
     @PutMapping
-    public ResponseEntity<Void> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) @Valid UserDTO updatedUserDTO) throws SQLException;
+    public ResponseEntity<Void> updateCurrentUser(@RequestHeader(required = true) String Authorization, @RequestBody(required = true) @Valid UserDTO updatedUserDTO);
     @DeleteMapping
-    public ResponseEntity<Void> deleteCurrentUser(@RequestHeader(required = true) String Authorization) throws SQLException;
+    public ResponseEntity<Void> deleteCurrentUser(@RequestHeader(required = true) String Authorization);
 
 }
 

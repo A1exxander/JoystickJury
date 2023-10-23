@@ -2,6 +2,7 @@ package xyz.joystickjury.backend.user;
 
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,9 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     private final UserMapper userMapper;
 
     @Override
+    @SneakyThrows
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) throws SQLException {
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
 
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = null;
@@ -44,14 +46,16 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/{userID}")
-    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable @Min(1) int userID) throws SQLException {
+    public ResponseEntity<UserDTO> getSpecificUser(@PathVariable @Min(1) int userID) {
         return ResponseEntity.ok(userMapper.entityToDTO(userService.getUser(userID)));
     }
 
     @Override
+    @SneakyThrows
     @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
-    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) throws SQLException {
+    public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -65,8 +69,9 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     }
 
     @Override
+    @SneakyThrows
     @PutMapping
-    public ResponseEntity<Void> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) throws SQLException { // Determine what happens with a null body
+    public ResponseEntity<Void> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) { // Determine what happens with a null body
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
         User updatedUser = userMapper.dtoToEntity(updatedUserDTO);
@@ -88,8 +93,9 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     }
 
     @Override
+    @SneakyThrows
     @DeleteMapping
-    public ResponseEntity<Void> deleteCurrentUser(@RequestHeader String Authorization) throws SQLException {
+    public ResponseEntity<Void> deleteCurrentUser(@RequestHeader String Authorization) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 

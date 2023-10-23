@@ -11,9 +11,9 @@ import java.sql.SQLException;
 public interface iAuthController {
 
     @PostMapping("/token")
-    public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO) throws SQLException;
+    public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO);
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid UserPostDTO userPostDTO) throws SQLException;
+    public ResponseEntity<String> register(@RequestBody @Valid UserPostDTO userPostDTO);
 
 }
 

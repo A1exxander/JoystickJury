@@ -2,6 +2,7 @@ package xyz.joystickjury.backend.gamerecommender;
 
 import io.fusionauth.jwt.JWTException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,6 @@ import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.game.GameDTO;
 import xyz.joystickjury.backend.game.GameMapper;
 import xyz.joystickjury.backend.token.JWTManager;
-import xyz.joystickjury.backend.user.UserDTO;
 
 import javax.validation.constraints.Null;
 import java.sql.SQLException;
@@ -20,17 +20,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1/games/recommended")
 @AllArgsConstructor
-public class GameRecommenderController {
+public class GameRecommendationController implements iGameRecommendationController{
 
     @Autowired
     private JWTManager jwtManager;
     @Autowired
-    private GameRecommenderService gameRecommenderService;
+    private GameRecommendationService gameRecommendationService;
     @Autowired
     private GameMapper gameMapper;
 
+    @Override
+    @SneakyThrows
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getRecommendedGames(@RequestHeader String Authorization, @Null Integer limit) throws SQLException {
+    public ResponseEntity<List<GameDTO>> getRecommendedGames(@RequestHeader String Authorization, @Null Integer limit) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -38,7 +40,7 @@ public class GameRecommenderController {
             throw new JWTException("Invalid JWT Provided");
         }
 
-        List<Game> recommendedGames = gameRecommenderService.getRecommendedGames(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
+        List<Game> recommendedGames = gameRecommendationService.getRecommendedGames(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
         List<GameDTO> recommendedGameDTOs = null;
 
         if (limit == null || limit > recommendedGames.size()) {

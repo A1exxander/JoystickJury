@@ -1,6 +1,7 @@
 package xyz.joystickjury.backend.auth;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,9 @@ public class AuthController implements iAuthController{
     private final AuthService authService;
 
     @Override
+    @SneakyThrows
     @PostMapping("/token")
-    public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO) throws SQLException {
+    public ResponseEntity<String> login(@RequestBody @Valid UserCredentialsDTO userCredentialsDTO) {
 
         UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(userCredentialsDTO);
         User authenticatedUser = authService.login(rawUserCredentials);
@@ -37,8 +39,9 @@ public class AuthController implements iAuthController{
     }
 
     @Override
+    @SneakyThrows
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid UserPostDTO userPostDTO) throws SQLException {
+    public ResponseEntity<String> register(@RequestBody @Valid UserPostDTO userPostDTO) {
 
         UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(userPostDTO.getUserCredentialsDTO());
         User newUser = userMapper.dtoToEntity(userPostDTO.getUserDTO());
