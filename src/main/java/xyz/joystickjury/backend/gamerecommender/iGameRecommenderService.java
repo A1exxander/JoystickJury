@@ -6,6 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public interface iGameRecommendationService {
+public interface iGameRecommenderService {
     public List<Game> getRecommendedGames(@Min(1) int userID) throws SQLException;
 }

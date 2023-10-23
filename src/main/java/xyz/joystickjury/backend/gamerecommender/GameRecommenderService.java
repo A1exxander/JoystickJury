@@ -3,6 +3,7 @@ package xyz.joystickjury.backend.gamerecommender;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.game.Game;
 import javax.validation.constraints.Min;
@@ -12,12 +13,14 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor @NoArgsConstructor @Setter
-public class GameRecommendationService implements iGameRecommendationService {
+public class GameRecommenderService implements iGameRecommenderService {
 
-    private iGameRecommenderStrategy gameRecommenderStrategy = new SlopeOneGameRecommender(); // Use strategy pattern as we are not sure if this will change in the future
+    @Autowired
+    private GameRecommenderStrategyFactory gameRecommenderStrategyFactory; // Use strategy pattern as we may want to recommend users popular games instead of personalized recommendations via slope one someday
 
     @Override
     public List<Game> getRecommendedGames(@Min(1) int userID) throws SQLException {
+        iGameRecommenderStrategy gameRecommenderStrategy = gameRecommenderStrategyFactory.getStrategy(GameRecommenderStrategy.SLOPEONE);
         return gameRecommenderStrategy.recommendGames(userID);
     }
 

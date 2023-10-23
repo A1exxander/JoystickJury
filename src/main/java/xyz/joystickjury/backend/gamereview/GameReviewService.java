@@ -28,7 +28,7 @@ public class GameReviewService implements iGameReviewService {
     @Override
     public GameReview getGameReview(@Min(1) int gameReviewID) throws SQLException {
         GameReview gameReview = gameReviewDAO.get(gameReviewID);
-        if (gameReview == null){ throw new ResourceDoesNotExistException("Error. Game review with the ID of : " + gameReviewID + "does not exist." ); }
+        if (gameReview == null){ throw new ResourceDoesNotExistException("Game review with the ID of : " + gameReviewID + "does not exist." ); }
         return gameReview;
     }
 
@@ -39,14 +39,14 @@ public class GameReviewService implements iGameReviewService {
 
     @Override
     public List<GameReview> getAllGameReviewsByUser(@Min(1) int userID) throws SQLException {
-        if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("Error. User with the ID of : " + userID + "does not exist." ); }
+        if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("User with the ID of : " + userID + "does not exist." ); }
         return gameReviewDAO.getAllByUserID(userID);
     }
 
     @Override
     public List<GameReview> getAllGameReviewsByGame(@Min(1) int gameID) throws SQLException {
-        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Error. Game with the ID of : " + gameID + "does not exist." ); }
-        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Error. Game must be released in order to have reviews"); }
+        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game with the ID of : " + gameID + "does not exist." ); }
+        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Game must be released in order to have reviews"); }
         return gameReviewDAO.getAllByGameID(gameID);
     }
 
@@ -56,10 +56,10 @@ public class GameReviewService implements iGameReviewService {
         int gameID = gameReview.getGameID();
         int userID = gameReview.getUserID();
 
-        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Error. Game review with the ID of : " + gameReview.getGameID() + "does not exist." ); }
-        else if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("Error. User with the ID of : " + gameReview.getGameID() + "does not exist." ); }
-        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Error. Game must be released in order to post a review"); }
-        else if (gameReviewExists(userID, gameID)) { throw new ResourceAlreadyExistsException("Error. User " + userID + "has already left a review for" + gameID +". Please update review instead."); };
+        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game review with the ID of : " + gameReview.getGameID() + "does not exist." ); }
+        else if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("User with the ID of : " + gameReview.getGameID() + "does not exist." ); }
+        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Game must be released in order to post a review"); }
+        else if (gameReviewExists(userID, gameID)) { throw new ResourceAlreadyExistsException("User " + userID + "has already left a review for" + gameID +". Please update review instead."); };
 
         gameReviewDAO.save(gameReview);
 
@@ -67,13 +67,13 @@ public class GameReviewService implements iGameReviewService {
 
     @Override
     public void updateGameReview(GameReview gameReview) throws SQLException {
-        if (gameReviewExists(gameReview.getUserID(), gameReview.getGameID())) { throw new ResourceDoesNotExistException("Error. User " + gameReview.getUserID() + "has not left a review for" + gameReview.getGameID() + "."); };
+        if (gameReviewExists(gameReview.getUserID(), gameReview.getGameID())) { throw new ResourceDoesNotExistException("User " + gameReview.getUserID() + "has not left a review for" + gameReview.getGameID() + "."); };
         gameReviewDAO.save(gameReview);
     }
 
     @Override
     public void deleteGameReview(@Min(1) int gameReviewID) throws SQLException {
-        if (gameReviewExists(gameReviewID)) { throw new ResourceDoesNotExistException("Error. No game review with the ID of " + gameReviewID + " exists."); };
+        if (gameReviewExists(gameReviewID)) { throw new ResourceDoesNotExistException("No game review with the ID of " + gameReviewID + " exists."); };
         gameReviewDAO.delete(gameReviewID);
     }
 

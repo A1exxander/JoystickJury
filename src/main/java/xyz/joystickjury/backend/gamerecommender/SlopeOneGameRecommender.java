@@ -1,7 +1,6 @@
 package xyz.joystickjury.backend.gamerecommender;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import xyz.joystickjury.backend.exception.IllegalOperationException;
@@ -18,26 +17,26 @@ import javafx.util.Pair;
 
 
 @Component
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
 public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
 
     @Autowired
-    private GameService gameService;
+    private final GameService gameService;
     @Autowired
-    private GameReviewService gameReviewService;
+    private final GameReviewService gameReviewService;
 
     @Override
     public List<Game> recommendGames(@Min(1) int userID) throws SQLException {
 
         List<GameReview> userGameReviews = gameReviewService.getAllGameReviewsByUser(userID); // Checks if our user exists for us already
-        if (userGameReviews.isEmpty()) { throw new IllegalOperationException("Error. User must post at least 1 review before they can be recommended games"); }
+        if (userGameReviews.isEmpty()) { throw new IllegalOperationException("User must post at least 1 review before they can be recommended games"); }
 
         List<Game> allGames = gameService.getAllGames();
 
-        HashMap<Pair<Integer, Integer>, Float> avgPrefDiffs = computeAvgPrefDiffs(allGames);
-        HashMap<Game, Float> predictedPrefDiffs = predictPrefDiffs(allGames, userGameReviews, avgPrefDiffs);
+        HashMap<Pair<Integer, Integer>, Float> avgPrefDiffs = computeAvgPrefDiffs(allGames); // Computes the average preference difference between Game X and Game Y
+        HashMap<Game, Float> predictedPrefDiffs = predictPrefDiffs(allGames, userGameReviews, avgPrefDiffs); // Determines a predicted preference difference for Game X where X is a Game not rated by our user based off other games the user has expressed a preference toward
 
-        List<Game> recommendedGames = predictedPrefDiffs.entrySet()
+        List<Game> recommendedGames = predictedPrefDiffs.entrySet()  // Convert our hashmap into a list ordered by the predicated preference difference descending
                 .stream()
                 .sorted(Map.Entry.<Game, Float>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
@@ -54,11 +53,11 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
 
         for (Game currentGame : allGames) {
             for (Game otherGame : allGames){
-                if (currentGame == otherGame) { continue; }
+                if (currentGame == otherGame) { continue; } // No reason to compute the average preference difference between the same 2 games, so skip it
                 int gameOneID = currentGame.getGameID();
                 int gameTwoID = otherGame.getGameID();
                 Pair<Integer,Integer> key = new Pair<>(gameOneID, gameTwoID);
-                avgPrefDiffs.put(key, computeAvgPrefDiff(allGameReviews.get(gameOneID), allGameReviews.get(gameTwoID)));
+                avgPrefDiffs.put(key, computeAvgPrefDiff(allGameReviews.get(gameOneID), allGameReviews.get(gameTwoID))); // Compute the preference difference between two separate games
             }
         }
 

@@ -18,7 +18,7 @@ public class GameService implements iGameService {
     @Override
     public Game getGame(@Min(1) int id) throws SQLException {
         Game game = gameDAO.get(id);
-        if (game == null) { throw new ResourceDoesNotExistException("Error. A game with the gameID of " + id + " could not be found."); }
+        if (game == null) { throw new ResourceDoesNotExistException("A game with the gameID of " + id + " could not be found."); }
         return game;
     }
 
@@ -34,15 +34,15 @@ public class GameService implements iGameService {
 
     @Override
     public void updateGame(@NotNull Game updatedGame) throws SQLException {
-        if (updatedGame.getGameID() == null) { throw new IllegalArgumentException("Error. A game must have a non null GameID"); }
-        else if (!gameExists(updatedGame.getGameID())){ throw new ResourceDoesNotExistException("Error. A game with the gameID of " + updatedGame.getGameID() + " could not be found."); }
+        if (updatedGame.getGameID() == null) { throw new IllegalArgumentException("A game must have a non null GameID"); }
+        else if (!gameExists(updatedGame.getGameID())){ throw new ResourceDoesNotExistException("A game with the gameID of " + updatedGame.getGameID() + " could not be found."); }
         gameDAO.update(updatedGame);
     }
 
 
     @Override
     public void deleteGame(@Min(1) int gameID) throws SQLException {
-        if (!gameExists(gameID)){ throw new ResourceDoesNotExistException("Error. A game with the gameID of " + gameID + " could not be found."); }
+        if (!gameExists(gameID)){ throw new ResourceDoesNotExistException("A game with the gameID of " + gameID + " could not be found."); }
         gameDAO.delete(gameID);
     }
 
@@ -72,7 +72,7 @@ public class GameService implements iGameService {
     @Override
     public boolean gameIsReleased(@Min(1) int gameID) throws SQLException {
         Game game = gameDAO.get(gameID);
-        if (game == null) { throw new ResourceDoesNotExistException("Error. A game with the gameID of " + gameID + " could not be found."); }
+        if (game == null) { throw new ResourceDoesNotExistException("A game with the gameID of " + gameID + " could not be found."); }
         return game.getReleaseStatus() == ReleaseStatus.RELEASED;
     }
 
