@@ -35,7 +35,7 @@ public class GameRecommenderController {
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)){
-            throw new JWTException("Error! Invalid JWT Provided");
+            throw new JWTException("Invalid JWT Provided");
         }
 
         List<Game> recommendedGames = gameRecommenderService.getRecommendedGames(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));

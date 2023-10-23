@@ -67,7 +67,7 @@ public class JWTManager implements iJWTManager {
 
     @Override
     public String extractBearerJWT(@NotNull String rawAuthorizationToken) throws IllegalArgumentException { // Maybe consider changing this method to use strategy pattern, where every strategy is dependent on Authorization type instead of being hardcoded to Bearer
-        if (!rawAuthorizationToken.startsWith("Bearer")) { throw new IllegalArgumentException("Error. Token did not start with expected \"Bearer\" prefix."); }
+        if (!rawAuthorizationToken.startsWith("Bearer")) { throw new IllegalArgumentException("Token did not start with expected \"Bearer\" prefix."); }
         return rawAuthorizationToken.substring(7);
     }
 

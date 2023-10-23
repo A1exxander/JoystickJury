@@ -16,7 +16,7 @@ import java.util.List;
 public class GameRecommenderService implements iGameRecommenderService {
 
     @Autowired
-    private GameRecommenderStrategyFactory gameRecommenderStrategyFactory; // Use strategy pattern as we may want to recommend users popular games instead of personalized recommendations via slope one someday
+    private GameRecommenderStrategyFactory gameRecommenderStrategyFactory; // Use strategy pattern as we may want to recommend users popular games instead of personalized recommendations someday
 
     @Override
     public List<Game> getRecommendedGames(@Min(1) int userID) throws SQLException {

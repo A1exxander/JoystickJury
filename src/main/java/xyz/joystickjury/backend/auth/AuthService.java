@@ -27,7 +27,7 @@ public class AuthService implements iAuthServices{
         UserCredentials hashedUserCredentials = userCredentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
 
         if (!userCredentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)){
-            throw new InvalidCredentialsException("Invalid request. User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
+            throw new InvalidCredentialsException("User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
         }
 
         return userService.getUser(hashedUserCredentials.getUserID());
@@ -39,10 +39,10 @@ public class AuthService implements iAuthServices{
     public int register(UserCredentials rawUserCredentials, User newUser) throws SQLException {
 
         if (userCredentialsService.emailExists(rawUserCredentials.getEmail())) {
-            throw new ResourceAlreadyExistsException("Invalid request. Email address already exists");
+            throw new ResourceAlreadyExistsException("Email address already exists");
         }
         else if (userService.userExists(newUser.getDisplayName())) {
-            throw new ResourceAlreadyExistsException("Invalid request. Display name already exists");
+            throw new ResourceAlreadyExistsException("Display name already exists");
         }
 
         userService.saveUser(newUser);

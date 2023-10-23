@@ -1,19 +1,15 @@
 package xyz.joystickjury.backend.auth;
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import xyz.joystickjury.backend.exception.EmailMismatchException;
+import xyz.joystickjury.backend.exception.IllegalOperationException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 
-import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -176,7 +172,7 @@ class UserCredentialsServiceTest {
             UserCredentials userCredentials = new UserCredentials(1, "test@test.com", "password");
             UserCredentials hashedUserCredentials = new UserCredentials(1, "different@example.com", "PASSWORDDONTMATTER");
 
-            EmailMismatchException exception = assertThrows(EmailMismatchException.class, () -> {
+            IllegalOperationException exception = assertThrows(IllegalOperationException.class, () -> {
                 userCredentialsService.areValidCredentials(userCredentials, hashedUserCredentials);
             });
 
@@ -212,7 +208,7 @@ class UserCredentialsServiceTest {
     @Nested
     public class updateUserCredentialsTest{
         @Test
-        public void updateUserCredentials_ShouldUpdateCredentials_WhenValidRequest() throws SQLException, EmailMismatchException {
+        public void updateUserCredentials_ShouldUpdateCredentials_WhenValidRequest() throws SQLException, IllegalOperationException {
 
             UserCredentials hashedUserCredentials = new UserCredentials(1, "test@example.com", "$2a$12$JtK1KZvmrDL7fXAvhefKtufcV6Cb3Uf1OqkV71R50JByyQRFsVtuG");
             when(userCredentialsDAOMock.getByUserID(hashedUserCredentials.getUserID())).thenReturn(hashedUserCredentials);

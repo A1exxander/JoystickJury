@@ -22,13 +22,13 @@ public class UserService implements iUserService {
     @Override
     public User getUser(int userID) throws SQLException { // Make it take an int not Integer to make sure that this does not get called with a null argument w/o having to check
         User user = userDAO.get(userID);
-        if (user == null) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + userID + " does not exist."); }
+        if (user == null) { throw new ResourceDoesNotExistException("User ID : " + userID + " does not exist."); }
         return user;
     }
 
     @Override
     public User getUser(String displayName) throws SQLException {
-        if (!userExists(displayName)) { throw new ResourceDoesNotExistException("Invalid request. Username : " + displayName + " does not exist."); } // Do this instead of calling doesUserExist which will call the DAO twice for no real reason
+        if (!userExists(displayName)) { throw new ResourceDoesNotExistException("Username : " + displayName + " does not exist."); } // Do this instead of calling doesUserExist which will call the DAO twice for no real reason
         return userDAO.get(displayName);
     }
 
@@ -49,21 +49,21 @@ public class UserService implements iUserService {
 
     @Override
     public void updateUser(@NotNull User user, @NotNull User updatedUser) throws SQLException {
-        if (!isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("Invalid request. UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
-        else if (!userExists(user.getUserID())) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + user.getUserID() + " does not exist."); };
+        if (!isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
+        else if (!userExists(user.getUserID())) { throw new ResourceDoesNotExistException("User ID : " + user.getUserID() + " does not exist."); };
         userDAO.update(updatedUser);
     }
 
     @Override
     public void saveUser(@NotNull User user) throws SQLException {
-        if (user.getUserID() != null) { throw new IllegalArgumentException("Invalid request. User ID : " + user.getUserID() + " already exists."); }
-        else if (userExists(user.getDisplayName())) { throw new ResourceAlreadyExistsException("Invalid request. Display name is already taken."); }
+        if (user.getUserID() != null) { throw new IllegalArgumentException("User ID : " + user.getUserID() + " already exists."); }
+        else if (userExists(user.getDisplayName())) { throw new ResourceAlreadyExistsException("Display name is already taken."); }
         userDAO.save(user);
     }
 
     @Override
     public void deleteUser(int userID) throws SQLException {
-        if (!userExists(userID)) { throw new ResourceDoesNotExistException("Invalid request. User ID : " + userID + " does not exist."); }
+        if (!userExists(userID)) { throw new ResourceDoesNotExistException("User ID : " + userID + " does not exist."); }
         userDAO.delete(userID);
     }
 

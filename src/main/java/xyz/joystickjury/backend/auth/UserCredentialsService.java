@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import xyz.joystickjury.backend.exception.EmailMismatchException;
+import xyz.joystickjury.backend.exception.IllegalOperationException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
@@ -26,7 +26,7 @@ public class UserCredentialsService implements iUserCredentialsService {
         UserCredentials hashedUserCredentials = userCredentialsDAO.get(email);
 
         if (hashedUserCredentials == null) {
-            throw new ResourceDoesNotExistException("Invalid request. No user with Email : " + email + " was found");
+            throw new ResourceDoesNotExistException("No user with Email : " + email + " was found");
         }
         else {
             return hashedUserCredentials;
@@ -42,7 +42,7 @@ public class UserCredentialsService implements iUserCredentialsService {
 
     @Override
     public void saveCredentials(@NotNull UserCredentials hashedUserCredentials) throws SQLException {
-        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("Invalid request. UserID inside of UserCredentials cannot be NULL."); } // UserID inside UserCredentials can be null sometimes but not when saving
+        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("UserID inside of UserCredentials cannot be NULL."); } // UserID inside UserCredentials can be null sometimes but not when saving
         userCredentialsDAO.save(hashedUserCredentials);
     }
 
@@ -53,14 +53,14 @@ public class UserCredentialsService implements iUserCredentialsService {
 
     @Override
     public boolean areValidCredentials(@NotNull UserCredentials userCredentials, @NotNull UserCredentials hashedUserCredentials) {
-        if (!userCredentials.getEmail().equals(hashedUserCredentials.getEmail())) { throw new EmailMismatchException("Invalid request. Email in UserCredentials : " + userCredentials + "does not match email in HashedUserCredentials : " + hashedUserCredentials.getEmail()); }
+        if (!userCredentials.getEmail().equals(hashedUserCredentials.getEmail())) { throw new IllegalOperationException("Email in UserCredentials : " + userCredentials + "does not match email in HashedUserCredentials : " + hashedUserCredentials.getEmail()); }
         return (BCrypt.checkpw(userCredentials.getPassword(), hashedUserCredentials.getPassword()));
     }
 
     @Override
-    public void updateUserCredentials(@NotNull UserCredentials hashedUserCredentials) throws EmailMismatchException, SQLException {
-        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("Invalid request. UserCredentials cannot be NULL."); }
-        else if ( userCredentialsDAO.getByUserID(hashedUserCredentials.getUserID()) == null) { throw new ResourceDoesNotExistException("Invalid request. UserID does not exist."); }
+    public void updateUserCredentials(@NotNull UserCredentials hashedUserCredentials) throws IllegalOperationException, SQLException {
+        if (hashedUserCredentials.getUserID() == null) { throw new IllegalArgumentException("UserCredentials cannot be NULL."); }
+        else if ( userCredentialsDAO.getByUserID(hashedUserCredentials.getUserID()) == null) { throw new ResourceDoesNotExistException("UserID does not exist."); }
         userCredentialsDAO.update(hashedUserCredentials);
     }
 

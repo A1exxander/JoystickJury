@@ -56,7 +56,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid Request. Invalid JWT Provided");
+            throw new JwtException("Invalid JWT Provided");
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
@@ -72,18 +72,18 @@ public class UserController implements iUserController { // TODO: Add endpoints 
         User updatedUser = userMapper.dtoToEntity(updatedUserDTO);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid Request. Invalid JWT Provided");
+            throw new JwtException("Invalid JWT Provided");
         }
 
         Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
         User currentUser = userService.getUser(currentUserID);
 
         if (!userService.isSameUser(currentUser, updatedUser)) { // Do not update the user if they change read-only data
-            throw new UnauthorizedOperationException("Invalid update request. You cannot modify read-only data");
+            throw new UnauthorizedOperationException("You cannot modify read-only data");
         }
 
         userService.updateUser(currentUser, updatedUser);
-        return ResponseEntity.noContent().build(); // Used w ResponseEntity<void> controller methods to indicate a 200 Response Type with no body
+        return ResponseEntity.noContent().build(); // Used w ResponseEntity<void> controller methods to indicate a 204 Response Type with no body
 
     }
 
@@ -94,7 +94,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid Request. Invalid JWT Provided");
+            throw new JwtException("Invalid JWT Provided");
         }
 
         userService.deleteUser(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));

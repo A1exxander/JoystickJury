@@ -12,9 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -34,7 +32,6 @@ public class GameController implements iGameController {
 
         List<GameDTO> gamesDTO = games.stream().map(game -> gameMapper.entityToDTO(game)).collect(Collectors.toList());
         if (limit != null && limit < gamesDTO.size()) { gamesDTO = gamesDTO.subList(0, limit); }
-
         return ResponseEntity.ok(gamesDTO);
 
     }
@@ -85,10 +82,10 @@ public class GameController implements iGameController {
         Game newGame = gameMapper.dtoToEntity(newGameDTO);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid request. Invalid JWT provided");
+            throw new JwtException("Invalid JWT provided");
         }
-        else if (jwtManager.decodeJWT(jwt).getString("role") != "ADMIN") {
-            throw new UnauthorizedOperationException("Invalid request. Account must have admin level permissions to save a new game");
+        else if (!jwtManager.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")) {
+            throw new UnauthorizedOperationException("Account must have admin level permissions to save a new game");
         }
 
         gameService.saveGame(newGame);
@@ -104,10 +101,10 @@ public class GameController implements iGameController {
         Game updatedGame = gameMapper.dtoToEntity(updatedGameDTO);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid request. Invalid JWT provided");
+            throw new JwtException("Invalid JWT provided");
         }
-        else if (jwtManager.decodeJWT(jwt).getString("role") != "ADMIN") {
-            throw new UnauthorizedOperationException("Invalid request. Account must have admin level permissions to save a new game");
+        else if (!jwtManager.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")) {
+            throw new UnauthorizedOperationException("Account must have admin level permissions to save a new game");
         }
 
         gameService.updateGame(updatedGame);
@@ -122,10 +119,10 @@ public class GameController implements iGameController {
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
         if (!jwtManager.isValidJWT(jwt)) {
-            throw new JwtException("Invalid request. Invalid JWT provided");
+            throw new JwtException("Invalid JWT provided");
         }
-        else if (jwtManager.decodeJWT(jwt).getString("role") != "ADMIN") {
-            throw new UnauthorizedOperationException("Invalid request. Account must have admin level permissions to save a new game");
+        else if (!jwtManager.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")) {
+            throw new UnauthorizedOperationException("Account must have admin level permissions to save a new game");
         }
 
         gameService.deleteGame(gameID);
