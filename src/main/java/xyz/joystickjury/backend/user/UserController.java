@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/v1/api/users")
 @AllArgsConstructor
 public class UserController implements iUserController { // TODO: Add endpoints to delete or update ANY user as an admin
 
