@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/v1/api/games")
+@RequestMapping("/api/v1/games")
 @AllArgsConstructor
 public class GameController implements iGameController {
 

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 
 @RestController
-@RequestMapping("/v1/api/user")
+@RequestMapping("/api/v1/user")
 public interface iAuthController {
 
     @PostMapping("/token")

@@ -73,7 +73,7 @@ public class GameReviewService implements iGameReviewService {
 
     @Override
     public void deleteGameReview(@Min(1) int gameReviewID) throws SQLException {
-        if (gameReviewExists(gameReviewID)) { throw new ResourceDoesNotExistException("No game review with the ID of " + gameReviewID + " exists."); };
+        if (!gameReviewExists(gameReviewID)) { throw new ResourceDoesNotExistException("No game review with the ID of " + gameReviewID + " exists."); };
         gameReviewDAO.delete(gameReviewID);
     }
 

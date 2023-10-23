@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@RequestMapping("/v1/api/users")
+@RequestMapping("/api/v1/users")
 @RestController
 public interface iUserController {
 

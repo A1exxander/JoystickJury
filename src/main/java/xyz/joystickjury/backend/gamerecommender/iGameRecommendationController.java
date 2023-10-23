@@ -10,7 +10,7 @@ import javax.validation.constraints.Null;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/api/games/recommended")
+@RequestMapping("/api/v1/games/recommended")
 public interface iGameRecommendationController {
     @GetMapping()
     public ResponseEntity<List<GameDTO>> getRecommendedGames(@RequestHeader String Authorization, @Null Integer limit);

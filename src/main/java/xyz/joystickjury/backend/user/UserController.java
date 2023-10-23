@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/v1/api/users")
+@RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserController implements iUserController { // TODO: Add endpoints to delete or update ANY user as an admin
 
@@ -54,7 +54,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
 
     @Override
     @SneakyThrows
-    @GetMapping("/current") // /user will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
+    @GetMapping("/current") // /users will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
     public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);

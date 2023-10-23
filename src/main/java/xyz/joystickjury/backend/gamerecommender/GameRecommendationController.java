@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/v1/games/recommended")
+@RequestMapping("/api/v1/games/recommended")
 @AllArgsConstructor
 public class GameRecommendationController implements iGameRecommendationController{
 
