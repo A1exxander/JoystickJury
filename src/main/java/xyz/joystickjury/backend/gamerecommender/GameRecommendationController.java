@@ -10,7 +10,6 @@ import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.game.GameDTO;
 import xyz.joystickjury.backend.game.GameMapper;
 import xyz.joystickjury.backend.token.JWTManager;
-
 import javax.validation.constraints.Null;
 import java.sql.SQLException;
 import java.util.List;
