@@ -22,7 +22,7 @@ public class GameDAO implements iGameDAO {
     @Override
     public Game get(Integer id) throws SQLException {
 
-        final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID WHERE G.GameID = ?";
+        final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.GameID = ? GROUP BY G.GameID";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet result = preparedStatement.executeQuery();

@@ -1,9 +1,7 @@
 package xyz.joystickjury.backend.gamereview;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.exception.IllegalOperationException;
 import xyz.joystickjury.backend.exception.ResourceAlreadyExistsException;
@@ -56,7 +54,7 @@ public class GameReviewService implements iGameReviewService {
         int gameID = gameReview.getGameID();
         int userID = gameReview.getUserID();
 
-        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game review with the ID of : " + gameReview.getGameID() + "does not exist." ); }
+        if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game with the ID of : " + gameReview.getGameID() + "does not exist." ); }
         else if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("User with the ID of : " + gameReview.getGameID() + "does not exist." ); }
         else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Game must be released in order to post a review"); }
         else if (gameReviewExists(userID, gameID)) { throw new ResourceAlreadyExistsException("User " + userID + "has already left a review for" + gameID +". Please update review instead."); };
@@ -78,7 +76,14 @@ public class GameReviewService implements iGameReviewService {
     }
 
     @Override
-    public boolean gameReviewExists(@Min(1) int userID, @Min(1) int gameID) throws SQLException { // Not ideal but W/E - We should instead call a DAO method that checks a
+    public void deleteGameReview(@Min(1) int userID, @Min(1) int gameReviewID) throws SQLException { // Useful to make sure that user only deletes their own reviews
+        GameReview gameReview = getGameReview(gameReviewID);
+        if (gameReview != null && gameReview.getUserID() != userID) { throw new ResourceDoesNotExistException("No game review with the ID of " + gameReviewID + " left by user " + userID + " exists."); };
+        gameReviewDAO.delete(gameReviewID);
+    }
+
+    @Override
+    public boolean gameReviewExists(@Min(1) int userID, @Min(1) int gameID) throws SQLException {
         return gameReviewDAO.get(userID, gameID) != null;
     }
 

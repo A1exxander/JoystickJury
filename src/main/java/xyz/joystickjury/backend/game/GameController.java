@@ -76,9 +76,7 @@ public class GameController implements iGameController {
     @SneakyThrows
     @GetMapping("/{gameID}")
     public ResponseEntity<GameDTO> getSpecificGame(@PathVariable @Min(1) int gameID) throws SQLException {
-
         return ResponseEntity.ok(gameMapper.entityToDTO(gameService.getGame(gameID)));
-
     }
 
     @Override

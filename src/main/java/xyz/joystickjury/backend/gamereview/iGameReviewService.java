@@ -15,5 +15,6 @@ public interface iGameReviewService {
     public void updateGameReview(GameReview gameReview) throws SQLException;
     public void deleteGameReview(@Min(1) int gameReviewID) throws SQLException;
     public boolean gameReviewExists(@Min(1) int gameReviewID) throws SQLException;
+    public void deleteGameReview(@Min(1) int userID, @Min(1) int gameReviewID) throws SQLException;
     public boolean gameReviewExists(@Min(1) int userID, int gameID) throws SQLException;
 }
