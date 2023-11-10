@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<String> handleSQLException(SQLException ex) {
         logger.error("SQLException: " + ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Internal server error! " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Internal server error! Please try again later"); // Don't leak internal details
     }
 
     @ExceptionHandler(JWTException.class)

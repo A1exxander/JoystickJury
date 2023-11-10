@@ -41,7 +41,7 @@ public class GameDAO implements iGameDAO {
                 releaseStatus = ReleaseStatus.RELEASED;
             }
 
-            if (releaseStatus == ReleaseStatus.RELEASED && result.getFloat("AverageReviewScore") == 0.0f){
+            if (releaseStatus == ReleaseStatus.RELEASED && result.getFloat("AverageReviewScore") != 0.0f){
                 averageGameScore = result.getFloat("AverageReviewScore");
             }
 
@@ -68,6 +68,60 @@ public class GameDAO implements iGameDAO {
     }
 
     @Override
+    public Game get(String gameTitle) throws SQLException {
+
+        final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.GameTitle = ? GROUP BY G.GameID";
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
+        preparedStatement.setString(1, gameTitle);
+        ResultSet result = preparedStatement.executeQuery();
+
+        if (result.next()) {
+
+            Date currentDate = new Date();
+            Date releaseDate = result.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
+            HashSet<String> gameGenres = null;
+
+            if (result.getDate("ReleaseDate") == null || currentDate.before(result.getDate("ReleaseDate"))){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            }
+            else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            if (releaseStatus == ReleaseStatus.RELEASED && result.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = result.getFloat("AverageReviewScore");
+            }
+
+            if (result.getString("GameGenres") != null){
+                gameGenres = new HashSet<String>(List.of(result.getString("GameGenres").split(",")));
+            }
+
+            return new Game(
+                    result.getInt("GameID"),
+                    result.getString("GameTitle"),
+                    result.getString("GameDescription"),
+                    result.getString("GameCoverArtLink"),
+                    result.getString("GameBannerArtLink"),
+                    result.getString("GameTrailerLink"),
+                    result.getString("DeveloperName"),
+                    result.getString("PublisherName"),
+                    gameGenres,
+                    releaseStatus,
+                    releaseDate,
+                    averageGameScore
+            );
+
+        }
+        else {
+            return null;
+        }
+
+
+    }
+
+    @Override
     public List<Game> getAll() throws SQLException {
 
         final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID;";
@@ -82,6 +136,7 @@ public class GameDAO implements iGameDAO {
             Date releaseDate = results.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
             Float averageGameScore = null;
+            HashSet<String> gameGenres = null;
 
             if (results.getDate("ReleaseDate") == null || currentDate.before(results.getDate("ReleaseDate"))){
                 releaseStatus = ReleaseStatus.UNRELEASED;
@@ -94,6 +149,10 @@ public class GameDAO implements iGameDAO {
                 averageGameScore = results.getFloat("AverageReviewScore");
             }
 
+            if (results.getString("GameGenres") != null){
+                gameGenres = new HashSet<String>(List.of(results.getString("GameGenres").split(",")));
+            }
+
             games.add(new Game(
                     results.getInt("GameID"),
                     results.getString("GameTitle"),
@@ -103,7 +162,7 @@ public class GameDAO implements iGameDAO {
                     results.getString("GameTrailerLink"),
                     results.getString("DeveloperName"),
                     results.getString("PublisherName"),
-                    new HashSet<String>(List.of(results.getString("GameGenres").split(","))),
+                    gameGenres,
                     releaseStatus,
                     releaseDate,
                     results.getFloat("AverageReviewScore"))
@@ -129,7 +188,7 @@ public class GameDAO implements iGameDAO {
         gameStatement.setString(4, game.getGameBannerArtLink());
         gameStatement.setString(5, game.getDeveloperName());
         gameStatement.setString(6, game.getPublisherName());
-        gameStatement.setDate(7, (java.sql.Date)game.getReleaseDate());
+        gameStatement.setDate(7, new java.sql.Date(game.getReleaseDate().getTime()));
 
         for (String genre : game.getGameGenres()) {
             genreStatement.setInt(1, game.getGameID());
