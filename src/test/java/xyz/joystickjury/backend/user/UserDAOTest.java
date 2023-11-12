@@ -9,18 +9,18 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it. Better to just integration test - ONLY RUN TESTS IN TESTING ENVIRONMENT
+class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it. Better to just integration test - ONLY RUN TESTS IN DEV ENVIRONMENT
 
-    private static UserDAO mockedUserDAO;
+    private static UserDAO userDAO;
 
     @BeforeAll
     public static void setUp() throws SQLException {
-        mockedUserDAO = new UserDAO(DatabaseConnectionManager.getConnection());
+        userDAO = new UserDAO(DatabaseConnectionManager.getConnection());
     }
 
     @AfterAll
     public static void tearDown() {
-        mockedUserDAO = null;
+        userDAO = null;
     }
 
     @Nested
@@ -28,12 +28,12 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         public void should_GetCorrectUser_When_RequestingExistingUser() throws SQLException {
-            User user = mockedUserDAO.get(1);
+            User user = userDAO.get(1);
             assertEquals("raposoalexander", user.getDisplayName());
         }
         @Test
         public void should_ReturnNull_When_RequestingNonExistentUser() throws SQLException {
-            assertNull(mockedUserDAO.get(-1));
+            assertNull(userDAO.get(-1));
         }
 
     };
@@ -43,7 +43,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         public void should_GetAll_When_Called() throws SQLException {
-            assertTrue(mockedUserDAO.getAll().size() >= 1); // We will always have our UID # 1 account in our DB, so if we are returning a list greater than 1, it is valid
+            assertTrue(userDAO.getAll().size() >= 1); // We will always have our UID # 1 account in our DB, so if we are returning a list greater than 1, it is valid
         }
 
     };
@@ -53,11 +53,11 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
         @Test
         public void should_ReturnUID1_When_ReceivingRaposoAlexanderEmail() throws SQLException {
-            assertEquals(1, mockedUserDAO.get("raposoalexander").getUserID());
+            assertEquals(1, userDAO.get("raposoalexander").getUserID());
         }
         @Test
         public void should_ReturnNull_When_ReceivingNonExistentEmailAddress() throws SQLException {
-            assertNull(mockedUserDAO.get("L"));
+            assertNull(userDAO.get("L"));
         }
 
     };
@@ -70,12 +70,12 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
             try {
                 User newUser = new User(null, "test", null, null, new Date(), AcccountType.ADMIN);
-                mockedUserDAO.save(newUser);
+                userDAO.save(newUser);
             } catch (SQLIntegrityConstraintViolationException e){
                 System.err.println("Test user already exists. Skipping creation...");
             }
 
-            assertNotNull(mockedUserDAO.get("test"));
+            assertNotNull(userDAO.get("test"));
 
         }
         @Test
@@ -83,7 +83,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
 
             User newUser = new User(null, "test", null, null, new Date(), AcccountType.ADMIN);
             assertThrows(SQLIntegrityConstraintViolationException.class, () -> {
-                mockedUserDAO.save(newUser);
+                userDAO.save(newUser);
             });
 
         }
@@ -96,9 +96,9 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         @Test
         public void should_DeleteUser_When_DeletingExistingUser() throws SQLException {
 
-            User testUser = mockedUserDAO.get("test");
-            mockedUserDAO.delete(testUser.getUserID());
-            assertNull(mockedUserDAO.get(testUser.getUserID()));
+            User testUser = userDAO.get("test");
+            userDAO.delete(testUser.getUserID());
+            assertNull(userDAO.get(testUser.getUserID()));
 
         }
 
@@ -106,7 +106,7 @@ class UserDAOTest { // Unit testing DAOs not using a JPA is not really worth it.
         public void should_ThrowException_When_DeletingNonExistentUser() {
 
             assertThrows(NullPointerException.class, () -> {
-                mockedUserDAO.delete(null);
+                userDAO.delete(null);
             });
 
         }
