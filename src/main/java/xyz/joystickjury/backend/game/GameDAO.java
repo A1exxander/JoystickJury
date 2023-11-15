@@ -234,7 +234,7 @@ public class GameDAO implements iGameDAO {
     @Override
     public List<Game> getTrending() throws SQLException {
 
-        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore, SUM(CASE WHEN GR.ReviewPostDate >= CURDATE() - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS ReviewsThisMonth FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <= CURDATE() AND G.GameBannerArtLink LIKE \"https://images.gog-statics.com%\" GROUP BY G.GameID ORDER BY ReleaseDate DESC LIMIT 10";
+        final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore, SUM(CASE WHEN GR.ReviewPostDate >= CURDATE() - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS ReviewsThisMonth FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <= CURDATE() AND G.GameID != 1 AND G.GameBannerArtLink LIKE \"https://images.gog-statics.com%\" GROUP BY G.GameID ORDER BY ReleaseDate DESC LIMIT 10";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
         List<Game> games = new ArrayList<>();
         ResultSet results = statement.executeQuery();

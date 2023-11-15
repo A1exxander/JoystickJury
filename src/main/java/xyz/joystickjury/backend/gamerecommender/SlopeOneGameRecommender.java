@@ -13,8 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-import javafx.util.Pair;
-
+import org.apache.commons.lang3.tuple.Pair;
 
 @Component
 @AllArgsConstructor
@@ -56,7 +55,7 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
                 if (currentGame == otherGame) { continue; } // No reason to compute the average preference difference between the same 2 games, so skip it
                 int gameOneID = currentGame.getGameID();
                 int gameTwoID = otherGame.getGameID();
-                Pair<Integer,Integer> key = new Pair<>(gameOneID, gameTwoID);
+                Pair<Integer, Integer> key = Pair.of(gameOneID, gameTwoID);
                 avgPrefDiffs.put(key, computeAvgPrefDiff(allGameReviews.get(gameOneID), allGameReviews.get(gameTwoID))); // Compute the preference difference between two separate games
             }
         }
@@ -110,8 +109,8 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
         int totalAvgPrefDiffsCount = 0;
 
         for (GameReview currentGameReview : userGameReviews) {
-
-            Float avgPreferenceDiff = avgPreferenceDiffs.get(new Pair<>(currentGameID, currentGameReview.getGameID()));
+            Pair<Integer, Integer> key = Pair.of(currentGameID, currentGameReview.getGameID());
+            Float avgPreferenceDiff = avgPreferenceDiffs.get(key);
             if (avgPreferenceDiff != null) {
                 totalAvgPrefDiffs += avgPreferenceDiff;
                 ++totalAvgPrefDiffsCount;
