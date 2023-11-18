@@ -5,28 +5,61 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
 import xyz.joystickjury.backend.token.JWTManager;
+
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/v1/api/games/reviews")
 @AllArgsConstructor
+@RequestMapping("/v1/api/games/reviews")
 public class GameReviewController implements iGameReviewController {
 
     @Autowired
     private final JWTManager jwtManager;
     @Autowired
     private final GameReviewService gameReviewService;
+    @Autowired
+    private final GameReviewMapper gameReviewMapper;
 
     @Override
     @SneakyThrows
-    @DeleteMapping
-    public ResponseEntity<Void> deleteGameReview(@RequestHeader String Authorization, @Min(1) int gameID){
+    @GetMapping("/v1/api/games/{gameID}/reviews/{gameReviewID}")
+    public ResponseEntity<GameReviewDTO> getGameReview(@PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID) {
+        return ResponseEntity.ok(gameReviewMapper.entityToDTO(gameReviewService.getGameReview(gameReviewID)));
+    }
+
+    @Override
+    @SneakyThrows
+    @GetMapping("/v1/api/games/{gameID}/reviews")
+    public ResponseEntity<List<GameReviewDTO>> getAllGameReviewsByGameID(@Null Integer limit, @PathVariable int gameID) {
+        List<GameReview> gameReviews = gameReviewService.getAllGameReviewsByGame(gameID);
+        List<GameReviewDTO> gameReviewDTOs = gameReviews.stream().map(game -> gameReviewMapper.entityToDTO(game)).collect(Collectors.toList());
+        if (limit != null && limit < gameReviewDTOs.size()) { gameReviewDTOs = gameReviewDTOs.subList(0, limit); }
+        return ResponseEntity.ok(gameReviewDTOs);
+    }
+
+    @Override
+    @SneakyThrows
+    @GetMapping
+    public ResponseEntity<List<GameReviewDTO>> getAllGameReviewsByUserID(@Null Integer limit, @Min(1) int userID) {
+        List<GameReview> gameReviews = gameReviewService.getAllGameReviewsByUser(userID);
+        List<GameReviewDTO> gameReviewDTOs = gameReviews.stream().map(game -> gameReviewMapper.entityToDTO(game)).collect(Collectors.toList());
+        if (limit != null && limit < gameReviewDTOs.size()) { gameReviewDTOs = gameReviewDTOs.subList(0, limit); }
+        return ResponseEntity.ok(gameReviewDTOs);
+    }
+
+    @Override
+    @SneakyThrows
+    @DeleteMapping("/v1/api/games/{gameID}/reviews/{gameReviewID}")
+    public ResponseEntity<Void> deleteGameReview(@RequestHeader String Authorization, @PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID){
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 
@@ -34,7 +67,46 @@ public class GameReviewController implements iGameReviewController {
             throw new JWTException("Invalid JWT provided.");
         }
 
-        gameReviewService.deleteGameReview(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
+        Integer userID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
+        Integer gameReviewUserID = gameReviewService.getGameReview(gameReviewID).getUserID();
+
+        if (userID != gameReviewUserID && !jwtManager.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
+            throw new UnauthorizedOperationException("You cannot delete the another user's reviews.");
+        }
+
+        gameReviewService.deleteGameReview(gameReviewID);
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @Override
+    @SneakyThrows
+    @PostMapping
+    public ResponseEntity<Void> postGameReview(@RequestHeader String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO) {
+
+        String jwt = jwtManager.extractBearerJWT(Authorization);
+
+        if (!jwtManager.isValidJWT(jwt)) {
+            throw new JWTException("Invalid JWT provided.");
+        }
+
+        gameReviewService.saveGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @Override
+    @SneakyThrows
+    @PutMapping
+    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO) {
+
+        String jwt = jwtManager.extractBearerJWT(Authorization);
+
+        if (!jwtManager.isValidJWT(jwt)) {
+            throw new JWTException("Invalid JWT provided.");
+        }
+
+        gameReviewService.updateGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
         return ResponseEntity.noContent().build();
 
     }
