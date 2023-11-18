@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
 import xyz.joystickjury.backend.token.JWTManager;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1/api/games/reviews")
 public class GameReviewController implements iGameReviewController {
 
     @Autowired
@@ -31,14 +29,14 @@ public class GameReviewController implements iGameReviewController {
 
     @Override
     @SneakyThrows
-    @GetMapping("/v1/api/games/{gameID}/reviews/{gameReviewID}")
+    @GetMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
     public ResponseEntity<GameReviewDTO> getGameReview(@PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID) {
         return ResponseEntity.ok(gameReviewMapper.entityToDTO(gameReviewService.getGameReview(gameReviewID)));
     }
 
     @Override
     @SneakyThrows
-    @GetMapping("/v1/api/games/{gameID}/reviews")
+    @GetMapping("/api/v1/games/{gameID}/reviews")
     public ResponseEntity<List<GameReviewDTO>> getAllGameReviewsByGameID(@Null Integer limit, @PathVariable int gameID) {
         List<GameReview> gameReviews = gameReviewService.getAllGameReviewsByGame(gameID);
         List<GameReviewDTO> gameReviewDTOs = gameReviews.stream().map(game -> gameReviewMapper.entityToDTO(game)).collect(Collectors.toList());
@@ -48,7 +46,7 @@ public class GameReviewController implements iGameReviewController {
 
     @Override
     @SneakyThrows
-    @GetMapping
+    @GetMapping("/api/v1/games/reviews")
     public ResponseEntity<List<GameReviewDTO>> getAllGameReviewsByUserID(@Null Integer limit, @Min(1) int userID) {
         List<GameReview> gameReviews = gameReviewService.getAllGameReviewsByUser(userID);
         List<GameReviewDTO> gameReviewDTOs = gameReviews.stream().map(game -> gameReviewMapper.entityToDTO(game)).collect(Collectors.toList());
@@ -58,7 +56,7 @@ public class GameReviewController implements iGameReviewController {
 
     @Override
     @SneakyThrows
-    @DeleteMapping("/v1/api/games/{gameID}/reviews/{gameReviewID}")
+    @DeleteMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
     public ResponseEntity<Void> deleteGameReview(@RequestHeader String Authorization, @PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID){
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
@@ -81,7 +79,7 @@ public class GameReviewController implements iGameReviewController {
 
     @Override
     @SneakyThrows
-    @PostMapping
+    @PostMapping("/api/v1/games/reviews")
     public ResponseEntity<Void> postGameReview(@RequestHeader String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
@@ -97,8 +95,8 @@ public class GameReviewController implements iGameReviewController {
 
     @Override
     @SneakyThrows
-    @PutMapping
-    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO) {
+    @PutMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
+    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO, @PathVariable @Min(1) int gameID,  @PathVariable @Min(1) int userID) {
 
         String jwt = jwtManager.extractBearerJWT(Authorization);
 

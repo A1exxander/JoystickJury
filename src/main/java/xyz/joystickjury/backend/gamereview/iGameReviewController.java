@@ -22,7 +22,6 @@ public interface iGameReviewController {
     public ResponseEntity<Void> deleteGameReview(@RequestHeader String Authorization, @PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID);
     @DeleteMapping("/v1/api/games/reviews/")
     public ResponseEntity<Void> postGameReview(@RequestHeader String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO);
-    @PutMapping("/v1/api/games/reviews/")
-    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO);
-
+    @PutMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
+    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO, @PathVariable @Min(1) int gameID, @PathVariable @Min(1) int userID);
 }
