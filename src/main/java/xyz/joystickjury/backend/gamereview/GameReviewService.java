@@ -3,7 +3,7 @@ package xyz.joystickjury.backend.gamereview;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.joystickjury.backend.exception.IllegalOperationException;
+import xyz.joystickjury.backend.exception.IllegalRequestException;
 import xyz.joystickjury.backend.exception.ResourceAlreadyExistsException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 import xyz.joystickjury.backend.game.GameService;
@@ -51,7 +51,7 @@ public class GameReviewService implements iGameReviewService {
     @Override
     public List<GameReview> getAllGameReviewsByGame(@Min(1) int gameID) throws SQLException {
         if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game with the ID of : " + gameID + "does not exist." ); }
-        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Game must be released in order to have reviews"); }
+        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalRequestException("Game must be released in order to have reviews"); }
         return gameReviewDAO.getAllByGameID(gameID);
     }
 
@@ -63,7 +63,7 @@ public class GameReviewService implements iGameReviewService {
 
         if (!gameService.gameExists(gameID)) { throw new ResourceDoesNotExistException("Game with the ID of : " + gameReview.getGameID() + "does not exist." ); }
         else if (!userService.userExists(userID)) { throw new ResourceDoesNotExistException("User with the ID of : " + gameReview.getGameID() + "does not exist." ); }
-        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalOperationException("Game must be released in order to post a review"); }
+        else if (!gameService.gameIsReleased(gameID)) { throw new IllegalRequestException("Game must be released in order to post a review"); }
         else if (gameReviewExists(userID, gameID)) { throw new ResourceAlreadyExistsException("User " + userID + "has already left a review for" + gameID +". Please update review instead."); };
 
         gameReviewDAO.save(gameReview);

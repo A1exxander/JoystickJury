@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import xyz.joystickjury.backend.user.User;
 
 @Component
-public interface iJWTManager { // Consider setting up a cache
+public interface iJWTProvider { // Consider setting up a cache
 
     public String generateJWT(User user);
     public void invalidateJWT(String jwt);

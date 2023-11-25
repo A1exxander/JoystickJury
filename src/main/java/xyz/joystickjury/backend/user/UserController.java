@@ -6,11 +6,10 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
-import xyz.joystickjury.backend.token.JWTManager;
+import xyz.joystickjury.backend.exception.UnauthorizedRequestException;
+import xyz.joystickjury.backend.token.JWTProvider;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     @Autowired
     private final UserService userService;
     @Autowired
-    private final JWTManager jwtManager;
+    private final JWTProvider jwtProvider;
     @Autowired
     private final UserMapper userMapper;
 
@@ -57,13 +56,13 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     @GetMapping("/current") // /users will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
     public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) {
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JwtException("Invalid JWT Provided");
         }
 
-        Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
+        Integer currentUserID = Integer.valueOf(jwtProvider.decodeJWT(jwt).subject);
         return ResponseEntity.ok(userMapper.entityToDTO(userService.getUser(currentUserID)));
 
     }
@@ -73,18 +72,18 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     @PutMapping
     public ResponseEntity<Void> updateCurrentUser(@RequestHeader String Authorization, @RequestBody @Valid UserDTO updatedUserDTO) { // Determine what happens with a null body
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
         User updatedUser = userMapper.dtoToEntity(updatedUserDTO);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JwtException("Invalid JWT Provided");
         }
 
-        Integer currentUserID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
+        Integer currentUserID = Integer.valueOf(jwtProvider.decodeJWT(jwt).subject);
         User currentUser = userService.getUser(currentUserID);
 
         if (!userService.isSameUser(currentUser, updatedUser)) { // Do not update the user if they change read-only data
-            throw new UnauthorizedOperationException("You cannot modify read-only data");
+            throw new UnauthorizedRequestException("You cannot modify read-only data");
         }
 
         userService.updateUser(currentUser, updatedUser);
@@ -97,14 +96,14 @@ public class UserController implements iUserController { // TODO: Add endpoints 
     @DeleteMapping
     public ResponseEntity<Void> deleteCurrentUser(@RequestHeader String Authorization) {
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JwtException("Invalid JWT Provided");
         }
 
-        userService.deleteUser(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
-        jwtManager.invalidateJWT(jwt);
+        userService.deleteUser(Integer.valueOf(jwtProvider.decodeJWT(jwt).subject));
+        jwtProvider.invalidateJWT(jwt);
 
         return ResponseEntity.noContent().build();
 

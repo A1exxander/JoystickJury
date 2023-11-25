@@ -6,8 +6,8 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
-import xyz.joystickjury.backend.token.JWTManager;
+import xyz.joystickjury.backend.exception.UnauthorizedRequestException;
+import xyz.joystickjury.backend.token.JWTProvider;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class GameReviewController implements iGameReviewController {
 
     @Autowired
-    private final JWTManager jwtManager;
+    private final JWTProvider jwtProvider;
     @Autowired
     private final GameReviewService gameReviewService;
     @Autowired
@@ -59,17 +59,17 @@ public class GameReviewController implements iGameReviewController {
     @DeleteMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
     public ResponseEntity<Void> deleteGameReview(@RequestHeader String Authorization, @PathVariable @Min(1) int gameID, @PathVariable @Min(1) int gameReviewID){
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JWTException("Invalid JWT provided.");
         }
 
-        Integer userID = Integer.valueOf(jwtManager.decodeJWT(jwt).subject);
+        Integer userID = Integer.valueOf(jwtProvider.decodeJWT(jwt).subject);
         Integer gameReviewUserID = gameReviewService.getGameReview(gameReviewID).getUserID();
 
-        if (userID != gameReviewUserID && !jwtManager.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
-            throw new UnauthorizedOperationException("You cannot delete the another user's reviews.");
+        if (userID != gameReviewUserID && !jwtProvider.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
+            throw new UnauthorizedRequestException("You cannot delete the another user's reviews.");
         }
 
         gameReviewService.deleteGameReview(gameReviewID);
@@ -82,9 +82,9 @@ public class GameReviewController implements iGameReviewController {
     @PostMapping("/api/v1/games/reviews")
     public ResponseEntity<Void> postGameReview(@RequestHeader String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO) {
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JWTException("Invalid JWT provided.");
         }
 
@@ -98,9 +98,9 @@ public class GameReviewController implements iGameReviewController {
     @PutMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
     public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO, @PathVariable @Min(1) int gameID,  @PathVariable @Min(1) int userID) {
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)) {
+        if (!jwtProvider.isValidJWT(jwt)) {
             throw new JWTException("Invalid JWT provided.");
         }
 

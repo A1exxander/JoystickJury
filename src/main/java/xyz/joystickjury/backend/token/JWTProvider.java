@@ -6,11 +6,9 @@ import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.user.User;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -20,7 +18,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class JWTManager implements iJWTManager {
+public class JWTProvider implements iJWTProvider {
 
     private final String secretKey = System.getenv("joystick-jury-secret-key");
     private final long tokenLifespanHours = 120;

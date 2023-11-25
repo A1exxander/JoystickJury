@@ -1,4 +1,4 @@
-package xyz.joystickjury.backend.exception;
+package xyz.joystickjury.backend.exceptionhandler;
 
 import io.fusionauth.jwt.JWTException;
 import org.apache.log4j.Level;
@@ -7,18 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.joystickjury.backend.exception.*;
+
 import java.sql.SQLException;
 
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class RestControllerExceptionHandler {
 
-    private static final Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = Logger.getLogger(RestControllerExceptionHandler.class);
 
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<String> handleSQLException(SQLException ex) {
         logger.log(Level.FATAL, "SQLException: " + ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Internal server error! Please try again later"); // Don't leak internal details
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Internal server error! Please try again later"); // Don't leak internals
     }
 
     @ExceptionHandler(JWTException.class)
@@ -33,15 +35,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid request! " + ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalOperationException.class)
-    public ResponseEntity<String> handleIllegalOperationException(IllegalOperationException ex) {
-        logger.log(Level.ERROR,"IllegalOperationException: " + ex.getMessage(), ex);
+    @ExceptionHandler(IllegalRequestException.class)
+    public ResponseEntity<String> handleIllegalOperationException(IllegalRequestException ex) {
+        logger.log(Level.ERROR,"IllegalRequestException: " + ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid request! " + ex.getMessage());
     }
 
-    @ExceptionHandler(UnauthorizedOperationException.class)
-    public ResponseEntity<String> handleUnauthorizedOperationException(UnauthorizedOperationException ex) {
-        logger.log(Level.ERROR,"UnauthorizedOperationException: " + ex.getMessage(), ex);
+    @ExceptionHandler(UnauthorizedRequestException.class)
+    public ResponseEntity<String> handleUnauthorizedOperationException(UnauthorizedRequestException ex) {
+        logger.log(Level.ERROR,"UnauthorizedRequestException: " + ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid request! " + ex.getMessage());
     }
 

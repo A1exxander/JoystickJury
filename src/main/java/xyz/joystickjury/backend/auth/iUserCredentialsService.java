@@ -1,7 +1,7 @@
 package xyz.joystickjury.backend.auth;
 
 import org.springframework.stereotype.Service;
-import xyz.joystickjury.backend.exception.IllegalOperationException;
+import xyz.joystickjury.backend.exception.IllegalRequestException;
 
 import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
@@ -15,6 +15,6 @@ public interface iUserCredentialsService {
     public void saveCredentials(@NotNull UserCredentials hashedUserCredentials) throws SQLException;
     public boolean emailExists(String email) throws SQLException;
     public boolean areValidCredentials(@NotNull UserCredentials userCredentials, @NotNull UserCredentials hashedUserCredentials);
-    public void updateUserCredentials(@NotNull UserCredentials hashedUserCredentials) throws IllegalOperationException, SQLException;
+    public void updateUserCredentials(@NotNull UserCredentials hashedUserCredentials) throws IllegalRequestException, SQLException;
 
 }

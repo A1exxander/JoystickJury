@@ -5,11 +5,10 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.joystickjury.backend.token.JWTManager;
+import xyz.joystickjury.backend.token.JWTProvider;
 import xyz.joystickjury.backend.user.User;
 import xyz.joystickjury.backend.user.UserMapper;
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.Date;
 
 
@@ -19,7 +18,7 @@ import java.util.Date;
 public class AuthController implements iAuthController{
 
     @Autowired
-    private final JWTManager jwtManager;
+    private final JWTProvider jwtProvider;
     @Autowired
     private final UserMapper userMapper;
     @Autowired
@@ -34,7 +33,7 @@ public class AuthController implements iAuthController{
 
         UserCredentials rawUserCredentials = userCredentialsMapper.dtoToEntity(userCredentialsDTO);
         User authenticatedUser = authService.login(rawUserCredentials);
-        return ResponseEntity.ok("Bearer " + jwtManager.generateJWT(authenticatedUser));
+        return ResponseEntity.ok("Bearer " + jwtProvider.generateJWT(authenticatedUser));
 
     }
 
@@ -50,7 +49,7 @@ public class AuthController implements iAuthController{
         int userID = authService.register(rawUserCredentials, newUser);
         newUser.setUserID(userID);
 
-        return ResponseEntity.ok("Bearer " + jwtManager.generateJWT(newUser));
+        return ResponseEntity.ok("Bearer " + jwtProvider.generateJWT(newUser));
 
     }
 

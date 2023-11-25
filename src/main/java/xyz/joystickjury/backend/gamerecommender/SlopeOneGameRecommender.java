@@ -3,7 +3,7 @@ package xyz.joystickjury.backend.gamerecommender;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xyz.joystickjury.backend.exception.IllegalOperationException;
+import xyz.joystickjury.backend.exception.IllegalRequestException;
 import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.game.GameService;
 import xyz.joystickjury.backend.gamereview.GameReview;
@@ -28,7 +28,7 @@ public class SlopeOneGameRecommender implements iGameRecommenderStrategy {
     public List<Game> recommendGames(@Min(1) int userID) throws SQLException {
 
         List<GameReview> userGameReviews = gameReviewService.getAllGameReviewsByUser(userID); // Checks if our user exists for us already
-        if (userGameReviews.isEmpty()) { throw new IllegalOperationException("User must post at least 1 review before they can be recommended games"); }
+        if (userGameReviews.isEmpty()) { throw new IllegalRequestException("User must post at least 1 review before they can be recommended games"); }
 
         List<Game> allGames = gameService.getAllGames();
 

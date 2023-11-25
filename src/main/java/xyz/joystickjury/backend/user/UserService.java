@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.exception.ResourceAlreadyExistsException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
-import xyz.joystickjury.backend.exception.UnauthorizedOperationException;
+import xyz.joystickjury.backend.exception.UnauthorizedRequestException;
 import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 import java.util.List;
@@ -49,7 +49,7 @@ public class UserService implements iUserService {
 
     @Override
     public void updateUser(@NotNull User user, @NotNull User updatedUser) throws SQLException {
-        if (!isSameUser(user, updatedUser)) { throw new UnauthorizedOperationException("UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
+        if (!isSameUser(user, updatedUser)) { throw new UnauthorizedRequestException("UserID, DisplayName, RegistrationDate, and AccountType must be the same!"); }
         else if (!userExists(user.getUserID())) { throw new ResourceDoesNotExistException("User ID : " + user.getUserID() + " does not exist."); };
         userDAO.update(updatedUser);
     }

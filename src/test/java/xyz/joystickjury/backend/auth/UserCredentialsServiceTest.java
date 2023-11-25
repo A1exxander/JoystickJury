@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import xyz.joystickjury.backend.exception.IllegalOperationException;
+import xyz.joystickjury.backend.exception.IllegalRequestException;
 import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 
 import java.sql.SQLException;
@@ -172,7 +172,7 @@ class UserCredentialsServiceTest {
             UserCredentials userCredentials = new UserCredentials(1, "test@test.com", "password");
             UserCredentials hashedUserCredentials = new UserCredentials(1, "different@example.com", "PASSWORDDONTMATTER");
 
-            IllegalOperationException exception = assertThrows(IllegalOperationException.class, () -> {
+            IllegalRequestException exception = assertThrows(IllegalRequestException.class, () -> {
                 userCredentialsService.areValidCredentials(userCredentials, hashedUserCredentials);
             });
 
@@ -208,7 +208,7 @@ class UserCredentialsServiceTest {
     @Nested
     public class updateUserCredentialsTest{
         @Test
-        public void updateUserCredentials_ShouldUpdateCredentials_WhenValidRequest() throws SQLException, IllegalOperationException {
+        public void updateUserCredentials_ShouldUpdateCredentials_WhenValidRequest() throws SQLException, IllegalRequestException {
 
             UserCredentials hashedUserCredentials = new UserCredentials(1, "test@example.com", "$2a$12$JtK1KZvmrDL7fXAvhefKtufcV6Cb3Uf1OqkV71R50JByyQRFsVtuG");
             when(userCredentialsDAOMock.getByUserID(hashedUserCredentials.getUserID())).thenReturn(hashedUserCredentials);

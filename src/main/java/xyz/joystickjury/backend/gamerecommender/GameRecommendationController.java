@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.game.GameDTO;
 import xyz.joystickjury.backend.game.GameMapper;
-import xyz.joystickjury.backend.token.JWTManager;
+import xyz.joystickjury.backend.token.JWTProvider;
 import javax.validation.constraints.Null;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 public class GameRecommendationController implements iGameRecommendationController{
 
     @Autowired
-    private JWTManager jwtManager;
+    private JWTProvider jwtProvider;
     @Autowired
     private GameRecommendationService gameRecommendationService;
     @Autowired
@@ -33,13 +32,13 @@ public class GameRecommendationController implements iGameRecommendationControll
     @GetMapping
     public ResponseEntity<List<GameDTO>> getRecommendedGames(@RequestHeader String Authorization, @Null Integer limit) {
 
-        String jwt = jwtManager.extractBearerJWT(Authorization);
+        String jwt = jwtProvider.extractBearerJWT(Authorization);
 
-        if (!jwtManager.isValidJWT(jwt)){
+        if (!jwtProvider.isValidJWT(jwt)){
             throw new JWTException("Invalid JWT Provided");
         }
 
-        List<Game> recommendedGames = gameRecommendationService.getRecommendedGames(Integer.valueOf(jwtManager.decodeJWT(jwt).subject));
+        List<Game> recommendedGames = gameRecommendationService.getRecommendedGames(Integer.valueOf(jwtProvider.decodeJWT(jwt).subject));
         List<GameDTO> recommendedGameDTOs = null;
 
         if (limit == null || limit > recommendedGames.size()) {

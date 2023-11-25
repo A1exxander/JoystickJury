@@ -12,17 +12,17 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JWTManagerTest {
+public class JWTProviderTest {
 
-    private JWTManager jwtManager;
+    private JWTProvider jwtProvider;
 
     @BeforeEach
     public void setUp(){
-        jwtManager = new JWTManager();
+        jwtProvider = new JWTProvider();
     }
     @AfterEach
     public void tearDown(){
-        jwtManager = null;
+        jwtProvider = null;
     }
 
     @Nested
@@ -32,8 +32,8 @@ public class JWTManagerTest {
         public void should_ReturnValidJWT_WhenValidGeneration() {
 
             User u = new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN);
-            String generatedJWT = jwtManager.generateJWT(u);
-            assertTrue(jwtManager.isValidJWT(generatedJWT));
+            String generatedJWT = jwtProvider.generateJWT(u);
+            assertTrue(jwtProvider.isValidJWT(generatedJWT));
 
         }
 
@@ -46,20 +46,20 @@ public class JWTManagerTest {
         public void isValidJWT_ShouldReturnTrue_WhenJWTExists() {
 
             User u = new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN);
-            String generatedJWT = jwtManager.generateJWT(u);
-            assertTrue(jwtManager.isValidJWT(generatedJWT));
+            String generatedJWT = jwtProvider.generateJWT(u);
+            assertTrue(jwtProvider.isValidJWT(generatedJWT));
 
         }
 
         @Test
-        public void isValidJWT_ShouldReturnFalse_WhenJWTNonExistent() { assertFalse(jwtManager.isValidJWT("")); }
+        public void isValidJWT_ShouldReturnFalse_WhenJWTNonExistent() { assertFalse(jwtProvider.isValidJWT("")); }
 
         @Test
         public void isValidJWT_ShouldReturnFalse_WhenJWTInvalidated() {
 
-            String generatedJWT = jwtManager.generateJWT(new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN));
-            jwtManager.invalidateJWT(generatedJWT);
-            assertFalse(jwtManager.isValidJWT(generatedJWT));
+            String generatedJWT = jwtProvider.generateJWT(new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN));
+            jwtProvider.invalidateJWT(generatedJWT);
+            assertFalse(jwtProvider.isValidJWT(generatedJWT));
 
         }
 
@@ -67,7 +67,7 @@ public class JWTManagerTest {
         public void isValidJWT_ShouldThrowException_WhenJWTNull() {
 
             assertThrows(IllegalArgumentException.class, () -> {
-                jwtManager.isValidJWT(null);
+                jwtProvider.isValidJWT(null);
             });
 
         }
@@ -81,8 +81,8 @@ public class JWTManagerTest {
         public void decodeJWT_ShouldReturnValidDecodedJWT_WhenCalled() {
 
             int expectedSubject = 0;
-            String generatedJWT = jwtManager.generateJWT(new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN));
-            JWT decodedJwt = jwtManager.decodeJWT(generatedJWT);
+            String generatedJWT = jwtProvider.generateJWT(new User(0,"test@test.com", null,null, new Date(), AcccountType.ADMIN));
+            JWT decodedJwt = jwtProvider.decodeJWT(generatedJWT);
             int actualSubject = Integer.valueOf(decodedJwt.subject);
             assertEquals(expectedSubject, actualSubject);
 
@@ -98,7 +98,7 @@ public class JWTManagerTest {
 
             String jwt = "Bearer Test";
             String expectedExtracted = "Test";
-            String result = jwtManager.extractBearerJWT(jwt);
+            String result = jwtProvider.extractBearerJWT(jwt);
             assertEquals(expectedExtracted, result);
 
         }
@@ -107,7 +107,7 @@ public class JWTManagerTest {
         public void extractBearerJWT_ShouldThrowException_WhenJWTNull() {
 
             assertThrows(IllegalArgumentException.class, () -> {
-                jwtManager.extractBearerJWT(null);
+                jwtProvider.extractBearerJWT(null);
             });
 
         }
@@ -116,7 +116,7 @@ public class JWTManagerTest {
         public void extractBearerJWT_ShouldThrowException_WhenDoesNotStartWithBearer() {
 
             assertThrows(IllegalArgumentException.class, () -> {
-                jwtManager.extractBearerJWT("Test Test");
+                jwtProvider.extractBearerJWT("Test Test");
             });
 
         }
