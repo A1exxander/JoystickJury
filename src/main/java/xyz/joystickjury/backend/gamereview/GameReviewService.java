@@ -31,6 +31,13 @@ public class GameReviewService implements iGameReviewService {
     }
 
     @Override
+    public GameReview getGameReview(@Min(1) int userID, @Min(1) int gameID) throws SQLException {
+        GameReview gameReview = gameReviewDAO.get(userID, gameID);
+        if (gameReview == null){ throw new ResourceDoesNotExistException("Game review with the user ID of : " + userID + " and game ID of : " + gameID + " does not exist." ); }
+        return gameReview;
+    }
+
+    @Override
     public List<GameReview> getAllGameReviews() throws SQLException {
         return gameReviewDAO.getAll();
     }
