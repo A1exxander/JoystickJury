@@ -8,14 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.joystickjury.backend.exception.*;
-
 import java.sql.SQLException;
 
 
 @RestControllerAdvice
 public class RestControllerExceptionHandler {
 
-    private static final Logger logger = Logger.getLogger(RestControllerExceptionHandler.class);
+    private final static Logger logger = Logger.getLogger(RestControllerExceptionHandler.class);
 
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<String> handleSQLException(SQLException ex) {

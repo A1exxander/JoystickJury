@@ -5,12 +5,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.joystickjury.backend.utils.DatabaseConnectionManager;
-import javax.validation.constraints.Min;
 import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -29,7 +30,7 @@ public class GameDAO implements iGameDAO {
 
         if (result.next()) {
 
-            Date currentDate = new Date();
+            java.util.Date currentDate = new java.util.Date();
             Date releaseDate = result.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
             Float averageGameScore = null;
@@ -77,7 +78,7 @@ public class GameDAO implements iGameDAO {
 
         if (result.next()) {
 
-            Date currentDate = new Date();
+            java.util.Date currentDate = new java.util.Date();
             Date releaseDate = result.getDate("ReleaseDate");
             ReleaseStatus releaseStatus = null;
             Float averageGameScore = null;
@@ -118,7 +119,6 @@ public class GameDAO implements iGameDAO {
             return null;
         }
 
-
     }
 
     @Override
@@ -127,9 +127,9 @@ public class GameDAO implements iGameDAO {
         final String query = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID;";
         PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
         ResultSet results = preparedStatement.executeQuery();
-        List<Game> games = new ArrayList<>();
+        List<Game> games = new LinkedList<>();
 
-        Date currentDate = new Date();
+        java.util.Date currentDate = new java.util.Date();
 
         while(results.next()) {
 
@@ -174,8 +174,69 @@ public class GameDAO implements iGameDAO {
     }
 
     @Override
+    public List<Game> getAll(List<String> searchQuery) throws SQLException {
+
+        String regexPattern = searchQuery.stream().collect(Collectors.joining("|"));
+        final String query = "SELECT G.*, AVG(GR.ReviewScore) AS AverageReviewScore, COUNT(GR.GameID) AS GameReviewCount, GROUP_CONCAT(GG.GameGenre) AS GameGenres FROM Game G " +
+                "LEFT JOIN GameReview GR ON G.GameID = GR.GameID " +
+                "LEFT JOIN GameGenre GG ON G.GameID = GG.GameID " +
+                "WHERE GameTitle REGEXP ? OR GameDescription REGEXP ? OR DeveloperName REGEXP ? OR PublisherName REGEXP ? " +
+                "GROUP BY G.GameID " +
+                "ORDER BY GameReviewCount DESC";
+
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement(query);
+        for (int i = 1; i <= 4; i++) {
+            preparedStatement.setString(i, regexPattern);
+        }
+
+        List<Game> games = new LinkedList<>();
+        java.util.Date currentDate = new java.util.Date();
+        ResultSet results = preparedStatement.executeQuery();
+
+        while (results.next()) {
+
+            Date releaseDate = results.getDate("ReleaseDate");
+            ReleaseStatus releaseStatus = null;
+            Float averageGameScore = null;
+            HashSet<String> gameGenres = null;
+
+            if (releaseDate == null || currentDate.before(releaseDate)){
+                releaseStatus = ReleaseStatus.UNRELEASED;
+            } else {
+                releaseStatus = ReleaseStatus.RELEASED;
+            }
+
+            if (releaseStatus == ReleaseStatus.RELEASED && results.getFloat("AverageReviewScore") != 0.0f){
+                averageGameScore = results.getFloat("AverageReviewScore");
+            }
+
+            if (results.getString("GameGenres") != null){
+                gameGenres = new HashSet<>(List.of(results.getString("GameGenres").split(",")));
+            }
+
+            games.add(new Game(
+                    results.getInt("GameID"),
+                    results.getString("GameTitle"),
+                    results.getString("GameDescription"),
+                    results.getString("GameCoverArtLink"),
+                    results.getString("GameBannerArtLink"),
+                    results.getString("GameTrailerLink"),
+                    results.getString("DeveloperName"),
+                    results.getString("PublisherName"),
+                    gameGenres,
+                    releaseStatus,
+                    releaseDate,
+                    averageGameScore
+            ));
+        }
+
+        return games;
+
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = SQLException.class)
-    public void save(Game game) throws SQLException { // Violates the SRP but W/E - Ideally we should've have a GameGenreDAO and create GameObjects thru GameService using GameDAO and GameGenreDAO classes
+    public void save(Game game) throws SQLException { // Violates the SRP but W/E - Ideally we should have a GameGenreDAO and create GameObjects thru GameService using GameDAO and GameGenreDAO classes
 
         final String insertGameQuery  = "INSERT INTO Game (GameTitle, GameDescription, GameTrailerLink, GameBannerArtLink, DeveloperName, PublisherName, ReleaseDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         final String insertGenreQuery = "INSERT INTO GameGenre (GameID, GameGenre) VALUES (?, ?)";
@@ -236,10 +297,10 @@ public class GameDAO implements iGameDAO {
 
         final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore, SUM(CASE WHEN GR.ReviewPostDate >= CURDATE() - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS ReviewsThisMonth FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <= CURDATE() AND G.GameID != 1 AND G.GameBannerArtLink LIKE \"https://images.gog-statics.com%\" GROUP BY G.GameID ORDER BY ReleaseDate DESC LIMIT 10";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        List<Game> games = new ArrayList<>();
+        List<Game> games = new LinkedList<>();
         ResultSet results = statement.executeQuery();
 
-        Date currentDate = new Date();
+        java.util.Date currentDate = new java.util.Date();
 
         while (results.next()) {
 
@@ -284,10 +345,10 @@ public class GameDAO implements iGameDAO {
 
         final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate > CURDATE() GROUP BY G.GameID ORDER BY G.ReleaseDate DESC LIMIT 10";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        List<Game> games = new ArrayList<>();
+        List<Game> games = new LinkedList<>();
         ResultSet results = statement.executeQuery();
 
-        Date currentDate = new Date();
+        java.util.Date currentDate = new java.util.Date();
 
         while (results.next()) {
 
@@ -332,10 +393,10 @@ public class GameDAO implements iGameDAO {
 
         final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID WHERE G.ReleaseDate <= CURDATE() GROUP BY G.GameID ORDER BY G.ReleaseDate DESC LIMIT 10";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        List<Game> games = new ArrayList<>();
+        List<Game> games = new LinkedList<>();
         ResultSet results = statement.executeQuery();
 
-        Date currentDate = new Date();
+        java.util.Date currentDate = new java.util.Date();
 
         while (results.next()) {
 
@@ -380,10 +441,10 @@ public class GameDAO implements iGameDAO {
 
         final String query  = "SELECT G.*, GROUP_CONCAT(GG.GameGenre) AS GameGenres, AVG(GR.ReviewScore) AS AverageReviewScore FROM Game G LEFT JOIN GameReview GR ON G.GameID = GR.GameID LEFT JOIN GameGenre GG ON G.GameID = GG.GameID GROUP BY G.GameID ORDER BY AverageReviewScore DESC LIMIT 10";
         PreparedStatement statement = databaseConnection.prepareStatement(query);
-        List<Game> games = new ArrayList<>();
+        List<Game> games = new LinkedList<>();
         ResultSet results = statement.executeQuery();
 
-        Date currentDate = new Date();
+        java.util.Date currentDate = new java.util.Date();
 
         while (results.next()) {
 

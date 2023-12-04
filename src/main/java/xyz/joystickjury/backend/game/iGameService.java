@@ -1,6 +1,7 @@
 package xyz.joystickjury.backend.game;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,5 +19,6 @@ public interface iGameService {
     public List<Game> getHighestRated() throws SQLException;
     public boolean gameExists(@Min(1) int id) throws SQLException;
     public boolean gameIsReleased(@Min(1) int gameID) throws SQLException;
+    public List<Game> getBySeachQuery(@NotNull String searchQuery) throws SQLException;
 
 }

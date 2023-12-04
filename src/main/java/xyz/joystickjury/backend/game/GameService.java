@@ -6,7 +6,11 @@ import xyz.joystickjury.backend.exception.ResourceDoesNotExistException;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -20,6 +24,22 @@ public class GameService implements iGameService {
         Game game = gameDAO.get(id);
         if (game == null) { throw new ResourceDoesNotExistException("A game with the gameID of " + id + " could not be found."); }
         return game;
+    }
+
+    @Override
+    public List<Game> getBySeachQuery(@NotNull @Min(1) String searchQuery) throws SQLException {
+
+        List<String> searchQueryList = List.of(searchQuery.split(" "));
+        Set<String> stopWords = new HashSet<>(Arrays.asList("the", "is", "at", "which", "on")); // Words we wish to ignore
+        searchQueryList = searchQueryList.stream().filter(word -> !stopWords.contains(word)).collect(Collectors.toList());
+
+        if (searchQuery.isEmpty()) {
+            return null;
+        }
+
+        List<Game> games = gameDAO.getAll(searchQueryList);
+        return games;
+
     }
 
     @Override

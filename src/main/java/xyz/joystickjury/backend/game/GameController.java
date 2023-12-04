@@ -29,47 +29,50 @@ public class GameController implements iGameController {
     @Autowired
     private JWTProvider jwtProvider;
 
-    private ResponseEntity<List<GameDTO>> getGamesByType(@Null Integer limit, @NotNull List<Game> games) { // Consider moving this
-
-        List<GameDTO> gamesDTO = games.stream().map(game -> gameMapper.entityToDTO(game)).collect(Collectors.toList());
-        if (limit != null && limit < gamesDTO.size()) { gamesDTO = gamesDTO.subList(0, limit); }
-        return ResponseEntity.ok(gamesDTO);
-
-    }
-
     @Override
     @SneakyThrows
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
-        return getGamesByType(limit, gameService.getAllGames());
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit, @RequestParam(name = "q", required = true) String searchQuery) {
+
+        List<Game> games;
+
+        if (searchQuery == null){
+            games = gameService.getAllGames();
+        }
+        else {
+            games = gameService.getBySeachQuery(searchQuery);
+        }
+
+        return convertGamesIntoGameDTOs(limit, games);
+
     }
 
     @Override
     @SneakyThrows
     @GetMapping("/latest")
     public ResponseEntity<List<GameDTO>> getNewGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
-        return getGamesByType(limit, gameService.getRecent());
+        return convertGamesIntoGameDTOs(limit, gameService.getRecent());
     }
 
     @Override
     @SneakyThrows
     @GetMapping("/upcoming")
     public ResponseEntity<List<GameDTO>> getUpcomingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
-        return getGamesByType(limit, gameService.getUpcoming());
+        return convertGamesIntoGameDTOs(limit, gameService.getUpcoming());
     }
 
     @Override
     @SneakyThrows
     @GetMapping("/highest-rated")
     public ResponseEntity<List<GameDTO>> getHighestRatedGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
-        return getGamesByType(limit, gameService.getHighestRated());
+        return convertGamesIntoGameDTOs(limit, gameService.getHighestRated());
     }
 
     @Override
     @SneakyThrows
     @GetMapping("/trending")
     public ResponseEntity<List<GameDTO>> getTrendingGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit) {
-        return getGamesByType(limit, gameService.getTrending());
+        return convertGamesIntoGameDTOs(limit, gameService.getTrending());
     }
 
     @Override
@@ -135,6 +138,14 @@ public class GameController implements iGameController {
 
         gameService.deleteGame(gameID);
         return ResponseEntity.noContent().build();
+
+    }
+
+    private ResponseEntity<List<GameDTO>> convertGamesIntoGameDTOs(@Null Integer limit, @NotNull List<Game> games) { // Consider moving this
+
+        List<GameDTO> gamesDTO = games.stream().map(game -> gameMapper.entityToDTO(game)).collect(Collectors.toList());
+        if (limit != null && limit < gamesDTO.size()) { gamesDTO = gamesDTO.subList(0, limit); }
+        return ResponseEntity.ok(gamesDTO);
 
     }
 

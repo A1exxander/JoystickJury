@@ -125,6 +125,16 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.12</version>
 		</dependency>
+        <dependency>
+            <groupId>com.googlecode.java-bit-arrays</groupId>
+            <artifactId>java-bit-arrays</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+		<dependency>
+			<groupId>com.googlecode.java-bit-arrays</groupId>
+			<artifactId>java-bit-arrays</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
