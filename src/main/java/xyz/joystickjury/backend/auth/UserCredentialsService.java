@@ -22,16 +22,8 @@ public class UserCredentialsService implements iUserCredentialsService {
 
     @Override
     public UserCredentials getHashedUserCredentials(@NotNull String email) throws SQLException { // Used for logging in, not registering a new user!
-
         UserCredentials hashedUserCredentials = userCredentialsDAO.get(email);
-
-        if (hashedUserCredentials == null) {
-            throw new ResourceDoesNotExistException("No user with Email : " + email + " was found");
-        }
-        else {
-            return hashedUserCredentials;
-        }
-
+        return hashedUserCredentials;
     }
 
     @Override

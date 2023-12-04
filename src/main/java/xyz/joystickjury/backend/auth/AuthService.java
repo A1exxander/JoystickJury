@@ -25,17 +25,15 @@ public class AuthService implements iAuthServices{
     public User login(UserCredentials rawUserCredentials) throws SQLException {
 
         UserCredentials hashedUserCredentials = userCredentialsService.getHashedUserCredentials(rawUserCredentials.getEmail());
-
-        if (!userCredentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)){
+        if (hashedUserCredentials == null || !userCredentialsService.areValidCredentials(rawUserCredentials, hashedUserCredentials)) {
             throw new InvalidCredentialsException("User credentials are invalid or do not exist"); // Do not explicitly tell the user which for security purposes
         }
-
         return userService.getUser(hashedUserCredentials.getUserID());
 
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = SQLException.class) // Make our method execute our 2 seperate database queries as an atomic transaction
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = SQLException.class) // Make our method execute our 2 separate database queries as an atomic transaction
     public int register(UserCredentials rawUserCredentials, User newUser) throws SQLException {
 
         if (userCredentialsService.emailExists(rawUserCredentials.getEmail())) {
