@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ec0a47d6-7cb9-4b84-bddc-24486a88c7fb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/BackendApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserCredentials.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserCredentialsDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserCredentialsDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserCredentialsMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserCredentialsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/UserPostDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/iAuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/iAuthServices.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/iUserCredentialsDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/auth/iUserCredentialsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/config/CORSConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/config/WebSocketConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exception/IllegalRequestException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exception/InvalidCredentialsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exception/ResourceAlreadyExistsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exception/ResourceDoesNotExistException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exception/UnauthorizedRequestException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/exceptionhandler/RestControllerExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/Game.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/GameController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/GameDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/GameDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/GameMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/GameService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/ReleaseStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/iGameController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/iGameDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/game/iGameService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/GameRecommendationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/GameRecommendationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/GameRecommenderStrategy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/GameRecommenderStrategyFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/SlopeOneGameRecommender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/iGameRecommendationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/iGameRecommendationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamerecommender/iGameRecommenderStrategy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReview.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewWebsocketController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/iGameReviewController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/iGameReviewDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/gamereview/iGameReviewService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/token/JWTProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/token/iJWTProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/AcccountType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/UserDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/UserDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/UserMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/iUserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/iUserDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/user/iUserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/utils/DatabaseConnectionManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/utils/iDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xyz/joystickjury/backend/utils/iMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/backend/BackendApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/BackendApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/auth/UserCredentialsServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/game/GameDAOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/game/GameServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/token/JWTProviderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/user/UserDAOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/xyz/joystickjury/backend/user/UserServiceTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2ZBKDDFE5rb8RdVS7mAxe51Qkgo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/Alex/Pictures/JoystickJury/API"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ec0a47d6-7cb9-4b84-bddc-24486a88c7fb" name="Changes" comment="" />
+      <created>1701889910990</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701889910990</updated>
+    </task>
+    <servers />
+  </component>
+</project>
