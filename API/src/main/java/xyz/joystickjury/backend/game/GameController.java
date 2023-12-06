@@ -32,7 +32,7 @@ public class GameController implements iGameController {
     @Override
     @SneakyThrows
     @GetMapping
-    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit, @RequestParam(name = "q", required = true) String searchQuery) {
+    public ResponseEntity<List<GameDTO>> getAllGames(@RequestParam(name = "limit", required = false) @Min(1) Integer limit, @RequestParam(name = "q", required = false) String searchQuery) {
 
         List<Game> games;
 
