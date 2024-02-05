@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  database:
+    build: /Database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - Database/data/mysql-volume:var/lib/mysql
+
+  api:
+    build: /API
+    environment:
+      MYSQL_ROOT_USERNAME: ${MYSQL_ROOT_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_SERVER: ${MYSQL_SERVER}
+      JJ_SECRET_KEY: ${JJ_SECRET_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  nginx:
+    build: /Frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+      - api
