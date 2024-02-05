@@ -12,9 +12,9 @@ public class DatabaseConnectionManager {
 
         if (databaseConnection == null){
             try {
-                final String server = "jdbc:mysql://127.0.0.1:3306/joystickjury";
-                final String username = System.getenv("JJ_DB_USERNAME");
-                final String password = System.getenv("JJ_DB_PASSWORD");
+                final String server = System.getenv("MYSQL_SERVER") + "joystickjury";
+                final String username = System.getenv("MYSQL_ROOT_USER");
+                final String password = System.getenv("MYSQL_ROOT_PASSWORD");
                 databaseConnection = DriverManager.getConnection(server, username, password);
             }
             catch (SQLException e){ // Not ideal but need to catch it to make it work else DAO classes will throw an exception saying that we cannot find connection bean when using Autowired
