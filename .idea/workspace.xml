@@ -4,49 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/out/artifacts/backend_jar/backend.jar" beforeDir="false" afterPath="$PROJECT_DIR$/API/out/artifacts/backend_jar/backend.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/BackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/user/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/test/java/xyz/joystickjury/backend/auth/UserCredentialsServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/test/java/xyz/joystickjury/backend/auth/UserCredentialsServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/test/java/xyz/joystickjury/backend/token/JWTProviderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/test/java/xyz/joystickjury/backend/token/JWTProviderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/00-CREATE-SCHEMA.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/01-CREATE-TABLE-User.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/02-CREATE-TABLE-UserCredential.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/03-CREATE-TABLE-Game.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/04-CREATE-TABLE-GameReview.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Database-Creation-Files/05-CREATE-TABLE-Game-Genre.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Design Documents/Joystick-Jury-ER-Diagram.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Database/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/DisplayedGames/DIsplayedGames.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/ErrorPage.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/ErrorPageNotFound.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/ContainerEdgeNavButton/ContainerEdgeNavButton.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/ContainerEdgeNavButton/ContainerEdgeNavButton.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/FeaturedGames.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/FeaturedGames.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/IndexSelector/IndexSelectorList.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/IndexSelector/IndexSelectorList.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/IndexSelector/IndexSelectorListItem.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/FeaturedGames/IndexSelector/IndexSelectorListItem.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/GameSearchBar/GameSearchBar.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/GameSearchBar/GameSearchBar.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/Header/Header.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/Header/Header.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/HomePage.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/HomePage.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/Router/Router.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/Router/Router.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/main.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="Made frontend public (WIP!)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +12,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -84,6 +43,44 @@
       <option name="presentableId" value="Default" />
       <updated>1705653313797</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added design documents folder, made small tweaks to project structure">
+      <created>1707092947092</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1707092947092</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added design documents folder, made small tweaks to project structure">
+      <created>1707093067528</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1707093067528</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Made frontend public (WIP!)">
+      <created>1707093117918</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1707093117918</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added design documents folder, made small tweaks to project structure" />
+    <MESSAGE value="Made frontend public (WIP!)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made frontend public (WIP!)" />
   </component>
 </project>
