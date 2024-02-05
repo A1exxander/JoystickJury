@@ -1,0 +1,18 @@
+
+#featured-games-container {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    height:auto;
+    height:75vh;
+    width:100vw;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+    transition: all 0.15s ease-in;
+}   
+
+#error-text{
+    padding-left: 15px;
+}

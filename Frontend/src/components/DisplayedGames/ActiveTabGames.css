@@ -1,0 +1,12 @@
+#active-tab-games{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 30px;
+    height:27vh;
+    width:75%;
+}
+
+#message{
+    padding-right: 28px;
+}

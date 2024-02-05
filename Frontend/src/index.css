@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+:root::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.red-purple-button {
+  
+  height: fit-content;
+  width: fit-content;
+  color:white;
+  background-color: #E7473C;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px black;
+
+}
+
+.red-purple-button:hover {
+  border-color: purple;
+}
+
+header {
+  margin:7px;
+  height:8vh;
+  width:98vw;
+  max-width:100%;
+}
+
+footer {
+  text-align: center;
+  height:5vh;
+}
+
+main, body{
+  width:98vw;
+  max-width: 100%;
+}
+
+.button-61 { 
+  align-items: center; 
+  appearance: none; 
+  border-radius: 4px; 
+  border-style: none; 
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 1px -2px,rgba(0, 0, 0, .14) 0 2px 2px 0,rgba(0, 0, 0, .12) 0 1px 5px 0; 
+  box-sizing: border-box; 
+  color: #fff; 
+  background-color: purple;
+  cursor: pointer; 
+  display: inline-flex; 
+  font-family: Roboto,sans-serif; 
+  font-size: .875rem; 
+  font-weight: 500; height: 36px; 
+  justify-content: center; 
+  letter-spacing: .0892857em; 
+  line-height: normal; 
+  min-width: 64px; 
+  outline: none; 
+  overflow: visible; 
+  padding: 0 16px; 
+  position: relative; 
+  text-align: center; 
+  text-decoration: none; 
+  text-transform: uppercase; 
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1); 
+  user-select: none; 
+  -webkit-user-select: none; 
+  touch-action: manipulation; 
+  vertical-align: middle; 
+  will-change: transform,opacity; 
+  margin-bottom: 5px;
+} 
+  .button-61:hover { box-shadow: rgba(0, 0, 0, .2) 0 2px 4px -1px, rgba(0, 0, 0, .14) 0 4px 5px 0, rgba(0, 0, 0, .12) 0 1px 10px 0; } .button-61:disabled { background-color: rgba(0, 0, 0, .12); box-shadow: rgba(0, 0, 0, .2) 0 0 0 0, rgba(0, 0, 0, .14) 0 0 0 0, rgba(0, 0, 0, .12) 0 0 0 0; color: rgba(0, 0, 0, .37); cursor: default; pointer-events: none; } .button-61:not(:disabled) { background-color: red; } .button-61:focus { box-shadow: rgba(0, 0, 0, .2) 0 2px 4px -1px, rgba(0, 0, 0, .14) 0 4px 5px 0, rgba(0, 0, 0, .12) 0 1px 10px 0; } .button-61:active { box-shadow: rgba(0, 0, 0, .2) 0 5px 5px -3px, rgba(0, 0, 0, .14) 0 8px 10px 1px, rgba(0, 0, 0, .12) 0 3px 14px 2px; background: purple; }

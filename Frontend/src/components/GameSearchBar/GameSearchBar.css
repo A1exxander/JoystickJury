@@ -1,0 +1,33 @@
+#game-search-bar {
+    padding: 12px 20px;
+    width: 45%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    border: 2px solid #ddd; /* Add a border */
+    border-radius: 25px; /* Round the borders */
+    margin-top: 35px; /* Add some top margin */
+    margin-bottom: 10px; /* Add some bottom margin */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+  }
+  
+  #game-search-bar::placeholder { /* Change the style of the placeholder text */
+    color: #999; /* Light grey placeholder text */
+  }
+  
+  #game-search-bar:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: purple; /* Highlight with a purple border */
+    box-shadow: 0 0 8px 0 rgba(240, 44, 223, 0.5); /* Add a glow effect */
+  }
+  
+  #game-search-bar:hover {
+    border-color: #999; /* Change border color on hover */
+  }
+
+#search-bar-container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+}

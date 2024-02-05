@@ -1,0 +1,20 @@
+#container-edge-nav-button{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+}
+
+#svg-button{
+    height:auto;
+    padding-left: 45px;
+    padding-top: -15px;
+    background-color: transparent;
+    border-color: none;
+    outline: none;
+}
+
+#container-edge-nav-button:hover{
+   background-color: rgba(2, 2, 2, 0.4);
+   transition: all 0.10s ease-in;
+}
