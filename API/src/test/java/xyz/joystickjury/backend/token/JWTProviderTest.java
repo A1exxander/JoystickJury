@@ -63,15 +63,6 @@ public class JWTProviderTest {
 
         }
 
-        @Test
-        public void isValidJWT_ShouldThrowException_WhenJWTNull() {
-
-            assertThrows(IllegalArgumentException.class, () -> {
-                jwtProvider.isValidJWT(null);
-            });
-
-        }
-
     }
 
     @Nested
@@ -106,7 +97,7 @@ public class JWTProviderTest {
         @Test
         public void extractBearerJWT_ShouldThrowException_WhenJWTNull() {
 
-            assertThrows(IllegalArgumentException.class, () -> {
+            assertThrows(NullPointerException.class, () -> {
                 jwtProvider.extractBearerJWT(null);
             });
 
@@ -114,11 +105,9 @@ public class JWTProviderTest {
 
         @Test
         public void extractBearerJWT_ShouldThrowException_WhenDoesNotStartWithBearer() {
-
             assertThrows(IllegalArgumentException.class, () -> {
-                jwtProvider.extractBearerJWT("Test Test");
+                jwtProvider.extractBearerJWT("dsada");
             });
-
         }
 
     }

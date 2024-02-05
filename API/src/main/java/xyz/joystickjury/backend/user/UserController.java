@@ -53,7 +53,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
 
     @Override
     @SneakyThrows
-    @GetMapping("/current") // /users will be used to fetch all users, /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
+    @GetMapping("/current") // /user/current will be used to fetch only the current user w JWT, and /user/{userID} will be used to fetch other users
     public ResponseEntity<UserDTO> getCurrentUser(@RequestHeader String Authorization) {
 
         String jwt = jwtProvider.extractBearerJWT(Authorization);

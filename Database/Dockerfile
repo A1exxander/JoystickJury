@@ -10,7 +10,7 @@ ENV MYSQL_DATABASE=joystickjury \
     MYSQL_PASSWORD=password
 
 # Copy our .sql database creation files into our container, which will automatically be executed inside our /docker-entrypoint-initdb.d/ folder
-COPY ./Database-Creation-Files /docker-entrypoint-initdb.d/
+COPY . /docker-entrypoint-initdb.d/
 
 # Expose a port
 EXPOSE 3306

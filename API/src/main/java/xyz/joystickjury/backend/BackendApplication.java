@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
+		BasicConfigurator.configure(); // Required by our logger
 		SpringApplication.run(BackendApplication.class, args);
 	}
-	// TODO : Controller unit tests
+	// TODO : Controller unit tests w MockMVC, Spring security JWT filter, using an ORM like Hibernate as an alternative to DAOs, dynamic entity filtering using Turkraft, pageable for collections + sorting, use a proper DTO mapper, Redis Caching, Swagger documentation
 
 }

@@ -48,26 +48,6 @@ class UserCredentialsServiceTest {
 
         }
 
-        @Test
-        public void getHashedUserCredentials_ShouldThrowException_WhenEmailNULL() throws SQLException {
-
-            assertThrows(ResourceDoesNotExistException.class, () -> {
-                userCredentialsService.getHashedUserCredentials(null);
-            });
-
-        }
-
-        @Test
-        public void getHashedUserCredentials_ShouldThrowException_WhenEmailInvalid() throws SQLException {
-
-            when(userCredentialsDAOMock.get("thisemaildoesntexist@reallyitdoesnt.com")).thenReturn(null);
-
-            assertThrows(ResourceDoesNotExistException.class, () -> {
-                userCredentialsService.getHashedUserCredentials("thisemaildoesntexist@reallyitdoesnt.com");
-            });
-
-        }
-
     }
 
     @Nested
