@@ -1,0 +1,10 @@
+#index-selector-list{
+    display:flex;
+    flex-direction: row;
+    align-self: center;
+    justify-self: flex-end;
+}
+
+#index-selector-list * {
+    margin-left: 10px;
+}

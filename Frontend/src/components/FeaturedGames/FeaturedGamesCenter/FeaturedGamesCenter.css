@@ -1,0 +1,8 @@
+#featured-games-center{
+    display: flex;
+    height:100%;
+    width:90%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
