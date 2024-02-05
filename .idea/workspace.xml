@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="Made frontend public (WIP!)">
-      <change afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/game/iGameMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/game/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/game/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/game/GameMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/game/GameMapper.java" afterDir="false" />
-    </list>
+    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="Refactored GameController to use a new entitiesToDTOs method inside GameMapper that takes a list arg" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1707093191406</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refactored GameController to use a new entitiesToDTOs method inside GameMapper that takes a list arg">
+      <created>1707095468537</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1707095468537</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -100,6 +102,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added design documents folder, made small tweaks to project structure" />
     <MESSAGE value="Made frontend public (WIP!)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made frontend public (WIP!)" />
+    <MESSAGE value="Refactored GameController to use a new entitiesToDTOs method inside GameMapper that takes a list arg" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored GameController to use a new entitiesToDTOs method inside GameMapper that takes a list arg" />
   </component>
 </project>
