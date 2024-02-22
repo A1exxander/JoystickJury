@@ -2,7 +2,6 @@ package xyz.joystickjury.backend.gamereview;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @AllArgsConstructor
-public class GameReviewWebsocketController {
+public class GameReviewWebsocketController implements iGameReviewWebsocketController {
 
     @Autowired
     private final SimpMessagingTemplate messagingTemplate;
@@ -21,12 +20,13 @@ public class GameReviewWebsocketController {
     @Autowired
     private final GameReviewService gameReviewService;
 
+    @Override
     @SneakyThrows
     @MessageMapping("games/{gameID}/reviews")
     public void postGameReview(@DestinationVariable String gameID, @Payload GameReviewDTO gameReviewDTO) {
-        StringBuilder messageEndpoint = new StringBuilder("/topic/games/" + gameID + "/reviews");
-        gameReviewService.saveGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
-        messagingTemplate.convertAndSend(messageEndpoint.toString(), gameReviewDTO);
+            StringBuilder messageEndpoint = new StringBuilder("/topic/games/" + gameID + "/reviews");
+            gameReviewService.saveGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
+            messagingTemplate.convertAndSend(messageEndpoint.toString(), gameReviewDTO);
     }
 
 }
