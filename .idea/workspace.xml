@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="Added a docker-compose.yml file" />
+    <list default="true" id="a93996b0-19ed-4411-9678-936952503c7a" name="Changes" comment="Added a UML use-case diagram for our backend">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/iGameReviewWebsocketController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Design-Documents/Database-Design-Documents/Joystick-Jury-ER-Diagram.PNG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/config/WebSocketConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewWebsocketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/API/src/main/java/xyz/joystickjury/backend/gamereview/GameReviewWebsocketController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -112,14 +122,21 @@
       <option name="project" value="LOCAL" />
       <updated>1707128425666</updated>
     </task>
-    <task id="LOCAL-00010" summary="Added a docker-compose.yml file">
-      <created>1707128575123</created>
+    <task id="LOCAL-00010" summary="Added preview screenshots for our frontend">
+      <created>1707383407357</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1707128575123</updated>
+      <updated>1707383407357</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added a UML use-case diagram for our backend">
+      <created>1707383438480</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1707383438480</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,7 +155,8 @@
     <MESSAGE value="Made frontend public (WIP!)" />
     <MESSAGE value="Refactored GameController to use a new entitiesToDTOs method inside GameMapper that takes a list arg" />
     <MESSAGE value="Renamed the environment vars used for authentication by DatabaseConnectionManager" />
-    <MESSAGE value="Added a docker-compose.yml file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a docker-compose.yml file" />
+    <MESSAGE value="Added preview screenshots for our frontend" />
+    <MESSAGE value="Added a UML use-case diagram for our backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a UML use-case diagram for our backend" />
   </component>
 </project>

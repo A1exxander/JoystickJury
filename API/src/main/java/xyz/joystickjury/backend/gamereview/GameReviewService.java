@@ -73,7 +73,7 @@ public class GameReviewService implements iGameReviewService {
     @Override
     public void updateGameReview(GameReview gameReview) throws SQLException {
         if (gameReviewExists(gameReview.getUserID(), gameReview.getGameID())) { throw new ResourceDoesNotExistException("User " + gameReview.getUserID() + "has not left a review for" + gameReview.getGameID() + "."); };
-        gameReviewDAO.save(gameReview);
+        gameReviewDAO.update(gameReview);
     }
 
     @Override

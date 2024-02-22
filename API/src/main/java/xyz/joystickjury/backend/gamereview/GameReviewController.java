@@ -1,6 +1,7 @@
 package xyz.joystickjury.backend.gamereview;
 
 import io.fusionauth.jwt.JWTException;
+import io.fusionauth.jwt.domain.JWT;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -69,7 +71,7 @@ public class GameReviewController implements iGameReviewController {
         Integer gameReviewUserID = gameReviewService.getGameReview(gameReviewID).getUserID();
 
         if (userID != gameReviewUserID && !jwtProvider.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
-            throw new UnauthorizedRequestException("You cannot delete the another user's reviews.");
+            throw new UnauthorizedRequestException("Could not delete game review. UserID provided by JWT MUST match UserID provided by GameReview OR your account must have admin level privileges.");
         }
 
         gameReviewService.deleteGameReview(gameReviewID);
@@ -88,6 +90,15 @@ public class GameReviewController implements iGameReviewController {
             throw new JWTException("Invalid JWT provided.");
         }
 
+        GameReview gameReview = gameReviewMapper.dtoToEntity(gameReviewDTO);
+
+        Integer userID = Integer.valueOf(jwtProvider.decodeJWT(jwt).subject);
+        Integer gameReviewUserID = gameReview.getUserID();
+
+        if (userID != gameReviewUserID && !jwtProvider.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
+            throw new UnauthorizedRequestException("Could not post game review. UserID provided by JWT MUST match UserID provided by GameReview OR your account must have admin level privileges.");
+        }
+
         gameReviewService.saveGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
         return ResponseEntity.noContent().build();
 
@@ -96,7 +107,7 @@ public class GameReviewController implements iGameReviewController {
     @Override
     @SneakyThrows
     @PutMapping("/api/v1/games/{gameID}/reviews/{gameReviewID}")
-    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO, @PathVariable @Min(1) int gameID,  @PathVariable @Min(1) int userID) {
+    public ResponseEntity<Void> updateGameReview(String Authorization, @RequestBody @NotNull @Valid GameReviewDTO gameReviewDTO, @PathVariable @Min(1) int gameID,  @PathVariable @Min(1) int gameReviewID) {
 
         String jwt = jwtProvider.extractBearerJWT(Authorization);
 
@@ -104,7 +115,16 @@ public class GameReviewController implements iGameReviewController {
             throw new JWTException("Invalid JWT provided.");
         }
 
-        gameReviewService.updateGameReview(gameReviewMapper.dtoToEntity(gameReviewDTO));
+        GameReview gameReview = gameReviewMapper.dtoToEntity(gameReviewDTO);
+
+        Integer userID = Integer.valueOf(jwtProvider.decodeJWT(jwt).subject);
+        Integer gameReviewUserID = gameReview.getUserID();
+
+        if (userID != gameReviewUserID && !jwtProvider.decodeJWT(jwt).getString("role").equalsIgnoreCase("ADMIN")){
+            throw new UnauthorizedRequestException("Could not delete game review. UserID provided by JWT MUST match UserID provided by GameReview OR your account must have admin level privileges.");
+        }
+
+        gameReviewService.updateGameReview(gameReview);
         return ResponseEntity.noContent().build();
 
     }
