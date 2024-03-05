@@ -1,9 +1,10 @@
 #tabs-list{
     margin-top: 20px;
     display:flex;
-    width:26%;
+    width:27%;
     justify-content: space-around;
     border-bottom: solid;
+    padding-left:20px;
 }
 
 #tabs-list *{
