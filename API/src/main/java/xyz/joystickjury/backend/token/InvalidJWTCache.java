@@ -18,8 +18,10 @@ public class InvalidJWTCache implements iInvalidTokenCache<JWT> {
     private final long expiredJWTEvictionRateMS = 3600000; // JWTs will be evicted every hour by default
 
     @Override
-    public void addToken(JWT token) {
-        invalidJWTs.add(token);
+    public void addToken(@NotNull JWT token) {
+        if (!token.isExpired()) {
+            invalidJWTs.add(token);
+        }
     }
 
     @Override
