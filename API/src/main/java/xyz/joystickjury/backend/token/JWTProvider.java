@@ -6,22 +6,22 @@ import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.user.User;
 import javax.validation.constraints.NotNull;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class JWTProvider implements iJWTProvider {
 
     private final String secretKey = System.getenv("joystick-jury-secret-key");
     private final long tokenLifespanHours = 120;
-    private final Set<String> invalidTokens = new HashSet<>(); // TODO: Currently causes a memory leak. Switch out to something like an LRU cache & evict expired keys automatically in the future.
+    private final InvalidJWTCache invalidJWTCache = new InvalidJWTCache();
 
     @Override
     public String generateJWT(@NotNull User user) {
@@ -39,16 +39,19 @@ public class JWTProvider implements iJWTProvider {
     }
 
     @Override
-    public void invalidateJWT(@NotNull String jwt) { invalidTokens.add(jwt); }
+    public void invalidateJWT(@NotNull String jwt) {
+        JWT decodedJWT = decodeJWT(jwt);
+        if (!decodedJWT.isExpired()){
+            invalidJWTCache.addToken(decodedJWT);
+        }
+    }
 
     @Override
-    public Boolean isValidJWT(@NotNull String jwt) { // Validates our token by verifying its signature & checking that it isn't expired
-
-        if(invalidTokens.contains(jwt)) { return false; }
+    public Boolean isValidJWT(@NotNull String jwt) { // Validates our token by verifying its signature, checking that it isn't expired, and checking that it isn't blacklisted
 
         try {
             JWT decodedJWT = decodeJWT(jwt);
-            return decodedJWT.expiration.isAfter(ZonedDateTime.now());
+            return (!invalidJWTCache.containsToken(decodedJWT) && !decodedJWT.isExpired());
         } catch (Exception e) {
             return false;
         }
