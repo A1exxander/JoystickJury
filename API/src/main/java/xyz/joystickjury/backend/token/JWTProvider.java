@@ -6,10 +6,8 @@ import io.fusionauth.jwt.domain.JWT;
 import io.fusionauth.jwt.hmac.HMACSigner;
 import io.fusionauth.jwt.hmac.HMACVerifier;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.joystickjury.backend.user.User;
-
 import javax.validation.constraints.NotNull;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -48,9 +46,8 @@ public class JWTProvider implements iJWTProvider {
 
         if(invalidTokens.contains(jwt)) { return false; }
 
-        Verifier verifier = HMACVerifier.newVerifier(secretKey);
         try {
-            JWT decodedJWT = JWT.getDecoder().decode(jwt, verifier);
+            JWT decodedJWT = decodeJWT(jwt);
             return decodedJWT.expiration.isAfter(ZonedDateTime.now());
         } catch (Exception e) {
             return false;
