@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.token.JWTProvider;
 import xyz.joystickjury.backend.user.User;
 import xyz.joystickjury.backend.user.UserMapper;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Date;
 
 

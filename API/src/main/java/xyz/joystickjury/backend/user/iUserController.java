@@ -3,8 +3,8 @@ package xyz.joystickjury.backend.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.sql.SQLException;
 import java.util.List;
 

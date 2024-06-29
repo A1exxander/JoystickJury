@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.joystickjury.backend.game.GameDTO;
-import javax.validation.constraints.Null;
+import jakarta.validation.constraints.Null;
 import java.util.List;
 
 @RestController

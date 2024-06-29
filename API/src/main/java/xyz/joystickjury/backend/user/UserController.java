@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.joystickjury.backend.exception.UnauthorizedRequestException;
 import xyz.joystickjury.backend.token.JWTProvider;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import xyz.joystickjury.backend.token.TokenBlacklistReason;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,7 +104,7 @@ public class UserController implements iUserController { // TODO: Add endpoints 
         }
 
         userService.deleteUser(Integer.valueOf(jwtProvider.decodeJWT(jwt).subject));
-        jwtProvider.invalidateJWT(jwt);
+        jwtProvider.invalidateJWT(jwt, TokenBlacklistReason.USER_DELETED);
 
         return ResponseEntity.noContent().build();
 

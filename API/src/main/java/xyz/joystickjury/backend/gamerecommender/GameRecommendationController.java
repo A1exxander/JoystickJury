@@ -10,7 +10,7 @@ import xyz.joystickjury.backend.game.Game;
 import xyz.joystickjury.backend.game.GameDTO;
 import xyz.joystickjury.backend.game.GameMapper;
 import xyz.joystickjury.backend.token.JWTProvider;
-import javax.validation.constraints.Null;
+import jakarta.validation.constraints.Null;
 import java.util.List;
 import java.util.stream.Collectors;
 
