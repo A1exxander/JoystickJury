@@ -1,6 +1,6 @@
 package xyz.joystickjury.backend.exceptionhandler;
 
-import io.fusionauth.jwt.JWTException;
+import io.jsonwebtoken.JwtException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class RestControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Internal server error! Please try again later"); // Don't leak internals
     }
 
-    @ExceptionHandler(JWTException.class)
-    public ResponseEntity<String> handleJWTException(JWTException ex) {
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<String> handleJWTException(JwtException ex) {
         logger.log(Level.ERROR,"JWTException: " + ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid request! " + ex.getMessage());
     }
