@@ -12,7 +12,7 @@ export default function CurrentUserProfilePreview( {userJWT, updateJWTState} ) {
     }
     else if (httpError){
         return <p>Error! {httpError}</p>
-        alert(user);
+        alert(httpError);
     }
     else {
         return (
